@@ -1,4 +1,3 @@
-
 ---
 import Layout from '../layouts/Layout.astro';
 ---
@@ -276,11 +275,13 @@ import Layout from '../layouts/Layout.astro';
       let currentTag = 'all';
       
       // Search functionality
-      searchInput.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        filterPosts(searchTerm, currentTag);
-      });
-      
+      if (searchInput instanceof HTMLInputElement) {
+        searchInput.addEventListener('input', function() {
+          const searchTerm = this.value.toLowerCase();
+          filterPosts(searchTerm, currentTag);
+        });
+      }
+
       // Tag filter functionality
       tagFilters.forEach(button => {
         button.addEventListener('click', function() {
@@ -294,27 +295,36 @@ import Layout from '../layouts/Layout.astro';
           this.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
           
           currentTag = this.dataset.tag;
-          const searchTerm = searchInput.value.toLowerCase();
+          const searchTerm = searchInput instanceof HTMLInputElement ? searchInput.value.toLowerCase() : '';
           filterPosts(searchTerm, currentTag);
         });
       });
       
-      function filterPosts(searchTerm, tag) {
+      function filterPosts(searchTerm: string, tag: string) {
         blogPosts.forEach(post => {
-          const title = post.querySelector('h3').textContent.toLowerCase();
-          const content = post.querySelector('p').textContent.toLowerCase();
-          const tags = post.dataset.tags.split(' ');
-          
+          // Cast post to HTMLElement so we can access dataset and style
+          const postElement = post as HTMLElement;
+
+          // Safe query for title and content
+          const titleEl = postElement.querySelector('h3');
+          const contentEl = postElement.querySelector('p');
+
+          const title = titleEl?.textContent?.toLowerCase() ?? '';
+          const content = contentEl?.textContent?.toLowerCase() ?? '';
+
+          // Access dataset safely
+          const tags = postElement.dataset.tags ? postElement.dataset.tags.split(' ') : [];
+
           const matchesSearch = title.includes(searchTerm) || content.includes(searchTerm);
           const matchesTag = tag === 'all' || tags.includes(tag);
-          
+
           if (matchesSearch && matchesTag) {
-            post.style.display = 'block';
+            postElement.style.display = 'block';
           } else {
-            post.style.display = 'none';
-          }
-        });
-      }
+            postElement.style.display = 'none';
+        }
+      });
+    }
     });
   </script>
 </Layout>
