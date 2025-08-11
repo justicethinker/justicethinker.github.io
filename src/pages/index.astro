@@ -1,0 +1,221 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Justice Thinker - Physicist • Developer • Polymath">
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+      <div class="mb-8 animate-bounce-in">
+        <!-- Logo Image -->
+        <div class="w-36 h-36 mx-auto mb-6">
+        <img src="/images/logo.png" alt="Justice Thinker Logo" class="w-full h-full object-cover rounded-full" border-4 border-white shadow-lg />
+        </div>
+      </div>
+      
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent animate-slide-up">
+        Justice Thinker
+      </h1>
+      
+      <div class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 h-8">
+        <span id="typed-text"></span>
+      </div>
+      
+      <p class="text-lg text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto animate-fade-in">
+        Beyond Code. Beyond Boundaries. Exploring the intersection of physics, technology, and human potential.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up">
+        <a href="/about" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-colors font-medium">
+          Learn More
+        </a>
+        <a href="/projects" class="border border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-600 hover:text-white px-8 py-3 rounded-lg transition-colors font-medium">
+          View Projects
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Links Section -->
+  <section class="py-20 bg-white dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 reveal">Explore My World</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <a href="/physics" class="group reveal">
+          <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-8 rounded-xl text-white hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+            <div class="text-4xl mb-4">🔬</div>
+            <h3 class="text-xl font-bold mb-2">Physics</h3>
+            <p class="text-blue-100">Research, experiments, and theoretical frameworks</p>
+          </div>
+        </a>
+        
+        <a href="/programming" class="group reveal">
+          <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-8 rounded-xl text-white hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+            <div class="text-4xl mb-4">💻</div>
+            <h3 class="text-xl font-bold mb-2">Programming</h3>
+            <p class="text-purple-100">AI projects, web development, and innovative solutions</p>
+          </div>
+        </a>
+        
+        <a href="/speaking" class="group reveal">
+          <div class="bg-gradient-to-br from-green-500 to-green-600 p-8 rounded-xl text-white hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+            <div class="text-4xl mb-4">🎤</div>
+            <h3 class="text-xl font-bold mb-2">Speaking</h3>
+            <p class="text-green-100">Debate championships, coaching, and public speaking</p>
+          </div>
+        </a>
+        
+        <a href="/projects" class="group reveal">
+          <div class="bg-gradient-to-br from-orange-500 to-orange-600 p-8 rounded-xl text-white hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+            <div class="text-4xl mb-4">🚀</div>
+            <h3 class="text-xl font-bold mb-2">Projects</h3>
+            <p class="text-orange-100">Multidisciplinary innovations and flagship work</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Projects Section -->
+  <section class="py-20 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 reveal">Featured Projects</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 reveal">
+          <div class="flex items-center mb-6">
+            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-4">
+              <span class="text-blue-600 dark:text-blue-400 text-2xl">🤖</span>
+            </div>
+            <h3 class="text-2xl font-bold">Look-Out AI</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-6">
+            Advanced computer vision system for real-time object detection and tracking, leveraging cutting-edge machine learning algorithms.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Python</span>
+            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">TensorFlow</span>
+            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Computer Vision</span>
+          </div>
+          <a href="/projects" class="text-blue-600 dark:text-blue-400 hover:underline font-medium">Learn more →</a>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 reveal">
+          <div class="flex items-center mb-6">
+            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-4">
+              <span class="text-purple-600 dark:text-purple-400 text-2xl">🧠</span>
+            </div>
+            <h3 class="text-2xl font-bold">Overmind</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-6">
+            Intelligent automation system that orchestrates complex workflows using natural language processing and decision trees.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm">JavaScript</span>
+            <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm">Node.js</span>
+            <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm">AI</span>
+          </div>
+          <a href="/projects" class="text-purple-600 dark:text-purple-400 hover:underline font-medium">Learn more →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Blog Posts -->
+  <section class="py-20 bg-white dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold reveal">Latest Thoughts</h2>
+        <a href="/blog" class="text-blue-600 dark:text-blue-400 hover:underline font-medium">View all posts →</a>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <article class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 hover:shadow-lg transition-all duration-300 reveal">
+          <div class="text-sm text-gray-500 dark:text-gray-400 mb-2">Dec 15, 2024</div>
+          <h3 class="text-xl font-bold mb-3">The Intersection of Quantum Computing and AI</h3>
+          <p class="text-gray-600 dark:text-gray-300 mb-4">
+            Exploring how quantum principles could revolutionize machine learning algorithms...
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-xs">Physics</span>
+            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-xs">AI</span>
+          </div>
+          <a href="/blog" class="text-blue-600 dark:text-blue-400 hover:underline">Read more →</a>
+        </article>
+        
+        <article class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 hover:shadow-lg transition-all duration-300 reveal">
+          <div class="text-sm text-gray-500 dark:text-gray-400 mb-2">Dec 10, 2024</div>
+          <h3 class="text-xl font-bold mb-3">Building Better Debate Arguments</h3>
+          <p class="text-gray-600 dark:text-gray-300 mb-4">
+            Lessons learned from coaching championship debaters and the art of persuasion...
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded text-xs">Speaking</span>
+            <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded text-xs">Philosophy</span>
+          </div>
+          <a href="/blog" class="text-blue-600 dark:text-blue-400 hover:underline">Read more →</a>
+        </article>
+        
+        <article class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 hover:shadow-lg transition-all duration-300 reveal">
+          <div class="text-sm text-gray-500 dark:text-gray-400 mb-2">Dec 5, 2024</div>
+          <h3 class="text-xl font-bold mb-3">The Future of Web Development</h3>
+          <p class="text-gray-600 dark:text-gray-300 mb-4">
+            Why static site generators are becoming the backbone of modern web architecture...
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded text-xs">Programming</span>
+            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded text-xs">Web Dev</span>
+          </div>
+          <a href="/blog" class="text-blue-600 dark:text-blue-400 hover:underline">Read more →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typing Effect Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof window === "undefined") return;
+      
+      const phrases = [
+        "I am the Thinker...",
+        "I am a Physicist...",
+        "I am a Developer...", 
+        "I am a Speaker...",
+        "I am Justice Thinker."
+      ];
+      
+      let phraseIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+      const typingElement = document.getElementById('typed-text');
+      const typingSpeed = 100;
+      const deletingSpeed = 50;
+      const delayBetweenPhrases = 2000;
+      
+      function type() {
+        const currentPhrase = phrases[phraseIndex];
+        if (typingElement) {
+          if (isDeleting) {
+            typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
+            charIndex--;
+          } else {
+            typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
+            charIndex++;
+          }
+        }
+        let speed = isDeleting ? deletingSpeed : typingSpeed;
+        if (!isDeleting && charIndex === currentPhrase.length) {
+          speed = delayBetweenPhrases;
+          isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+          isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+        }
+        setTimeout(type, speed);
+      }
+      type();
+    });
+  </script>
+</Layout>

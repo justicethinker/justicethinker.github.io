@@ -1,0 +1,444 @@
+
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Projects - Justice Thinker" description="Explore Justice Thinker's multidisciplinary projects and innovations">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <!-- Header -->
+    <div class="text-center mb-16 reveal">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+        Projects & Innovations
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+        Multidisciplinary projects that blend physics, programming, and strategic thinking to solve complex real-world challenges.
+      </p>
+    </div>
+
+    <!-- Filter and Search -->
+    <div class="mb-12 reveal">
+      <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div class="w-full md:w-96">
+          <input 
+            type="text" 
+            id="project-search" 
+            placeholder="Search projects..." 
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        <div class="flex flex-wrap gap-2" id="category-filters">
+          <button class="filter-btn active px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" data-category="all">
+            All
+          </button>
+          <button class="filter-btn px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-category="ai">
+            AI/ML
+          </button>
+          <button class="filter-btn px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-category="physics">
+            Physics
+          </button>
+          <button class="filter-btn px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-category="web">
+            Web Dev
+          </button>
+          <button class="filter-btn px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-category="interdisciplinary">
+            Interdisciplinary
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured Projects Section -->
+    <section class="mb-16 reveal">
+      <h2 class="text-3xl font-bold mb-8 flex items-center">
+        <span class="text-2xl mr-3">⭐</span> Featured Projects
+      </h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Look-Out AI - Featured -->
+        <div class="project-card bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300" data-category="ai">
+          <div class="relative">
+            <div class="h-48 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+              <span class="text-6xl text-white">👁️</span>
+            </div>
+            <div class="absolute top-4 right-4 bg-yellow-500 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold">
+              FEATURED
+            </div>
+          </div>
+          <div class="p-8">
+            <h3 class="text-2xl font-bold mb-3">Look-Out AI</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6">
+              Revolutionary computer vision system that combines real-time object detection with predictive analytics. 
+              Features custom neural architectures optimized for edge deployment and multi-object tracking.
+            </p>
+            
+            <div class="mb-6">
+              <h4 class="font-bold mb-3">Key Innovations</h4>
+              <ul class="text-sm space-y-1 text-gray-600 dark:text-gray-300">
+                <li>• Custom YOLO architecture with 40% faster inference</li>
+                <li>• Real-time multi-camera fusion algorithms</li>
+                <li>• Edge-optimized deployment pipeline</li>
+                <li>• Adaptive learning for new environments</li>
+              </ul>
+            </div>
+            
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">Python</span>
+              <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">TensorFlow</span>
+              <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">OpenCV</span>
+              <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm">CUDA</span>
+            </div>
+            
+            <div class="flex gap-3">
+              <a href="#" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 rounded-lg transition-colors font-medium">
+                View Project
+              </a>
+              <a href="#" class="flex-1 border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white text-center py-2 rounded-lg transition-colors font-medium">
+                GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quantum Simulator - Featured -->
+        <div class="project-card bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300" data-category="physics interdisciplinary">
+          <div class="relative">
+            <div class="h-48 bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+              <span class="text-6xl text-white">⚛️</span>
+            </div>
+            <div class="absolute top-4 right-4 bg-yellow-500 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold">
+              FEATURED
+            </div>
+          </div>
+          <div class="p-8">
+            <h3 class="text-2xl font-bold mb-3">Quantum Circuit Simulator</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-6">
+              Advanced quantum computing simulator with interactive visualization, supporting complex quantum algorithms 
+              and educational demonstrations. Built for both research and teaching applications.
+            </p>
+            
+            <div class="mb-6">
+              <h4 class="font-bold mb-3">Capabilities</h4>
+              <ul class="text-sm space-y-1 text-gray-600 dark:text-gray-300">
+                <li>• Support for 20+ qubit systems</li>
+                <li>• Interactive circuit design interface</li>
+                <li>• Real-time quantum state visualization</li>
+                <li>• Implementation of major algorithms (Shor's, Grover's)</li>
+              </ul>
+            </div>
+            
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm">Python</span>
+              <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm">Qiskit</span>
+              <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm">React</span>
+              <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm">WebGL</span>
+            </div>
+            
+            <div class="flex gap-3">
+              <a href="#" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white text-center py-2 rounded-lg transition-colors font-medium">
+                Try Demo
+              </a>
+              <a href="#" class="flex-1 border border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white text-center py-2 rounded-lg transition-colors font-medium">
+                Source Code
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- All Projects Grid -->
+    <section class="reveal"/>
+      <h2 class="text-3xl font-bold mb-8">All Projects</h2>
+      <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <!-- Overmind -->
+        <div class="project-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300" data-category="ai">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center mr-4">
+              <span class="text-2xl">🧠</span>
+            </div>
+            <h3 class="text-xl font-bold">Overmind</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+            Intelligent automation system that processes natural language commands and orchestrates complex workflows across multiple platforms.
+          </p>
+          <div class="flex flex-wrap gap-1 mb-4">
+            <span class="px-2 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded text-xs">Node.js</span>
+            <span class="px-2 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded text-xs">NLP</span>
+            <span class="px-2 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded text-xs">GraphQL</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="#" class="flex-1 text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium text-center">View →</a>
+            <a href="#" class="flex-1 text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium text-center">GitHub →</a>
+          </div>
+        </div>
+
+        <!-- Wave Dynamics Lab -->
+        <div class="project-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300" data-category="physics">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-cyan-100 dark:bg-cyan-900 rounded-lg flex items-center justify-center mr-4">
+              <span class="text-2xl">🌊</span>
+            </div>
+            <h3 class="text-xl font-bold">Wave Dynamics Lab</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+            Interactive physics simulation platform for studying wave propagation, interference, and resonance phenomena with real-time visualization.
+          </p>
+          <div class="flex flex-wrap gap-1 mb-4">
+            <span class="px-2 py-1 bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 rounded text-xs">Python</span>
+            <span class="px-2 py-1 bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 rounded text-xs">NumPy</span>
+            <span class="px-2 py-1 bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 rounded text-xs">Matplotlib</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="#" class="flex-1 text-cyan-600 dark:text-cyan-400 hover:underline text-sm font-medium text-center">Demo →</a>
+            <a href="#" class="flex-1 text-cyan-600 dark:text-cyan-400 hover:underline text-sm font-medium text-center">Code →</a>
+          </div>
+        </div>
+
+        <!-- Neural Architecture Search -->
+        <div class="project-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300" data-category="ai">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center mr-4">
+              <span class="text-2xl">🔍</span>
+            </div>
+            <h3 class="text-xl font-bold">Neural Architecture Search</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+            Automated system for discovering optimal neural network architectures using evolutionary algorithms and performance-based selection.
+          </p>
+          <div class="flex flex-wrap gap-1 mb-4">
+            <span class="px-2 py-1 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 rounded text-xs">TensorFlow</span>
+            <span class="px-2 py-1 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 rounded text-xs">AutoML</span>
+            <span class="px-2 py-1 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 rounded text-xs">Evolution</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="#" class="flex-1 text-emerald-600 dark:text-emerald-400 hover:underline text-sm font-medium text-center">Results →</a>
+            <a href="#" class="flex-1 text-emerald-600 dark:text-emerald-400 hover:underline text-sm font-medium text-center">Paper →</a>
+          </div>
+        </div>
+
+        <!-- Debate Analysis Tool -->
+        <div class="project-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300" data-category="ai interdisciplinary">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-rose-100 dark:bg-rose-900 rounded-lg flex items-center justify-center mr-4">
+              <span class="text-2xl">📊</span>
+            </div>
+            <h3 class="text-xl font-bold">Debate Analysis Tool</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+            AI-powered platform for analyzing debate performance, providing detailed feedback on argumentation, delivery, and strategic effectiveness.
+          </p>
+          <div class="flex flex-wrap gap-1 mb-4">
+            <span class="px-2 py-1 bg-rose-100 dark:bg-rose-900 text-rose-800 dark:text-rose-200 rounded text-xs">React</span>
+            <span class="px-2 py-1 bg-rose-100 dark:bg-rose-900 text-rose-800 dark:text-rose-200 rounded text-xs">NLP</span>
+            <span class="px-2 py-1 bg-rose-100 dark:bg-rose-900 text-rose-800 dark:text-rose-200 rounded text-xs">Analytics</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="#" class="flex-1 text-rose-600 dark:text-rose-400 hover:underline text-sm font-medium text-center">Live Demo →</a>
+            <a href="#" class="flex-1 text-rose-600 dark:text-rose-400 hover:underline text-sm font-medium text-center">GitHub →</a>
+          </div>
+        </div>
+
+        <!-- Portfolio Website -->
+        <div class="project-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300" data-category="web">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900 rounded-lg flex items-center justify-center mr-4">
+              <span class="text-2xl">🌐</span>
+            </div>
+            <h3 class="text-xl font-bold">Portfolio Website</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+            Modern, responsive portfolio website built with Astro and Tailwind CSS, featuring dark mode, animations, and optimized performance.
+          </p>
+          <div class="flex flex-wrap gap-1 mb-4">
+            <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded text-xs">Astro</span>
+            <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded text-xs">Tailwind</span>
+            <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 rounded text-xs">TypeScript</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="#" class="flex-1 text-amber-600 dark:text-amber-400 hover:underline text-sm font-medium text-center">Visit →</a>
+            <a href="#" class="flex-1 text-amber-600 dark:text-amber-400 hover:underline text-sm font-medium text-center">Source →</a>
+          </div>
+        </div>
+
+        <!-- Physics Problem Solver -->
+        <div class="project-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300" data-category="ai physics interdisciplinary">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900 rounded-lg flex items-center justify-center mr-4">
+              <span class="text-2xl">🧮</span>
+            </div>
+            <h3 class="text-xl font-bold">Physics Problem Solver</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+            AI system trained to solve complex physics problems with step-by-step explanations, supporting multiple domains from mechanics to quantum physics.
+          </p>
+          <div class="flex flex-wrap gap-1 mb-4">
+            <span class="px-2 py-1 bg-violet-100 dark:bg-violet-900 text-violet-800 dark:text-violet-200 rounded text-xs">PyTorch</span>
+            <span class="px-2 py-1 bg-violet-100 dark:bg-violet-900 text-violet-800 dark:text-violet-200 rounded text-xs">Transformers</span>
+            <span class="px-2 py-1 bg-violet-100 dark:bg-violet-900 text-violet-800 dark:text-violet-200 rounded text-xs">SymPy</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="#" class="flex-gray-600 dark:text-gray-300">Argumentation Analysis</span>
+              <div class="flex space-x-1">
+                {Array.from({length: 5}).map((_, i) => (
+                  <div class="w-3 h-3 bg-purple-500 rounded-full"></div>
+                ))}
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm texttext-purple-200 rounded text-xs">Node.js</span>
+                    <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded text-xs">NLP</span>
+                    <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded text-xs">MongoDB</span>
+                    <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:
+
+
+            <a href="#" class="flex-1 text-violet-600 dark:text-violet-400 hover:underline text-sm font-medium text-center">Beta Test →</a>
+            <a href="#" class="flex-1 text-violet-600 dark:text-violet-400 hover:underline text-sm font-medium text-center">Paper →</a>
+          </div>
+        </div>
+
+        <!-- Research Assistant -->
+        <div class="project-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300" data-category="ai interdisciplinary">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-teal-100 dark:bg-teal-900 rounded-lg flex items-center justify-center mr-4">
+              <span class="text-2xl">🔬</span>
+            </div>
+            <h3 class="text-xl font-bold">Autonomous Research Assistant</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+            AI system that autonomously conducts literature reviews, generates research hypotheses, and identifies knowledge gaps across scientific domains.
+          </p>
+          <div class="flex flex-wrap gap-1 mb-4">
+            <span class="px-2 py-1 bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 rounded text-xs">LangChain</span>
+            <span class="px-2 py-1 bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 rounded text-xs">RAG</span>
+            <span class="px-2 py-1 bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 rounded text-xs">Vector DB</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="#" class="flex-1 text-teal-600 dark:text-teal-400 hover:underline text-sm font-medium text-center">Alpha →</a>
+            <a href="#" class="flex-1 text-teal-600 dark:text-teal-400 hover:underline text-sm font-medium text-center">Docs →</a>
+          </div>
+        </div>
+
+        <!-- EM Field Mapper -->
+        <div class="project-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300" data-category="physics">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mr-4">
+              <span class="text-2xl">📡</span>
+            </div>
+            <h3 class="text-xl font-bold">EM Field Mapper</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+            High-precision electromagnetic field mapping system with real-time visualization and data logging capabilities for research applications.
+          </p>
+          <div class="flex flex-wrap gap-1 mb-4">
+            <span class="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded text-xs">Arduino</span>
+            <span class="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded text-xs">Python</span>
+            <span class="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded text-xs">3D Viz</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="#" class="flex-1 text-orange-600 dark:text-orange-400 hover:underline text-sm font-medium text-center">Gallery →</a>
+            <a href="#" class="flex-1 text-orange-600 dark:text-orange-400 hover:underline text-sm font-medium text-center">Build Guide →</a>
+          </div>
+        </div>
+
+        <!-- API Gateway -->
+        <div class="project-card bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300" data-category="web">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center mr-4">
+              <span class="text-2xl">🚪</span>
+            </div>
+            <h3 class="text-xl font-bold">Universal API Gateway</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+            Scalable API gateway with rate limiting, authentication, and intelligent routing for microservices architecture.
+          </p>
+          <div class="flex flex-wrap gap-1 mb-4">
+            <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded text-xs">Node.js</span>
+            <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded text-xs">Redis</span>
+            <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded text-xs">Docker</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="#" class="flex-1 text-slate-600 dark:text-slate-400 hover:underline text-sm font-medium text-center">Deploy →</a>
+            <a href="#" class="flex-1 text-slate-600 dark:text-slate-400 hover:underline text-sm font-medium text-center">GitHub →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Project Stats -->
+    <section class="mt-16 reveal">
+      <div class="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-xl p-8">
+        <h2 class="text-2xl font-bold mb-8 text-center">Project Impact</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">25+</div>
+            <div class="text-gray-600 dark:text-gray-300">Projects Completed</div>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">10K+</div>
+            <div class="text-gray-600 dark:text-gray-300">Lines of Code</div>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">5</div>
+            <div class="text-gray-600 dark:text-gray-300">Open Source</div>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">3</div>
+            <div class="text-gray-600 dark:text-gray-300">Publications</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Project Filter Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('project-search');
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const projectCards = document.querySelectorAll('.project-card');
+      
+      let currentFilter = 'all';
+      
+      // Search functionality
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        filterProjects(searchTerm, currentFilter);
+      });
+      
+      // Filter functionality
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Update active state
+          filterButtons.forEach(btn => {
+            btn.classList.remove('active', 'bg-blue-600', 'text-white');
+            btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+          });
+          
+          this.classList.add('active', 'bg-blue-600', 'text-white');
+          this.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+          
+          currentFilter = this.dataset.category;
+          const searchTerm = searchInput.value.toLowerCase();
+          filterProjects(searchTerm, currentFilter);
+        });
+      });
+      
+      function filterProjects(searchTerm, category) {
+        projectCards.forEach(card => {
+          const title = card.querySelector('h3').textContent.toLowerCase();
+          const description = card.querySelector('p').textContent.toLowerCase();
+          const categories = card.dataset.category.split(' ');
+          
+          const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+          const matchesCategory = category === 'all' || categories.includes(category);
+          
+          if (matchesSearch && matchesCategory) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+    });
+  </script>
+</Layout>
