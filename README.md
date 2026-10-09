@@ -1,67 +1,116 @@
-# Personal Portfolio (justicethinker.github.io)
+# justicethinker.github.io
 
-![Build Status](https://img.shields.io/badge/deployment-GitHub_Pages-brightgreen)
-![Frontend](https://img.shields.io/badge/Frontend-Responsive_Web-blue)
-![Portfolio](https://img.shields.io/badge/Type-Personal_Site-orange)
-![License](https://img.shields.io/badge/license-MIT-green)
+The personal site of **Emmanuel Isaac** — physicist, developer, debater. Ten static
+pages, one accent colour, one generated drawing, and no third-party requests.
 
-## The Elevator Pitch
-The personal portfolio and digital resume of Emmanuel Isaac (Justice Thinker). Hosted natively on GitHub Pages, this site serves as a central digital hub showcasing a diverse range of software engineering work—from AI learning agents and automated trading platforms (GAT) to full-stack mobile apps (Linkd, Echo) and Web3 decentralized finance protocols (Fundafrica). 
+## Stack
 
-## Visuals
+| | |
+|---|---|
+| Framework | Astro 4 (`output: 'static'`) |
+| Styling | Plain CSS, five source sheets, bundled to one file. No preprocessor, no utility framework |
+| Client JS | One hand-written script — 3.3 kB, 1.4 kB gzipped |
+| Fonts | Instrument Serif, self-hosted (2 files, 42 kB). Body text uses the platform's UI sans |
+| Image | One drawing, generated in Node from the wave equation, encoded with `ffmpeg-static` |
+| Hosting | GitHub Pages, deployed by Actions on push to `main` |
 
-*(Insert a high-quality screenshot or GIF of the website's landing page, resume section, and project showcase)*
+## Design
 
-## Features
-* **Project Showcase:** Interactive displays of key repositories, detailing the tech stack, problem-solving approach, and architecture for each.
-* **Digital Resume:** A comprehensive overview of professional experience, FUTO physics background, and core competencies in Python, React, and Flutter.
-* **Responsive Design:** Optimized for seamless viewing across desktop, tablet, and mobile devices to accommodate recruiters and open-source collaborators.
-* **Continuous Deployment:** Automatically built and hosted via GitHub Pages whenever changes are pushed to the main branch.
+Paper and ink. The field is a warm off-white (`#f7f5f1`), the text a warm
+near-black (`#1b1815`), and there is exactly one accent — a muted vermilion
+(`#a4472c`) spent only on links, the current page and focus rings.
 
-## Prerequisites
-To run or modify this site locally, ensure you have:
-* **Git** (for version control)
-* A local web server environment (e.g., Python's `http.server`, the Live Server extension in VS Code, or Node.js if using a static site framework)
+Structure is drawn with 1px hairlines at 13% ink: no cards, no panels, no
+shadows. Lists are lists. The masthead carries four links; everything else waits
+in the menu or the footer. The reasoning, and the rules this site is held to, are
+in [`design/PAPER.md`](design/PAPER.md).
 
-## Installation
-Run the following commands to get the site running on your local machine for UI development and testing:
+Two typefaces' worth of work is done by one shipped font: Instrument Serif for
+display, the platform's own interface sans for everything else — it is excellent
+everywhere, costs nothing to download, and cannot flash or fail.
 
-```bash
-# 1. Clone the repository
-git clone [https://github.com/justicethinker/justicethinker.github.io.git](https://github.com/justicethinker/justicethinker.github.io.git)
-cd justicethinker.github.io
+## Layout of the source
 
-# 2. Run a local development server
-# If the site is built with standard HTML/CSS/JS, use your existing Python environment:
-python3 -m http.server 8000
-
-# (Note: If you ended up using an npm-based framework like React or Next.js, run `npm install` followed by `npm run dev` instead).
+```text
+src/
+  data/site.ts          every word on the site, typed — the single content source
+  layouts/Layout.astro  head, meta, fonts, masthead, footer
+  components/           Nav.astro, Footer.astro, Figure.astro
+  pages/                index, physics, programming, speaking, work (projects),
+                        blog, cv, about, contact, 404
+  scripts/motion.js     reveals, menu, back-to-top, contact form
+  styles/
+    tokens.css          paper, ink, one accent, type scale, spacing
+    fonts.css           the self-hosted display face
+    base.css            reset, document type, links, focus, utilities
+    components.css      masthead, menu, lists, facts, figure, form, footer
+    motion.css          one gesture: a 10px settle, once, respecting reduced motion
 ```
 
-## Usage
+## Commands
 
-### Local Development
-Once your local server is running, open your browser and navigate to `http://localhost:8000` to view the site. Test any changes to your project links, resume details, or CSS styles here before pushing.
-
-### Live Deployment
-Because this is a special `[username].github.io` repository, GitHub Pages automatically handles the hosting. To deploy updates, simply commit and push your changes:
 ```bash
-git add .
-git commit -m "Update resume and add new Echo AI project"
-git push origin main
+npm run dev        # development server
+npm run build      # static build into dist/
+npm run preview    # serve the built output
+
+npm run image      # regenerate the one drawing, public/art/ink.webp
+npm run og         # the 1200×630 social card, rendered in a real browser
+npm run fonts      # refetch the self-hosted display face
+
+npm run check      # page audit + interaction tests against dist/
 ```
-The live site will automatically update at `https://justicethinker.github.io/` within a few minutes.
 
-## Contributing
-While this is a personal portfolio, suggestions for UI/UX improvements, accessibility enhancements, or typo corrections are always appreciated!
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/UIEnhancement`)
-3. Commit your Changes (`git commit -m 'Improve contrast on project cards'`)
-4. Push to the Branch (`git push origin feature/UIEnhancement`)
-5. Open a Pull Request
+## The one image
 
-## License
-Distributed under the MIT License. See `LICENSE` for more information.
+Every image is generated. The interference field — a few emitters summed into one
+scalar value — is drawn as ink contours on paper: fine lines where the field is
+steep, open curves where it is flat. `tools/ink.mjs` does the drawing;
+`tools/gen-image.mjs` renders it to `public/art/ink.webp` (1600×1000, 110 kB).
 
----
-**Contact:** justicethinker2@gmail.com | [LinkedIn](https://www.linkedin.com/in/justicethinker/) | [GitHub](https://github.com/justicethinker)
+It appears as a still in two places — a full-bleed plate on the home page, and
+beside the modelling notes on the physics page. There is no video, no loop and no
+autoplaying media anywhere on the site, which is a deliberate choice: the same
+drawing animated cost between two and nine megabytes for a drift a visitor
+watches for two seconds. The still carries the same idea for a tenth of that.
+
+## Verification
+
+Three tools, all driving a real headless Chromium over the DevTools protocol:
+
+- **`npm run check`** — `tools/audit.mjs` walks all ten pages at four widths
+  checking console and page errors, failed requests, horizontal overflow, that
+  every image actually loaded, that the display font resolved, contrast, heading
+  structure, tap-target sizes, and that nothing is left invisible by the reveal
+  system. `tools/check-interactions.mjs` then drives the real controls — the
+  drawing and its caption, the menu with its focus handling, the contact form
+  including an empty submit, and back-to-top — and asserts observable behaviour.
+- **`tools/diag-reveal.mjs`** — scrolls a page step by step, logging how many
+  reveal targets light, which separates a broken reveal from a measurement
+  artefact.
+- **`tools/shoot.mjs` + `tools/preview-shots.mjs`** — full-page screenshots at any
+  viewport, and downscaled or sliced previews for reviewing composition.
+
+Two traps worth knowing about, both of which produced false alarms before they
+were understood. The page uses `scroll-behavior: smooth`, so a test that scrolls
+programmatically must pass `behavior: 'instant'` or it will sample positions the
+page has not reached. And reveals take ~700 ms, so a probe that measures
+immediately after scrolling reports lit content as invisible; the audit waits for
+finite CSS animations to settle first.
+
+## Editing content
+
+Almost every change is an edit to [`src/data/site.ts`](src/data/site.ts) —
+identity, projects, publications, talks, posts, record, education, skills and
+statistics all live there, typed. Adding a project means adding an object to
+`projects`; the work page, the discipline pages and the counts follow from it.
+
+## Deploy
+
+`.github/workflows/deploy.yml` builds on every push to `main` and publishes
+`dist/` to the `gh-pages` branch. CI installs production dependencies only
+(`npm ci --omit=dev`); the image and social-card pipeline is local-only, and its
+one binary download is the step most likely to fail for reasons unrelated to the
+site — the build was verified to succeed with `ffmpeg-static` absent.
+
+`public/.nojekyll` keeps GitHub Pages from filtering the `_astro/` directory.
