@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Social card</title>
+    <style>
+      @font-face {
+        font-family: 'Instrument Serif';
+        font-style: normal;
+        font-weight: 400;
+        src: url('../public/fonts/instrument-serif-400-normal.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Instrument Serif';
+        font-style: italic;
+        font-weight: 400;
+        src: url('../public/fonts/instrument-serif-400-italic.woff2') format('woff2');
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* 1200x630 — the one size every platform agrees on. */
+      body {
+        width: 1200px;
+        height: 630px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        background: #f7f5f1;
+        color: #1b1815;
+        font-family: ui-sans-serif, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        overflow: hidden;
+      }
+
+      .left {
+        padding: 66px 52px 66px 70px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .mark {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-size: 30px;
+        line-height: 1;
+        letter-spacing: -0.02em;
+      }
+
+      .mark i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #a4472c;
+      }
+
+      h1 {
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-weight: 400;
+        font-size: 82px;
+        line-height: 1;
+        letter-spacing: -0.025em;
+      }
+
+      h1 em {
+        font-style: italic;
+      }
+
+      .role {
+        font-size: 21px;
+        color: #4c463e;
+        margin-top: 22px;
+        max-width: 34ch;
+        line-height: 1.5;
+      }
+
+      .site {
+        font-size: 16px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #7b746a;
+      }
+
+      .right {
+        position: relative;
+        border-left: 1px solid rgb(27 24 21 / 0.12);
+      }
+
+      .right img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="left">
+      <span class="mark"><i></i> Justice Thinker</span>
+
+      <div>
+        <h1>Measure it. <em>Then argue.</em></h1>
+        <p class="role">
+          Physics, software and competitive debate — three disciplines, one method.
+        </p>
+      </div>
+
+      <span class="site">justicethinker.github.io</span>
+    </div>
+
+    <div class="right">
+      <img src="../public/art/ink.webp" alt="" />
+    </div>
+  </body>
+</html>

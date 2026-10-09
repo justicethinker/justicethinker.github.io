@@ -1,24 +1,23 @@
-
 {
-  "name": "justice-thinker-portfolio",
+  "name": "justice-thinker",
   "type": "module",
-  "version": "0.0.1",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Personal site of Emmanuel Isaac — physicist, developer, debater.",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "image": "node tools/gen-image.mjs",
+    "og": "node tools/gen-og.mjs",
+    "fonts": "node tools/fetch-fonts.mjs",
+    "check": "node tools/audit.mjs && node tools/check-interactions.mjs"
   },
   "dependencies": {
-    "astro": "^4.0.0",
-    "@astrojs/tailwind": "^5.0.0",
-    "@astrojs/mdx": "^2.0.0",
-    "tailwindcss": "^3.3.0",
-    "typed.js": "^2.0.16"
+    "astro": "^4.0.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.3.1",
-    "typescript": "^5.0.0"
+    "ffmpeg-static": "^5.2.0"
   }
 }
