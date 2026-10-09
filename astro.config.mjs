@@ -1,10 +1,16 @@
-
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
-import mdx from '@astrojs/mdx';
 
+// Static output — deployed to GitHub Pages via the workflow in .github/workflows/deploy.yml
 export default defineConfig({
-  integrations: [tailwind(), mdx()],
   site: 'https://justicethinker.github.io',
-  base: '/'
+  base: '/',
+  output: 'static',
+  build: {
+    inlineStylesheets: 'auto',
+  },
+  vite: {
+    build: {
+      assetsInlineLimit: 2048,
+    },
+  },
 });
