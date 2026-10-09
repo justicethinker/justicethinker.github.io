@@ -408,9 +408,12 @@
   margin-inline: calc(var(--gutter) * -1);
 }
 
-/* The image may run to the edge; its caption may not. */
+/* The image may run to the edge; its caption may not. The cap is a measure of
+   the text, and the box is a border box, so the inset has to be added back or
+   the gutter would eat the measure and wrap the caption into a narrow column. */
 .figure--bleed .figure__caption {
   padding-inline: var(--gutter);
+  max-width: calc(58ch + var(--gutter) * 2);
 }
 
 /* --- CONTACT CHANNELS ----------------------------------------------------------- */
