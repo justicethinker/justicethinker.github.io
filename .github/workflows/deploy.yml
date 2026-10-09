@@ -9,22 +9,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
+      # Only the runtime dependency is needed to build: the image pipeline
+      # (ffmpeg-static, dev-only) never runs in CI, and its binary download is
+      # the one step that can fail on a runner for reasons unrelated to the site.
       - name: Install dependencies
-        run: npm install
+        run: npm ci --omit=dev
 
       - name: Build site
         run: npm run build
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          publish_branch: gh-pages

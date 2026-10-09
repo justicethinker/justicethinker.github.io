@@ -1,1 +1,13 @@
+# dependencies
 node_modules
+
+# build output — produced by `npm run build`, published by CI
+dist
+.astro
+
+# local scaffolding: screenshots, contact sheets, downscaled previews
+.tmp
+
+# editor state
+.vscode
+.DS_Store
