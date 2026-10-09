@@ -1,0 +1,610 @@
+/* ==========================================================================
+   Components
+
+   Hairlines, type and space. No frames, no ticks, no labels for their own
+   sake — every element here has to earn its pixels.
+   ========================================================================== */
+
+/* --- MASTHEAD -------------------------------------------------------------- */
+
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.masthead__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 4.5rem;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: var(--ls-tight);
+  color: var(--ink);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2.4rem);
+}
+
+.nav__link {
+  font-size: var(--t-small);
+  color: var(--ink-2);
+  text-decoration: none;
+  padding-block: 0.4rem;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.nav__link:hover {
+  color: var(--ink);
+}
+
+.nav__link[aria-current='page'] {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+.nav__toggle {
+  display: none;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: var(--t-small);
+  color: var(--ink-2);
+  padding: 0.5rem 0;
+}
+
+.nav__toggle-bars {
+  display: grid;
+  gap: 4px;
+  width: 18px;
+}
+
+.nav__toggle-bars i {
+  height: 1px;
+  background: currentColor;
+}
+
+@media (max-width: 860px) {
+  .nav {
+    display: none;
+  }
+
+  .nav__toggle {
+    display: inline-flex;
+  }
+}
+
+/* --- DRAWER (mobile menu) -------------------------------------------------- */
+
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  padding: var(--space-3) var(--gutter) var(--space-5);
+  overscroll-behavior: contain;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-0.75rem);
+  transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease),
+    visibility var(--dur-slow);
+}
+
+.drawer[data-open='true'] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 0.75rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.drawer__list {
+  display: grid;
+  align-content: center;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.drawer__link {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 8vw, 2.75rem);
+  line-height: 1.3;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.drawer__link:hover,
+.drawer__link[aria-current='page'] {
+  color: var(--accent);
+}
+
+.drawer__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: var(--t-small);
+  color: var(--ink-3);
+}
+
+/* --- PAGE OPENER ------------------------------------------------------------ */
+
+.opener {
+  display: grid;
+  gap: var(--space-3);
+  padding-block: var(--space-4) var(--space-5);
+}
+
+.opener__kicker {
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.opener .lede {
+  margin-top: var(--space-1);
+}
+
+/* --- SECTION ----------------------------------------------------------------- */
+
+.section {
+  padding-block: var(--space-5);
+}
+
+.section + .section {
+  border-top: 1px solid var(--rule-soft);
+}
+
+.section--tight {
+  padding-block: var(--space-4);
+}
+
+.section__head {
+  display: grid;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+}
+
+.section__head .note {
+  max-width: 50ch;
+}
+
+@media (min-width: 900px) {
+  .section__head {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+    align-items: end;
+    gap: var(--space-4);
+  }
+
+  .section__head .note {
+    text-align: right;
+    justify-self: end;
+  }
+}
+
+/* --- WORK LIST ---------------------------------------------------------------
+   A ruled list is the whole index of the site. It is the simplest thing that
+   can hold a name, a line and a year. */
+
+.work {
+  border-top: 1px solid var(--rule);
+}
+
+.work__item {
+  display: grid;
+  gap: 0.35rem;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--rule);
+}
+
+.work__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.work__name {
+  font-family: var(--font-display);
+  font-size: var(--t-title);
+  line-height: 1.2;
+  letter-spacing: var(--ls-tight);
+  /* A name is often a single long word. Break it rather than let it run into
+     the line beside it. */
+  overflow-wrap: break-word;
+}
+
+.work__meta {
+  font-size: var(--t-micro);
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.work__line {
+  font-size: var(--t-small);
+  color: var(--ink-3);
+  max-width: 62ch;
+}
+
+.work__item:hover .work__name {
+  color: var(--accent);
+}
+
+.work--plain .work__item {
+  /* Wide enough for the longest label in the content model at the top of the
+     type scale — the label must never reach into the line beside it. */
+  grid-template-columns: 12rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+}
+
+.work--plain .work__row {
+  display: contents;
+}
+
+@media (max-width: 700px) {
+  .work--plain .work__item {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- POSTS -------------------------------------------------------------------- */
+
+.posts {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.post {
+  display: grid;
+  gap: 0.3rem;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--rule);
+}
+
+.post__date {
+  font-size: var(--t-micro);
+  color: var(--ink-3);
+}
+
+.post__title {
+  font-family: var(--font-display);
+  font-size: var(--t-title);
+  line-height: 1.2;
+}
+
+.post:hover .post__title {
+  color: var(--accent);
+}
+
+.post__dek {
+  font-size: var(--t-small);
+  color: var(--ink-3);
+  max-width: 62ch;
+}
+
+/* --- FACTS (education, skills, record) ---------------------------------------- */
+
+.facts {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.facts__row {
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+  gap: var(--space-2) var(--space-4);
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--rule);
+}
+
+.facts__key {
+  font-size: var(--t-small);
+  color: var(--ink-3);
+}
+
+.facts__value {
+  color: var(--ink-2);
+}
+
+.facts__value strong {
+  color: var(--ink);
+  font-weight: 500;
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}
+
+@media (max-width: 700px) {
+  .facts__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- TERMS ---------------------------------------------------------------------
+   A bare list of names, with no second column to fill. Two abreast so eight
+   short entries stay a short block instead of a tall stack. */
+
+.terms {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.terms__item {
+  padding-block: var(--space-2);
+  padding-right: var(--space-3);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: var(--ls-tight);
+}
+
+@media (min-width: 701px) {
+  .terms {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --- FIGURE -------------------------------------------------------------------- */
+
+.figure {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.figure__media {
+  position: relative;
+  background: var(--paper-soft);
+  overflow: hidden;
+}
+
+.figure__media img,
+.figure__media video {
+  width: 100%;
+}
+
+.figure__caption {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--t-small);
+  color: var(--ink-3);
+  max-width: 58ch;
+}
+
+.figure--bleed {
+  margin-inline: calc(var(--gutter) * -1);
+}
+
+/* The image may run to the edge; its caption may not. */
+.figure--bleed .figure__caption {
+  padding-inline: var(--gutter);
+}
+
+/* --- CONTACT CHANNELS ----------------------------------------------------------- */
+
+.channels {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.channel {
+  display: grid;
+  gap: 0.2rem;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--rule);
+}
+
+.channel__label {
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.channel__value {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+  word-break: break-word;
+}
+
+/* --- FORM ------------------------------------------------------------------------ */
+
+.form {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 34rem;
+}
+
+.form__row {
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (min-width: 620px) {
+  .form__row--two {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.field__label {
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.field__input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  padding: 0.6rem 0;
+  color: var(--ink);
+  border-radius: 0;
+  transition: border-color var(--dur) var(--ease);
+}
+
+.field__input::placeholder {
+  color: var(--ink-4);
+}
+
+.field__input:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+
+.field__input:focus-visible {
+  outline: none;
+}
+
+textarea.field__input {
+  resize: vertical;
+  min-height: 8rem;
+}
+
+.field:focus-within .field__label {
+  color: var(--accent);
+}
+
+.form__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* --- BUTTONS ---------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  padding: 0.7rem 1.4rem;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius);
+  font-size: var(--t-small);
+  text-decoration: none;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.btn:hover {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.btn--quiet {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--rule);
+}
+
+.btn--quiet:hover {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.status {
+  font-size: var(--t-small);
+  color: var(--ink-3);
+  min-height: 1.5rem;
+}
+
+.status a {
+  color: var(--accent);
+}
+
+/* --- FOOTER ------------------------------------------------------------------------ */
+
+.footer {
+  border-top: 1px solid var(--rule);
+  padding-block: var(--space-5) var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.footer__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.footer__mark {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.6vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: var(--ls-tight);
+}
+
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: var(--t-small);
+}
+
+.footer__base {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--rule-soft);
+  font-size: var(--t-micro);
+  color: var(--ink-3);
+}
+
+.to-top {
+  min-height: 1.75rem;
+  padding: 0.25rem 0;
+  color: var(--ink-3);
+  transition: color var(--dur) var(--ease);
+}
+
+.to-top:hover {
+  color: var(--accent);
+}

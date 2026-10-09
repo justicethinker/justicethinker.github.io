@@ -1,0 +1,24 @@
+---
+import { identity, navAll } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="shell">
+    <div class="footer__top">
+      <p class="footer__mark">
+        Let's build something <span class="italic">worth measuring</span>.
+      </p>
+
+      <nav class="footer__links" aria-label="Pages">
+        {navAll.map((item) => <a class="link" href={item.href}>{item.label}</a>)}
+      </nav>
+    </div>
+
+    <div class="footer__base">
+      <span>© {year} {identity.legalName} · static pages, no trackers, no third-party requests</span>
+      <button class="to-top" type="button" data-to-top>Back to top</button>
+    </div>
+  </div>
+</footer>

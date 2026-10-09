@@ -1,0 +1,30 @@
+---
+export interface Props {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  /** one line of italic serif, set under the image */
+  caption?: string;
+  /** let the image run to the page edges */
+  bleed?: boolean;
+  /** above the fold: load it now rather than when it scrolls into view */
+  priority?: boolean;
+}
+
+const { src, alt, width, height, caption, bleed = false, priority = false } = Astro.props;
+---
+
+<figure class={`figure${bleed ? ' figure--bleed' : ''}`} data-reveal>
+  <div class="figure__media" data-plate>
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={priority ? 'eager' : 'lazy'}
+      decoding="async"
+    />
+  </div>
+  {caption && <figcaption class="figure__caption">{caption}</figcaption>}
+</figure>

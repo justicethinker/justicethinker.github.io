@@ -1,0 +1,77 @@
+/* ==========================================================================
+   Tokens
+
+   Paper and ink, plus exactly one accent. Nothing here is a decoration:
+   if a value is not doing work, it does not belong in this file.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* --- FIELD ------------------------------------------------------------- */
+  --paper: #f7f5f1; /* warm off-white, never a screen white */
+  --paper-soft: #efece5; /* a raised or inset surface */
+  --ink: #1b1815; /* warm near-black — never #000 */
+  --ink-2: #4c463e; /* secondary text */
+  --ink-3: #7b746a; /* muted text, still legible */
+  --ink-4: #b0a99f; /* rules, marks, decoration only */
+
+  --rule: rgb(27 24 21 / 0.13);
+  --rule-soft: rgb(27 24 21 / 0.07);
+
+  /* --- ACCENT ------------------------------------------------------------
+     One colour for the whole site, spent only on links, marks and the single
+     primary action on a page. */
+  --accent: #a4472c;
+  --accent-deep: #7d3320;
+  --accent-wash: rgb(164 71 44 / 0.14);
+
+  /* --- TYPE -------------------------------------------------------------- */
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-text: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --t-mega: clamp(2.75rem, 8.4vw, 5.75rem);
+  --t-display: clamp(2rem, 5.2vw, 3.4rem);
+  --t-title: clamp(1.3rem, 2.2vw, 1.75rem);
+  --t-lead: clamp(1.1rem, 1.5vw, 1.35rem);
+  --t-body: 1.0625rem;
+  --t-small: 0.9375rem;
+  --t-micro: 0.8125rem;
+
+  --lh-display: 1.04;
+  --lh-title: 1.24;
+  --lh-body: 1.68;
+
+  --ls-tight: -0.02em;
+  --ls-wide: 0.08em;
+
+  /* --- SPACE -------------------------------------------------------------
+     Fewer steps, used consistently, so the page keeps one rhythm. */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: 6rem;
+  --space-7: clamp(4.5rem, 11vw, 8.5rem);
+
+  --gutter: clamp(1.25rem, 5vw, 4.5rem);
+  --measure: 62ch; /* paragraphs never run wider than this */
+  --page: 74rem;
+
+  /* --- FORM -------------------------------------------------------------- */
+  --radius: 2px;
+  --shadow: 0 1px 2px rgb(27 24 21 / 0.04), 0 14px 34px rgb(27 24 21 / 0.05);
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur: 420ms;
+  --dur-slow: 720ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur: 1ms;
+    --dur-slow: 1ms;
+  }
+}

@@ -1,0 +1,39 @@
+/* ==========================================================================
+   Motion
+
+   One gesture: content settles into place as it arrives. Nothing loops,
+   nothing bounces, nothing moves again once it has arrived.
+   ========================================================================== */
+
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease);
+  transition-delay: calc(var(--reveal-i, 0) * 60ms);
+}
+
+html.js [data-reveal].is-lit {
+  opacity: 1;
+  transform: none;
+}
+
+/* The ink plate fades in slightly slower: it is the largest thing on a page. */
+html.js [data-plate] {
+  opacity: 0;
+  transition: opacity 1100ms var(--ease);
+}
+
+html.js [data-plate].is-lit {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal],
+  html.js [data-reveal].is-lit,
+  html.js [data-plate],
+  html.js [data-plate].is-lit {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
