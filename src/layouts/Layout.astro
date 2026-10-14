@@ -7,9 +7,10 @@ import { identity } from '../data/site';
 export interface Props {
   title: string;
   description?: string;
+  hero3d?: boolean;
 }
 
-const { title, description = identity.statement } = Astro.props;
+const { title, description = identity.statement, hero3d = false } = Astro.props;
 
 const fullTitle =
   title === identity.name ? `${identity.name} — ${identity.role}` : `${title} — ${identity.name}`;
@@ -27,8 +28,8 @@ const ogImage = new URL('/og.jpg', Astro.site).href;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
 
-    <meta name="theme-color" content="#f7f5f1" />
-    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#0a0908" />
+    <meta name="color-scheme" content="dark" />
     <meta name="author" content={identity.legalName} />
 
     <meta property="og:type" content="website" />
@@ -47,6 +48,17 @@ const ogImage = new URL('/og.jpg', Astro.site).href;
       type="font/woff2"
       crossorigin
     />
+
+    {hero3d && (
+      <script
+        type="importmap"
+        set:html={JSON.stringify({
+          imports: {
+            three: 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js',
+          },
+        })}
+      />
+    )}
 
     <script is:inline>
       // Reveals are armed only when scripting is available, so no content is

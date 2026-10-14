@@ -1,39 +1,56 @@
 /* ==========================================================================
-   Motion
-
-   One gesture: content settles into place as it arrives. Nothing loops,
-   nothing bounces, nothing moves again once it has arrived.
+   AURUM — motion
+   One settle on arrival, tilt on cards, calm water elsewhere. Reduced motion
+   resolves everything to its final state.
    ========================================================================== */
 
-html.js [data-reveal] {
+.js [data-reveal] {
   opacity: 0;
-  transform: translate3d(0, 10px, 0);
+  transform: translateY(14px);
   transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease);
-  transition-delay: calc(var(--reveal-i, 0) * 60ms);
 }
 
-html.js [data-reveal].is-lit {
+.js [data-reveal].is-lit {
   opacity: 1;
   transform: none;
 }
 
-/* The ink plate fades in slightly slower: it is the largest thing on a page. */
-html.js [data-plate] {
-  opacity: 0;
-  transition: opacity 1100ms var(--ease);
+/* Stagger siblings so a row of cards arrives like a dealt hand. */
+.js [data-reveal-group] > [data-reveal]:nth-child(2) {
+  transition-delay: 90ms;
 }
 
-html.js [data-plate].is-lit {
-  opacity: 1;
+.js [data-reveal-group] > [data-reveal]:nth-child(3) {
+  transition-delay: 180ms;
+}
+
+.js [data-reveal-group] > [data-reveal]:nth-child(4) {
+  transition-delay: 270ms;
+}
+
+.js [data-reveal-group] > [data-reveal]:nth-child(5) {
+  transition-delay: 360ms;
+}
+
+.js [data-reveal-group] > [data-reveal]:nth-child(6) {
+  transition-delay: 450ms;
+}
+
+/* 3D tilt: the card follows the pointer; the shine follows the card. */
+.js [data-tilt] {
+  transition: transform 180ms var(--ease), border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html.js [data-reveal],
-  html.js [data-reveal].is-lit,
-  html.js [data-plate],
-  html.js [data-plate].is-lit {
+  .js [data-reveal] {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }

@@ -1,0 +1,38 @@
+---
+/**
+ * Portrait — the reserved seat for the owner's photograph.
+ *
+ * To put your picture on the home page, add a file at
+ * `public/portrait.jpg` (portrait orientation, ~1200px tall is plenty).
+ * It is picked up at build time; until then a gold monogram holds the frame,
+ * and no request for a missing file ever leaves the browser.
+ */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+const hasPhoto = existsSync(join(process.cwd(), 'public/portrait.jpg'));
+---
+
+<div class="portrait" data-tilt data-reveal>
+  <div class="portrait__frame">
+    <div class="portrait__inner">
+      {hasPhoto ? (
+        <img
+          src="/portrait.jpg"
+          alt="Portrait of Justice Thinker"
+          width="800"
+          height="1000"
+          loading="eager"
+          decoding="async"
+        />
+      ) : (
+        <div class="portrait__empty" data-portrait-empty>
+          <span class="portrait__mono" aria-hidden="true">JT</span>
+          <p class="portrait__note">
+            Your photograph goes here — add <code>portrait.jpg</code> to <code>public/</code>.
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+</div>

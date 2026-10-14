@@ -1,53 +1,50 @@
 /* ==========================================================================
-   Tokens
-
-   Paper and ink, plus exactly one accent. Nothing here is a decoration:
-   if a value is not doing work, it does not belong in this file.
+   AURUM — tokens
+   Black, gold, silver-white. One metal accent, spent where it matters.
    ========================================================================== */
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 
-  /* --- FIELD ------------------------------------------------------------- */
-  --paper: #f7f5f1; /* warm off-white, never a screen white */
-  --paper-soft: #efece5; /* a raised or inset surface */
-  --ink: #1b1815; /* warm near-black — never #000 */
-  --ink-2: #4c463e; /* secondary text */
-  --ink-3: #7b746a; /* muted text, still legible */
-  --ink-4: #b0a99f; /* rules, marks, decoration only */
+  /* --- FIELD ----------------------------------------------------------- */
+  --black: #0a0908;
+  --coal: #12100d;
+  --coal-2: #1a1712;
+  --line: rgb(212 175 55 / 0.22);
+  --line-soft: rgb(212 175 55 / 0.12);
 
-  --rule: rgb(27 24 21 / 0.13);
-  --rule-soft: rgb(27 24 21 / 0.07);
+  /* --- METAL ----------------------------------------------------------- */
+  --gold: #d4af37;
+  --gold-bright: #f0d878;
+  --gold-deep: #9a7b1e;
+  --gold-wash: rgb(212 175 55 / 0.1);
 
-  /* --- ACCENT ------------------------------------------------------------
-     One colour for the whole site, spent only on links, marks and the single
-     primary action on a page. */
-  --accent: #a4472c;
-  --accent-deep: #7d3320;
-  --accent-wash: rgb(164 71 44 / 0.14);
+  /* --- TYPE ------------------------------------------------------------ */
+  --ink: #ece7db; /* silver-white body text */
+  --ink-2: #b9b4a8; /* secondary text */
+  --ink-3: #847e71; /* muted text */
+  --silver: #c8c9ce;
 
-  /* --- TYPE -------------------------------------------------------------- */
   --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-text: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
 
-  --t-mega: clamp(2.75rem, 8.4vw, 5.75rem);
-  --t-display: clamp(2rem, 5.2vw, 3.4rem);
-  --t-title: clamp(1.3rem, 2.2vw, 1.75rem);
-  --t-lead: clamp(1.1rem, 1.5vw, 1.35rem);
+  --t-mega: clamp(2.9rem, 9vw, 6.5rem);
+  --t-display: clamp(2.1rem, 5.4vw, 3.6rem);
+  --t-title: clamp(1.35rem, 2.4vw, 1.8rem);
+  --t-lead: clamp(1.1rem, 1.6vw, 1.35rem);
   --t-body: 1.0625rem;
   --t-small: 0.9375rem;
-  --t-micro: 0.8125rem;
+  --t-micro: 0.8rem;
 
-  --lh-display: 1.04;
-  --lh-title: 1.24;
-  --lh-body: 1.68;
+  --lh-display: 1.03;
+  --lh-title: 1.25;
+  --lh-body: 1.7;
 
   --ls-tight: -0.02em;
-  --ls-wide: 0.08em;
+  --ls-wide: 0.14em;
 
-  /* --- SPACE -------------------------------------------------------------
-     Fewer steps, used consistently, so the page keeps one rhythm. */
+  /* --- SPACE ------------------------------------------------------------ */
   --space-1: 0.5rem;
   --space-2: 1rem;
   --space-3: 1.5rem;
@@ -57,16 +54,19 @@
   --space-7: clamp(4.5rem, 11vw, 8.5rem);
 
   --gutter: clamp(1.25rem, 5vw, 4.5rem);
-  --measure: 62ch; /* paragraphs never run wider than this */
-  --page: 74rem;
+  --measure: 62ch;
+  --page: 76rem;
 
-  /* --- FORM -------------------------------------------------------------- */
-  --radius: 2px;
-  --shadow: 0 1px 2px rgb(27 24 21 / 0.04), 0 14px 34px rgb(27 24 21 / 0.05);
+  /* --- SURFACE ---------------------------------------------------------- */
+  --radius: 14px;
+  --card: linear-gradient(160deg, rgb(212 175 55 / 0.09), rgb(212 175 55 / 0.02) 55%),
+    var(--coal);
+  --shadow: 0 1px 0 rgb(240 216 120 / 0.12) inset, 0 24px 60px rgb(0 0 0 / 0.55);
+  --gold-text: linear-gradient(100deg, #8a6d14 0%, var(--gold) 30%, #f6e58d 50%, var(--gold) 70%, #8a6d14 100%);
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --dur: 420ms;
-  --dur-slow: 720ms;
+  --dur-slow: 800ms;
 }
 
 @media (prefers-reduced-motion: reduce) {

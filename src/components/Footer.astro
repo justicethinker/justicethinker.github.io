@@ -8,16 +8,26 @@ const year = new Date().getFullYear();
   <div class="shell">
     <div class="footer__top">
       <p class="footer__mark">
-        Let's build something <span class="italic">worth measuring</span>.
+        Have a problem <span class="italic">worth arguing about?</span>
       </p>
 
       <nav class="footer__links" aria-label="Pages">
         {navAll.map((item) => <a class="link" href={item.href}>{item.label}</a>)}
       </nav>
+
+      <p class="footer__base" style="border:0;padding:0;">
+        <a class="link" href={`mailto:${identity.email}`}>{identity.email}</a>
+        <span aria-hidden="true">·</span>
+        <a class="link" href={identity.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+        <span aria-hidden="true">·</span>
+        <a class="link" href={identity.substack} target="_blank" rel="noopener noreferrer">Substack</a>
+        <span aria-hidden="true">·</span>
+        <a class="link" href={identity.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </p>
     </div>
 
     <div class="footer__base">
-      <span>© {year} {identity.legalName} · static pages, no trackers, no third-party requests</span>
+      <span>© {year} {identity.legalName} · static pages, no trackers</span>
       <button class="to-top" type="button" data-to-top>Back to top</button>
     </div>
   </div>

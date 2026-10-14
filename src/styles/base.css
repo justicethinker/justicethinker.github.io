@@ -1,8 +1,6 @@
 /* ==========================================================================
-   Base
-
-   A document, not an instrument panel. One column, generous margins, nothing
-   competing with the type.
+   AURUM — base
+   A dark document. Type in silver-white, structure in gold hairlines.
    ========================================================================== */
 
 *,
@@ -16,8 +14,6 @@
   padding: 0;
 }
 
-/* Anything the scripts hide must actually hide: several elements here are
-   flex or grid, which outranks the browser's own [hidden] rule. */
 [hidden] {
   display: none !important;
 }
@@ -25,163 +21,109 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  background: var(--paper);
-  -webkit-tap-highlight-color: var(--accent-wash);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-/* Anchored sections must clear the fixed masthead. */
-:target,
-[id] {
-  scroll-margin-top: 6rem;
-}
-
-/* Touch targets answer on the first tap. */
-a,
-button,
-input,
-select,
-summary,
-textarea {
-  touch-action: manipulation;
+  background: var(--black);
+  -webkit-tap-highlight-color: var(--gold-wash);
 }
 
 body {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  background: var(--paper);
-  color: var(--ink);
   font-family: var(--font-text);
   font-size: var(--t-body);
   line-height: var(--lh-body);
-  font-synthesis-weight: none;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  color: var(--ink);
+  background:
+    radial-gradient(1100px 500px at 85% -5%, rgb(212 175 55 / 0.08), transparent 60%),
+    radial-gradient(900px 600px at -10% 30%, rgb(212 175 55 / 0.05), transparent 60%),
+    var(--black);
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--gold);
+  color: #141004;
 }
 
 img,
-svg,
-video {
+video,
+canvas,
+svg {
   display: block;
   max-width: 100%;
 }
 
-img,
-video {
-  height: auto;
-}
-
-ul,
-ol {
-  list-style: none;
-}
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
+a {
   color: inherit;
 }
 
-button {
-  background: none;
-  border: 0;
-  cursor: pointer;
-}
-
-::selection {
-  background: var(--accent-wash);
-}
-
+/* Visible gold focus everywhere — keyboard users get the metal too. */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--gold);
   outline-offset: 3px;
-  border-radius: var(--radius);
+  border-radius: 4px;
 }
 
-/* --- SHELL ---------------------------------------------------------------- */
-
-.shell {
-  width: 100%;
-  max-width: var(--page);
-  margin-inline: auto;
-  padding-inline: var(--gutter);
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: -4rem;
+  z-index: 200;
+  background: var(--gold);
+  color: #141004;
+  font-weight: 650;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: top var(--dur) var(--ease);
 }
 
-main {
-  flex: 1;
-  padding-block: var(--space-7) var(--space-6);
+.skip:focus-visible {
+  top: 1rem;
+  outline-color: #fff;
 }
 
-/* --- DISPLAY TYPE ---------------------------------------------------------
-   A high-contrast serif, given room to be large and nothing to compete with. */
-
-.display,
-.title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: var(--ls-tight);
-  text-wrap: balance;
-}
+/* --- TYPE -------------------------------------------------------------- */
 
 .display {
+  font-family: var(--font-display);
+  font-weight: 400;
   font-size: var(--t-mega);
   line-height: var(--lh-display);
+  letter-spacing: var(--ls-tight);
+  text-wrap: balance;
 }
 
 .display--md {
   font-size: var(--t-display);
 }
 
+.display .gold {
+  background: var(--gold-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .title {
+  font-family: var(--font-display);
+  font-weight: 400;
   font-size: var(--t-title);
   line-height: var(--lh-title);
+  letter-spacing: var(--ls-tight);
 }
-
-.italic {
-  font-style: italic;
-}
-
-/* --- TEXT ------------------------------------------------------------------ */
 
 .lede {
   font-size: var(--t-lead);
-  line-height: 1.5;
-  color: var(--ink-2);
-  max-width: 46ch;
-  text-wrap: pretty;
-}
-
-.prose {
-  max-width: var(--measure);
-  color: var(--ink-2);
-}
-
-.prose > * + * {
-  margin-top: var(--space-3);
-}
-
-.prose a {
-  color: var(--ink);
-}
-
-.prose strong {
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.note {
-  font-size: var(--t-small);
   line-height: 1.6;
-  color: var(--ink-3);
-  max-width: 44ch;
+  color: var(--ink-2);
+  max-width: var(--measure);
+}
+
+.kicker {
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 650;
 }
 
 .micro {
@@ -191,94 +133,76 @@ main {
   color: var(--ink-3);
 }
 
-/* --- LINKS -----------------------------------------------------------------
-   A hairline that grows from the left. It is the only movement most links get. */
-
-.link {
-  position: relative;
-  display: inline-block;
-  color: inherit;
-  text-decoration: none;
-  transition: color var(--dur) var(--ease);
+.italic {
+  font-style: italic;
 }
 
-.link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -0.14em;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.28;
-  transform-origin: left;
-  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+.prose {
+  max-width: var(--measure);
+  display: grid;
+  gap: var(--space-2);
+  color: var(--ink-2);
+}
+
+.prose strong {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+/* --- LINKS -------------------------------------------------------------- */
+
+.link {
+  color: var(--gold-bright);
+  text-decoration: underline;
+  text-decoration-color: rgb(212 175 55 / 0.45);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 
 .link:hover {
-  color: var(--accent);
+  color: #fff;
+  text-decoration-color: var(--gold-bright);
 }
 
-.link:hover::after {
-  opacity: 0.7;
+/* --- LAYOUT -------------------------------------------------------------- */
+
+.shell {
+  width: min(var(--page), 100% - var(--gutter) * 2);
+  margin-inline: auto;
 }
 
-.link--accent {
-  color: var(--accent);
+.section {
+  padding-block: var(--space-5);
 }
 
-.link--accent:hover {
-  color: var(--accent-deep);
+.section--tight {
+  padding-block: var(--space-3);
 }
 
-/* Prose links keep a permanent underline: they are not navigation, they are
-   asides, and they must be findable in a paragraph. */
-.prose .link::after {
-  opacity: 0.4;
+.section__head {
+  display: grid;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+  max-width: var(--measure);
 }
 
-/* --- RULES ------------------------------------------------------------------ */
+.section__head .note {
+  color: var(--ink-3);
+  font-size: var(--t-small);
+}
 
 .rule {
-  height: 1px;
-  background: var(--rule);
   border: 0;
+  border-top: 1px solid var(--line-soft);
 }
 
-.rule--soft {
-  background: var(--rule-soft);
-}
-
-/* --- UTILITIES --------------------------------------------------------------- */
-
-.stack > * + * {
-  margin-top: var(--space-3);
-}
-
-.stack--lg > * + * {
-  margin-top: var(--space-5);
-}
-
-.skip {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  padding: var(--space-2) var(--space-3);
-  background: var(--ink);
-  color: var(--paper);
-  z-index: 100;
-}
-
-.skip:focus {
-  left: var(--space-2);
-  top: var(--space-2);
-}
-
-.visually-hidden {
+/* Screen-reader-only text. */
+.sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
   overflow: hidden;
-  clip-path: inset(50%);
+  clip: rect(0 0 0 0);
   white-space: nowrap;
 }
