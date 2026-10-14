@@ -387,11 +387,18 @@ try {
     await new Promise((r) => setTimeout(r, 400));
     const name = document.querySelector('[data-orbit-name]')?.textContent || '';
     const link = document.querySelector('[data-orbit-link]')?.getAttribute('href') || '';
+    // Scroll dives toward the sun through the same interface visitors use.
+    const beforeZoom = Number(canvas?.dataset.zoom || 1);
+    canvas.dispatchEvent(new WheelEvent('wheel', { bubbles: true, cancelable: true, deltaY: -400 }));
+    await new Promise((r) => setTimeout(r, 600));
+    const afterZoom = Number(canvas?.dataset.zoom || 1);
     return {
       live: canvas?.dataset.system === 'live',
       panelOpen: panel && !panel.hasAttribute('hidden'),
       name,
       github: link.startsWith('https://github.com/justicethinker/'),
+      beforeZoom,
+      afterZoom,
     };
   })()`);
   record(
@@ -399,44 +406,41 @@ try {
     orbits.live && orbits.panelOpen && orbits.name.length > 2 && orbits.github,
     `landed on “${orbits.name}”`,
   );
+  record(
+    'scrolling dives toward the sun instead of trapping the page',
+    orbits.afterZoom > orbits.beforeZoom,
+    `zoom ${orbits.beforeZoom}→${orbits.afterZoom}`,
+  );
 
-  /* -------------------------------------------------- debate: tug-of-war */
+  /* ----------------------------------------------------- debate: scales */
   await open('/debate/');
-  // The push is transient by design (the room settles), so watch the peak
-  // rather than sampling one arbitrary instant after it.
-  const tug = await evaluate(`(async () => {
-    const canvas = document.querySelector('[data-tug-canvas]');
-    const meter = document.querySelector('[data-tug-meter]');
-    const atClick = Number(canvas?.dataset.split || 50);
-    const btn = document.querySelector('[data-tug-for]');
-    btn?.click();
-    await new Promise((r) => setTimeout(r, 250));
-    btn?.click();
-    let peak = atClick;
-    const deadline = Date.now() + 1800;
-    while (Date.now() < deadline) {
-      await new Promise((r) => setTimeout(r, 120));
-      peak = Math.max(peak, Number(canvas?.dataset.split || 50));
-    }
+  const scales = await evaluate(`(async () => {
+    const canvas = document.querySelector('[data-scale-canvas]');
+    const readout = document.querySelector('[data-scale-readout]');
+    const before = Number(canvas?.dataset.scaleFor || 0);
+    document.querySelector('[data-scale-add-for]')?.click();
+    await new Promise((r) => setTimeout(r, 900));
+    const after = Number(canvas?.dataset.scaleFor || 0);
     return {
-      live: canvas?.dataset.tug === 'live',
-      atClick,
-      peak,
-      verdict: meter ? meter.textContent : '',
+      live: canvas?.dataset.scale === 'live',
+      frames: Number(canvas?.dataset.frames || 0),
+      before,
+      after,
+      verdict: readout ? readout.textContent : '',
     };
   })()`);
   record(
-    'arguing for moves the field and the verdict follows it',
-    tug.live && tug.peak > tug.atClick + 1,
-    `${tug.atClick}→peak ${tug.peak} “${tug.verdict}”`,
+    'the balance hangs, weighs a win, and reports the verdict',
+    scales.live && scales.frames > 10 && scales.after === scales.before + 1,
+    `for-side ${scales.before}→${scales.after} “${scales.verdict}”`,
   );
 
-  /* ----------------------------------------------------- writing: ink */
+  /* ------------------------------------------------- writing: titles */
   await open('/writing/');
-  const ink = await evaluate(`(async () => {
-    const canvas = document.querySelector('[data-ink-canvas]');
+  const titles = await evaluate(`(async () => {
+    const canvas = document.querySelector('[data-titles-canvas]');
     if (!canvas) return { found: false };
-    // Pour through the interface a visitor uses: a drag across the well.
+    // Brush through the interface a visitor uses, then count gold pixels.
     const rect = canvas.getBoundingClientRect();
     const opts = (x, y) => ({
       bubbles: true,
@@ -445,37 +449,26 @@ try {
       pointerId: 7,
       isPrimary: true,
     });
-    canvas.dispatchEvent(new PointerEvent('pointerdown', opts(0.3, 0.5)));
-    for (let k = 1; k <= 8; k++) {
-      canvas.dispatchEvent(new PointerEvent('pointermove', opts(0.3 + k * 0.05, 0.5)));
-    }
-    canvas.dispatchEvent(new PointerEvent('pointerup', opts(0.7, 0.5)));
-    await new Promise((r) => setTimeout(r, 800));
-    // The tank animates, so sample the brightest of several frames rather
-    // than one arbitrary instant. A blank canvas scores ~0 on every frame.
+    canvas.dispatchEvent(new PointerEvent('pointermove', opts(0.5, 0.55)));
+    await new Promise((r) => setTimeout(r, 700));
     const ctx = canvas.getContext('2d');
-    let best = 0;
-    for (let f = 0; f < 4; f++) {
-      const px = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      let bright = 0;
-      let sample = 0;
-      for (let i = 0; i < px.length; i += 4 * 41) {
-        sample++;
-        if (px[i] > 70 || px[i + 1] > 60) bright++;
-      }
-      best = Math.max(best, bright / sample);
-      await new Promise((r) => setTimeout(r, 350));
+    const px = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    let bright = 0;
+    let sample = 0;
+    for (let i = 0; i < px.length; i += 4 * 37) {
+      sample++;
+      if (px[i] > 70 || px[i + 1] > 60) bright++;
     }
     return {
       found: true,
-      live: canvas.dataset.ink === 'live',
-      brightPercent: Number((best * 100).toFixed(1)),
+      live: canvas.dataset.titles === 'live',
+      brightPercent: Number(((bright / sample) * 100).toFixed(1)),
     };
   })()`);
   record(
-    'a drag through the well leaves real gold ink behind',
-    ink.found && ink.live && ink.brightPercent > 1,
-    `${ink.brightPercent}% of sampled pixels carry ink`,
+    'the essay titles stand written in gold particles',
+    titles.found && titles.live && titles.brightPercent > 1,
+    `${titles.brightPercent}% of sampled pixels carry a title`,
   );
 
   // Essays link out to the real Substack posts.

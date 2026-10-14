@@ -581,7 +581,7 @@
   position: relative;
   overflow: clip;
   border-bottom: 1px solid var(--line-soft);
-  min-height: clamp(560px, 78vh, 700px);
+  min-height: calc(100svh - 4.25rem);
   display: flex;
   flex-direction: column;
 }
@@ -675,6 +675,19 @@
   border-bottom: 1px solid var(--line-soft);
 }
 
+/* The balance fills the viewport: the record needs no scroll to be weighed. */
+.arena--full {
+  min-height: calc(100svh - 4.25rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.arena--full .arena__inner {
+  flex: 1;
+  align-content: end;
+  padding-bottom: var(--space-4);
+}
+
 .arena__canvas {
   position: absolute;
   inset: 0;
@@ -708,29 +721,6 @@
   max-width: 44rem;
 }
 
-.arena__meter {
-  display: grid;
-  gap: 0.6rem;
-  margin-top: var(--space-1);
-}
-
-.arena__track {
-  height: 10px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: linear-gradient(90deg, rgb(212 175 55 / 0.25), rgb(200 201 206 / 0.18));
-  overflow: hidden;
-}
-
-.arena__fill {
-  height: 100%;
-  width: 50%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--gold-deep), var(--gold-bright));
-  /* No transition: the script eases the value itself, and a transition here
-     would restart on every frame the meter moves. */
-}
-
 .arena__verdict {
   font-size: var(--t-small);
   font-weight: 650;
@@ -744,6 +734,18 @@
   position: relative;
   overflow: clip;
   border-bottom: 1px solid var(--line-soft);
+}
+
+/* The titles fill the viewport: each essay gets its own band of sky. */
+.inkwell--full {
+  min-height: calc(100svh - 4.25rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.inkwell--full .inkwell__inner {
+  flex: 1;
+  align-content: start;
 }
 
 .inkwell__canvas {
