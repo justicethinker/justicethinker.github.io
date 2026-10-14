@@ -7,22 +7,31 @@ import { identity, essays } from '../data/site';
   title="Writing"
   description="Essays by Justice Thinker on Substack — thought in progress."
 >
-  <div class="shell">
-    <section class="opener">
+  <section class="inkwell" data-ink-stage aria-label="Gold ink blooming in dark water">
+    <div class="inkwell__canvas">
+      <canvas data-ink-canvas aria-hidden="true"></canvas>
+    </div>
+    <div class="inkwell__veil" aria-hidden="true"></div>
+
+    <div class="shell inkwell__inner">
       <p class="kicker" data-reveal>Writing</p>
       <h1 class="display display--md" data-reveal>
         Thought <span class="gold">in progress.</span>
       </h1>
       <p class="lede" data-reveal>
         Essays published on Substack at {identity.substackHandle} — on fear, judgment, and
-        the difference between feeling right and being right. New pieces land there first.
+        the difference between feeling right and being right. Drag through the ink while
+        you decide where to start.
       </p>
       <div class="actions" data-reveal>
         <a class="btn btn--gold" href={identity.substack} target="_blank" rel="noopener noreferrer">
           Open the Substack
         </a>
       </div>
-    </section>
+    </div>
+  </section>
+
+  <div class="shell">
 
     <section class="section" aria-label="Essays">
       <div data-reveal-group>
@@ -59,4 +68,8 @@ import { identity, essays } from '../data/site';
       </div>
     </section>
   </div>
+
+  <script>
+    import '../scripts/ink.js';
+  </script>
 </Layout>
