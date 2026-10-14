@@ -4,7 +4,7 @@
  *
  * To put your picture on the home page, add a file at
  * `public/portrait.jpg` (portrait orientation, ~1200px tall is plenty).
- * It is picked up at build time; until then a gold monogram holds the frame,
+ * It is picked up at build time; until then a silver monogram holds the frame,
  * and no request for a missing file ever leaves the browser.
  */
 import { existsSync } from 'node:fs';
@@ -17,14 +17,18 @@ const hasPhoto = existsSync(join(process.cwd(), 'public/portrait.jpg'));
   <div class="portrait__frame">
     <div class="portrait__inner">
       {hasPhoto ? (
-        <img
-          src="/portrait.jpg"
-          alt="Portrait of Justice Thinker"
-          width="800"
-          height="1000"
-          loading="eager"
-          decoding="async"
-        />
+        <picture>
+          <source srcset="/portrait-small.webp" type="image/webp" />
+          <img
+            src="/portrait-small.jpg"
+            alt="Portrait of Justice Thinker"
+            width="640"
+            height="640"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
       ) : (
         <div class="portrait__empty" data-portrait-empty>
           <span class="portrait__mono" aria-hidden="true">JT</span>

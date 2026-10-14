@@ -182,7 +182,7 @@ try {
       // The frame holds either the owner's photograph or the monogram that
       // reserves its seat — never an empty box, never a broken image.
       portrait: (() => {
-        const photo = document.querySelector('.portrait__inner > img');
+        const photo = document.querySelector('.portrait__inner img');
         if (photo instanceof HTMLImageElement) {
           return photo.complete && photo.naturalWidth > 0;
         }
