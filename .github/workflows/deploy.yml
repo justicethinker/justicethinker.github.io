@@ -4,6 +4,12 @@ on:
   push:
     branches: [main] # change to your default branch if different
 
+# The deploy step pushes the built site to the gh-pages branch. Without this
+# block the job's token is read-only and the push is refused, which is why
+# every run of this workflow had failed.
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
