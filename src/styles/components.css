@@ -575,6 +575,209 @@
   color: var(--ink-3);
 }
 
+/* --- ORBIT (tech hero) -------------------------------------------------------------- */
+
+.orbit {
+  position: relative;
+  overflow: clip;
+  border-bottom: 1px solid var(--line-soft);
+  min-height: clamp(560px, 78vh, 700px);
+  display: flex;
+  flex-direction: column;
+}
+
+.orbit__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.orbit__canvas canvas {
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+}
+
+.orbit__veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(10 9 8 / 0.72),
+    rgb(10 9 8 / 0.1) 34%,
+    rgb(10 9 8 / 0.2) 62%,
+    rgb(10 9 8 / 0.9)
+  );
+}
+
+.orbit__inner {
+  position: relative;
+  flex: 1;
+  display: grid;
+  gap: var(--space-3);
+  padding-block: var(--space-5) var(--space-2);
+  align-content: start;
+}
+
+@media (min-width: 900px) {
+  .orbit__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(17rem, 22rem);
+    align-items: start;
+  }
+}
+
+.orbit__copy {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  max-width: 40rem;
+}
+
+.orbit__panel {
+  background: rgb(18 16 13 / 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+  box-shadow: var(--shadow);
+}
+
+.orbit__panel[hidden] {
+  display: none;
+}
+
+.orbit__bar {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding-bottom: var(--space-2);
+}
+
+.orbit__hint {
+  margin-left: auto;
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* --- ARENA (debate hero) -------------------------------------------------------------- */
+
+.arena {
+  position: relative;
+  overflow: clip;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.arena__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.arena__canvas canvas {
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+
+.arena__veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(10 9 8 / 0.78),
+    rgb(10 9 8 / 0.25) 40%,
+    rgb(10 9 8 / 0.25) 60%,
+    rgb(10 9 8 / 0.88)
+  );
+}
+
+.arena__inner {
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+  padding-block: var(--space-5) var(--space-4);
+  max-width: 44rem;
+}
+
+.arena__meter {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: var(--space-1);
+}
+
+.arena__track {
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: linear-gradient(90deg, rgb(212 175 55 / 0.25), rgb(200 201 206 / 0.18));
+  overflow: hidden;
+}
+
+.arena__fill {
+  height: 100%;
+  width: 50%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold-deep), var(--gold-bright));
+  /* No transition: the script eases the value itself, and a transition here
+     would restart on every frame the meter moves. */
+}
+
+.arena__verdict {
+  font-size: var(--t-small);
+  font-weight: 650;
+  color: var(--gold-bright);
+  letter-spacing: 0.02em;
+}
+
+/* --- INKWELL (writing hero) -------------------------------------------------------------- */
+
+.inkwell {
+  position: relative;
+  overflow: clip;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.inkwell__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.inkwell__canvas canvas {
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+
+.inkwell__veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(10 9 8 / 0.66),
+    rgb(10 9 8 / 0.18) 45%,
+    rgb(10 9 8 / 0.72)
+  );
+}
+
+.inkwell__inner {
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+  padding-block: var(--space-5) var(--space-4);
+  max-width: 44rem;
+}
+
 /* --- OPENER (inner pages) ---------------------------------------------------------- */
 
 .opener {

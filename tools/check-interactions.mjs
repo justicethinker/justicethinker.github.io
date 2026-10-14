@@ -346,27 +346,136 @@ try {
 
   // The tank must be drawing waves, not just holding a canvas: sample the
   // pixels the visitor actually sees.
-  const tankPixels = await evaluate(`(() => {
+  const tankPixels = await evaluate(`(async () => {
     const canvas = document.querySelector('[data-wave-stage] canvas');
     if (!canvas) return { found: false };
+    // The tank animates, so sample the brightest of several frames rather
+    // than one arbitrary instant. A blank canvas scores ~0 on every frame.
     const ctx = canvas.getContext('2d');
-    const px = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-    let bright = 0;
+    let best = 0;
     let sample = 0;
-    for (let i = 0; i < px.length; i += 4 * 37) {
-      sample++;
-      if (px[i] > 60 || px[i + 1] > 60) bright++;
+    for (let f = 0; f < 4; f++) {
+      const px = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let bright = 0;
+      sample = 0;
+      for (let i = 0; i < px.length; i += 4 * 37) {
+        sample++;
+        if (px[i] > 60 || px[i + 1] > 60) bright++;
+      }
+      best = Math.max(best, bright / sample);
+      await new Promise((r) => setTimeout(r, 350));
     }
     return {
       found: true,
       sampled: sample,
-      brightPercent: Number(((bright / sample) * 100).toFixed(1)),
+      brightPercent: Number((best * 100).toFixed(1)),
     };
   })()`);
   record(
     'the tank draws actual wave fronts, not a blank canvas',
     tankPixels.found && tankPixels.brightPercent > 8,
     `${tankPixels.brightPercent}% of sampled pixels carry a wave front`,
+  );
+
+  /* ------------------------------------------------- tech: solar system */
+  await open('/tech/');
+  const orbits = await evaluate(`(async () => {
+    const canvas = document.querySelector('[data-orbit-canvas]');
+    const panel = document.querySelector('[data-orbit-panel]');
+    // Drive it the keyboard way: the Next button selects the first world.
+    document.querySelector('[data-orbit-next]')?.click();
+    await new Promise((r) => setTimeout(r, 400));
+    const name = document.querySelector('[data-orbit-name]')?.textContent || '';
+    const link = document.querySelector('[data-orbit-link]')?.getAttribute('href') || '';
+    return {
+      live: canvas?.dataset.system === 'live',
+      panelOpen: panel && !panel.hasAttribute('hidden'),
+      name,
+      github: link.startsWith('https://github.com/justicethinker/'),
+    };
+  })()`);
+  record(
+    'the solar system runs and landing on a world shows its repo',
+    orbits.live && orbits.panelOpen && orbits.name.length > 2 && orbits.github,
+    `landed on “${orbits.name}”`,
+  );
+
+  /* -------------------------------------------------- debate: tug-of-war */
+  await open('/debate/');
+  // The push is transient by design (the room settles), so watch the peak
+  // rather than sampling one arbitrary instant after it.
+  const tug = await evaluate(`(async () => {
+    const canvas = document.querySelector('[data-tug-canvas]');
+    const meter = document.querySelector('[data-tug-meter]');
+    const atClick = Number(canvas?.dataset.split || 50);
+    const btn = document.querySelector('[data-tug-for]');
+    btn?.click();
+    await new Promise((r) => setTimeout(r, 250));
+    btn?.click();
+    let peak = atClick;
+    const deadline = Date.now() + 1800;
+    while (Date.now() < deadline) {
+      await new Promise((r) => setTimeout(r, 120));
+      peak = Math.max(peak, Number(canvas?.dataset.split || 50));
+    }
+    return {
+      live: canvas?.dataset.tug === 'live',
+      atClick,
+      peak,
+      verdict: meter ? meter.textContent : '',
+    };
+  })()`);
+  record(
+    'arguing for moves the field and the verdict follows it',
+    tug.live && tug.peak > tug.atClick + 1,
+    `${tug.atClick}→peak ${tug.peak} “${tug.verdict}”`,
+  );
+
+  /* ----------------------------------------------------- writing: ink */
+  await open('/writing/');
+  const ink = await evaluate(`(async () => {
+    const canvas = document.querySelector('[data-ink-canvas]');
+    if (!canvas) return { found: false };
+    // Pour through the interface a visitor uses: a drag across the well.
+    const rect = canvas.getBoundingClientRect();
+    const opts = (x, y) => ({
+      bubbles: true,
+      clientX: rect.left + rect.width * x,
+      clientY: rect.top + rect.height * y,
+      pointerId: 7,
+      isPrimary: true,
+    });
+    canvas.dispatchEvent(new PointerEvent('pointerdown', opts(0.3, 0.5)));
+    for (let k = 1; k <= 8; k++) {
+      canvas.dispatchEvent(new PointerEvent('pointermove', opts(0.3 + k * 0.05, 0.5)));
+    }
+    canvas.dispatchEvent(new PointerEvent('pointerup', opts(0.7, 0.5)));
+    await new Promise((r) => setTimeout(r, 800));
+    // The tank animates, so sample the brightest of several frames rather
+    // than one arbitrary instant. A blank canvas scores ~0 on every frame.
+    const ctx = canvas.getContext('2d');
+    let best = 0;
+    for (let f = 0; f < 4; f++) {
+      const px = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let bright = 0;
+      let sample = 0;
+      for (let i = 0; i < px.length; i += 4 * 41) {
+        sample++;
+        if (px[i] > 70 || px[i + 1] > 60) bright++;
+      }
+      best = Math.max(best, bright / sample);
+      await new Promise((r) => setTimeout(r, 350));
+    }
+    return {
+      found: true,
+      live: canvas.dataset.ink === 'live',
+      brightPercent: Number((best * 100).toFixed(1)),
+    };
+  })()`);
+  record(
+    'a drag through the well leaves real gold ink behind',
+    ink.found && ink.live && ink.brightPercent > 1,
+    `${ink.brightPercent}% of sampled pixels carry ink`,
   );
 
   // Essays link out to the real Substack posts.
