@@ -3,16 +3,16 @@
   "type": "module",
   "version": "3.0.0",
   "private": true,
-  "description": "Personal site of Emmanuel Isaac — physicist, developer, debater.",
+  "description": "Personal site of Justice Thinker (Emmanuel Isaac) — software, physics and debate.",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "image": "node tools/gen-image.mjs",
     "og": "node tools/gen-og.mjs",
     "fonts": "node tools/fetch-fonts.mjs",
-    "check": "node tools/audit.mjs && node tools/check-interactions.mjs"
+    "check": "node tools/audit.mjs && node tools/check-interactions.mjs",
+    "probe": "node tools/probe-hero.mjs"
   },
   "dependencies": {
     "astro": "^4.0.0"

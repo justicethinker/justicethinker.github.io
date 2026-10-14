@@ -128,8 +128,8 @@ function connect(wsUrl) {
 
 /** Scroll the page with animation-frame ticks, logging lit counts. */
 const SCROLL = `(async () => {
-  const LIT = '[data-reveal].is-lit, [data-plate].is-lit';
-  const ALL = '[data-reveal], [data-plate]';
+  const LIT = '[data-reveal].is-lit';
+  const ALL = '[data-reveal]';
   const total = document.querySelectorAll(ALL).length;
   const step = Math.round(window.innerHeight * 0.6);
   const end = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
@@ -175,7 +175,7 @@ const TIMELINE = `(async () => {
 
 /** Report every target that is still unlit, with geometry and why. */
 const UNLIT = `(() => {
-  const ALL = '[data-reveal], [data-plate]';
+  const ALL = '[data-reveal]';
   const out = [];
   for (const el of document.querySelectorAll(ALL)) {
     if (el.classList.contains('is-lit')) continue;

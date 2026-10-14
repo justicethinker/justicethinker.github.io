@@ -2,9 +2,9 @@
  * Exercise the site's interactive layer through the interface a visitor uses.
  *
  * A green audit only proves the pages render; this drives the actual controls
- * over the DevTools protocol — the drawing and its caption, the menu, the
- * contact form and back-to-top — and asserts observable behaviour, so a
- * control that renders but does nothing cannot pass.
+ * over the DevTools protocol — the 3D hero field, the menu, the tilt cards,
+ * the wave tank, the portrait slot and back-to-top — and asserts observable
+ * behaviour, so a control that renders but does nothing cannot pass.
  *
  *   node tools/check-interactions.mjs
  */
@@ -161,33 +161,62 @@ try {
     await new Promise((r) => setTimeout(r, 1500));
   };
 
-  /* ----------------------------------------------------- home: the drawing */
+  /* ------------------------------------------------------- home: hero 3D */
   await open('/');
 
-  const image = await evaluate(`(() => {
-    const img = document.querySelector('.figure img');
-    const caption = document.querySelector('.figure__caption');
-    const videos = document.querySelectorAll('video').length;
+  // The hero must actually run: a live WebGL context and a frame counter that
+  // keeps climbing. A canvas that exists but never renders fails here.
+  const hero = await evaluate(`(async () => {
+    const canvas = document.querySelector('[data-hero-field]');
+    const importmap = document.querySelector('script[type="importmap"]');
+    const rect = canvas ? canvas.getBoundingClientRect() : { width: 0, height: 0 };
+    const first = Number(canvas?.dataset.frames || 0);
+    await new Promise((r) => setTimeout(r, 900));
+    const second = Number(canvas?.dataset.frames || 0);
+    const gl = canvas ? (canvas.getContext('webgl2') || canvas.getContext('webgl')) : null;
     return {
-      found: !!img,
-      loaded: !!img && img.complete && img.naturalWidth > 0,
-      width: img ? Number(img.getAttribute('width')) : 0,
-      height: img ? Number(img.getAttribute('height')) : 0,
-      loading: img ? img.getAttribute('loading') : '',
-      alt: img ? img.getAttribute('alt').length : 0,
-      caption: caption ? caption.textContent.trim().length : 0,
-      videos,
+      canvas: !!canvas,
+      width: Math.round(rect.width),
+      height: Math.round(rect.height),
+      threePinned: (importmap?.textContent || '').includes('three@'),
+      portrait: !!document.querySelector('[data-portrait-empty]'),
+      tiltCards: document.querySelectorAll('[data-tilt]').length,
+      live: canvas?.dataset.field === 'live',
+      particles: Number(canvas?.dataset.particles || 0),
+      framesClimbing: second > first,
+      glAlive: !!gl && !gl.isContextLost(),
     };
   })()`);
   record(
-    'the drawing loads, declares its size, and is described',
-    image.found && image.loaded && image.width > 0 && image.height > 0 && image.alt > 40,
-    `${image.width}x${image.height} loading=${image.loading} alt=${image.alt} chars`,
+    'the 3D hero field is live — WebGL context up and frames climbing',
+    hero.canvas && hero.live && hero.framesClimbing && hero.glAlive && hero.particles >= 300,
+    `${hero.width}x${hero.height} particles=${hero.particles} live=${hero.live} climbing=${hero.framesClimbing}`,
   );
   record(
-    'the image carries a caption and the page ships no video at all',
-    image.caption > 40 && image.videos === 0,
-    `caption=${image.caption} chars, videos=${image.videos}`,
+    'the portrait slot and tilt cards are on the home page',
+    hero.portrait && hero.tiltCards >= 3 && hero.threePinned,
+    `tilt=${hero.tiltCards} portraitSlot=${hero.portrait} threePinned=${hero.threePinned}`,
+  );
+
+  // The tilt is a real transform: park the pointer on a card and read it back.
+  const tilt = await evaluate(`(async () => {
+    const card = document.querySelector('.card[data-tilt]');
+    if (!card) return { found: false };
+    const rect = card.getBoundingClientRect();
+    card.dispatchEvent(new PointerEvent('pointermove', {
+      bubbles: true,
+      clientX: rect.left + rect.width * 0.8,
+      clientY: rect.top + rect.height * 0.2,
+    }));
+    await new Promise((r) => setTimeout(r, 300));
+    const t = card.style.transform || '';
+    card.dispatchEvent(new PointerEvent('pointerleave', { bubbles: true }));
+    return { found: true, leaned: t.includes('rotateY') };
+  })()`);
+  record(
+    'cards lean toward the pointer in 3D',
+    tilt.found && tilt.leaned,
+    tilt.found ? `transform applied: ${tilt.leaned}` : 'no tilt card found',
   );
 
   /* ------------------------------------------------------------ masthead nav */
@@ -200,28 +229,36 @@ try {
       skipHref: skip?.getAttribute('href') || '',
       skipFirst: first === skip,
       main: !!document.querySelector('main#main'),
+      links: Array.from(document.querySelectorAll('.nav__link')).map((a) => a.textContent.trim()),
     };
   })()`);
   record(
-    'the current page is marked in the masthead, and only once',
-    chromeBits.current.length === 0 && chromeBits.main,
-    `home marks: [${chromeBits.current.join(', ')}] — home is the brand link`,
-  );
-  record(
-    'a skip link is the first thing a keyboard reaches',
-    chromeBits.skipFirst && chromeBits.skipHref === '#main' && chromeBits.main,
-    `href=${chromeBits.skipHref}`,
+    'home marks nothing current, and a skip link comes first',
+    chromeBits.current.length === 0 && chromeBits.skipFirst && chromeBits.main,
+    `nav=[${chromeBits.links.join(', ')}]`,
   );
 
-  await open('/projects/');
+  await open('/tech/');
   const marked = await evaluate(`(() => {
     const current = Array.from(document.querySelectorAll('.nav__link[aria-current="page"]')).map((a) => a.textContent.trim());
     return { current };
   })()`);
   record(
     'the masthead marks the section you are in on an inner page',
-    marked.current.length === 1,
+    marked.current.length === 1 && marked.current[0] === 'Tech',
     `marked: [${marked.current.join(', ')}]`,
+  );
+
+  // Every repo link must point at the real GitHub profile.
+  const repos = await evaluate(`(() => {
+    const links = Array.from(document.querySelectorAll('a[href*="github.com/justicethinker"]'));
+    const bad = links.filter((a) => !a.href.startsWith('https://github.com/justicethinker'));
+    return { total: links.length, bad: bad.length };
+  })()`);
+  record(
+    'every repo link points at the real GitHub profile',
+    repos.total >= 20 && repos.bad === 0,
+    `${repos.total} github links, ${repos.bad} bad`,
   );
 
   /* ------------------------------------------------------------ menu drawer */
@@ -230,7 +267,7 @@ try {
     const toggle = document.querySelector('[data-drawer-toggle]');
     const panel = document.querySelector('[data-drawer]');
     toggle.click();
-    await new Promise((r) => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 900));
     const opened = {
       open: panel.dataset.open,
       expanded: toggle.getAttribute('aria-expanded'),
@@ -261,65 +298,85 @@ try {
     JSON.stringify(drawer.closed),
   );
 
-  /* ------------------------------------------------------- contact: form */
-  await open('/contact/');
-  const form = await evaluate(`(async () => {
-    const status = document.querySelector('[data-form-status]');
-    const email = document.querySelector('input[name="email"]');
-    const wired =
-      status.getAttribute('role') === 'status' && status.getAttribute('aria-live') === 'polite';
-
-    // An empty submit must be refused, not turned into an empty draft.
-    document.querySelector('[data-contact-form] button[type="submit"]').click();
-    await new Promise((r) => setTimeout(r, 250));
-
+  /* ------------------------------------------------------------ wave lab */
+  await open('/physics/');
+  const lab = await evaluate(`(async () => {
+    const canvas = document.querySelector('[data-wave-stage] canvas');
+    const freq = document.querySelector('[data-wave-freq]');
+    const add = document.querySelector('[data-wave-add]');
+    const reset = document.querySelector('[data-wave-reset]');
+    const readout = document.querySelector('[data-wave-readout]');
+    const before = readout ? readout.textContent : '';
+    add?.click();
+    await new Promise((r) => setTimeout(r, 300));
+    const afterAdd = readout ? readout.textContent : '';
+    const addDisabled = !!add?.disabled;
+    reset?.click();
+    await new Promise((r) => setTimeout(r, 300));
+    const afterReset = readout ? readout.textContent : '';
+    const rect = canvas ? canvas.getBoundingClientRect() : { width: 0, height: 0 };
     return {
-      wired,
-      draftOpened: status.textContent.includes('Opening') || !!status.querySelector('a[href]'),
-      stillHere: document.body.contains(status),
-      focused: document.activeElement?.getAttribute('name') || '',
-      emailType: email.type,
-      autocomplete: email.autocomplete,
+      canvas: !!canvas,
+      width: Math.round(rect.width),
+      freq: !!freq,
+      before,
+      afterAdd,
+      addDisabled,
+      afterReset,
     };
   })()`);
   record(
-    'the form is labelled, typed and reports through a live region',
-    form.wired && form.emailType === 'email' && form.autocomplete === 'email',
-    `type=${form.emailType} autocomplete=${form.autocomplete}`,
+    'the wave tank renders and its controls answer',
+    lab.canvas && lab.width > 200 && lab.freq && lab.afterAdd.includes('3 sources'),
+    `canvas=${lab.width}px wide, add→“${lab.afterAdd}”`,
   );
-  // An empty form never reaches the handler: the browser refuses the submit and
-  // moves focus to the first field it objects to, which is the behaviour that
-  // matters. What must not happen is a half-written draft.
   record(
-    'an empty submit is refused, with focus on the first missing field',
-    !form.draftOpened && form.focused === 'name' && form.stillHere,
-    `focus on ${form.focused}, draft opened: ${form.draftOpened}`,
+    'adding then resetting sources round-trips the simulation',
+    lab.addDisabled && lab.afterReset.includes('2 sources') && lab.before.includes('2 sources'),
+    `reset→“${lab.afterReset}”`,
   );
 
-  const draft = await evaluate(`(async () => {
-    const status = document.querySelector('[data-form-status]');
-    const form = document.querySelector('[data-contact-form]');
-    form.querySelector('input[name="name"]').value = 'Ada Lovelace';
-    form.querySelector('input[name="email"]').value = 'ada@example.com';
-    form.querySelector('textarea[name="message"]').value = 'Collision terms, please.';
-    form.querySelector('button[type="submit"]').click();
-    await new Promise((r) => setTimeout(r, 400));
-    const link = status.querySelector('a[href^="mailto:"]');
-    return { hasLink: !!link, href: link ? link.getAttribute('href') : '' };
+  // The tank must be drawing waves, not just holding a canvas: sample the
+  // pixels the visitor actually sees.
+  const tankPixels = await evaluate(`(() => {
+    const canvas = document.querySelector('[data-wave-stage] canvas');
+    if (!canvas) return { found: false };
+    const ctx = canvas.getContext('2d');
+    const px = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    let bright = 0;
+    let sample = 0;
+    for (let i = 0; i < px.length; i += 4 * 37) {
+      sample++;
+      if (px[i] > 60 || px[i + 1] > 60) bright++;
+    }
+    return {
+      found: true,
+      sampled: sample,
+      brightPercent: Number(((bright / sample) * 100).toFixed(1)),
+    };
   })()`);
   record(
-    'submitting composes a real mail draft, addressed and quoted',
-    draft.hasLink &&
-      draft.href.includes('justicethinker2@gmail.com') &&
-      draft.href.includes('subject=') &&
-      draft.href.includes('Ada%20Lovelace'),
-    draft.href || 'no draft link',
+    'the tank draws actual wave fronts, not a blank canvas',
+    tankPixels.found && tankPixels.brightPercent > 8,
+    `${tankPixels.brightPercent}% of sampled pixels carry a wave front`,
+  );
+
+  // Essays link out to the real Substack posts.
+  await open('/writing/');
+  const essays = await evaluate(`(() => {
+    const links = Array.from(document.querySelectorAll('a.essay[href*="justicethinker.substack.com/p/"]'));
+    return { total: links.length };
+  })()`);
+  record(
+    'the writing page links to the real Substack essays',
+    essays.total === 3,
+    `${essays.total} essay links`,
   );
 
   /* ------------------------------------------------------ back to top */
   await open('/');
   const toTop = await evaluate(`(async () => {
-    window.scrollTo({ top: 3000, behavior: 'instant' });
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' });
     await new Promise((r) => setTimeout(r, 250));
     const mid = window.scrollY;
     const button = document.querySelector('[data-to-top]');
@@ -332,7 +389,7 @@ try {
   })()`);
   record(
     'back to top returns the reader to the start of the page',
-    toTop.exists && toTop.mid > 1000 && toTop.after < 100,
+    toTop.exists && toTop.mid > 500 && toTop.after < 100,
     `${toTop.mid} → ${toTop.after}`,
   );
 } catch (error) {

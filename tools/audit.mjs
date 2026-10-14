@@ -27,14 +27,10 @@ const CHROME = join(
 
 const PAGES = [
   '/',
+  '/tech/',
+  '/debate/',
+  '/writing/',
   '/physics/',
-  '/programming/',
-  '/speaking/',
-  '/projects/',
-  '/blog/',
-  '/cv/',
-  '/about/',
-  '/contact/',
   '/404.html',
 ];
 
@@ -213,9 +209,9 @@ const PROBE = `(() => {
     if (fg) contrast = Math.round(ratio(fg, bg) * 100) / 100;
   }
 
-  const revealTotal = document.querySelectorAll('[data-reveal], [data-plate]').length;
-  const revealLit = document.querySelectorAll('[data-reveal].is-lit, [data-plate].is-lit').length;
-  const stillHiddenList = Array.from(document.querySelectorAll('[data-reveal], [data-plate]'))
+  const revealTotal = document.querySelectorAll('[data-reveal]').length;
+  const revealLit = document.querySelectorAll('[data-reveal].is-lit').length;
+  const stillHiddenList = Array.from(document.querySelectorAll('[data-reveal]'))
     .filter((el) => parseFloat(cs(el).opacity) < 0.9)
     .map((el) => {
       const r = el.getBoundingClientRect();
