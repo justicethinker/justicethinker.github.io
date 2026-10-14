@@ -7,23 +7,58 @@ import { identity, techFeatured, techMore } from '../data/site';
   title="Tech"
   description="Software by Justice Thinker — featured builds and the full public repo record on GitHub."
 >
-  <div class="shell">
-    <section class="opener">
-      <p class="kicker" data-reveal>Tech</p>
-      <h1 class="display display--md" data-reveal>
-        I build software <span class="gold">in the open.</span>
-      </h1>
-      <p class="lede" data-reveal>
-        {identity.githubHandle} — the builds worth walking you through first, then the rest of
-        the public record. Nothing here is described as more than it is, and every entry links
-        to the code.
-      </p>
-      <div class="actions" data-reveal>
-        <a class="btn btn--gold" href={identity.github} target="_blank" rel="noopener noreferrer">
-          Open the GitHub profile
-        </a>
+  <section class="orbit" data-orbit-stage aria-label="The featured builds as a solar system">
+    <div class="orbit__canvas">
+      <canvas data-orbit-canvas aria-hidden="true"></canvas>
+    </div>
+    <div class="orbit__veil" aria-hidden="true"></div>
+
+    <div class="shell orbit__inner">
+      <div class="orbit__copy">
+        <p class="kicker" data-reveal>Tech</p>
+        <h1 class="display display--md" data-reveal>
+          Six worlds around <span class="gold">one sun.</span>
+        </h1>
+        <p class="lede" data-reveal>
+          {identity.githubHandle} — every featured build in orbit. Click a world to read
+          what it is and where the code lives.
+        </p>
+        <div class="actions" data-reveal>
+          <a class="btn btn--gold" href={identity.github} target="_blank" rel="noopener noreferrer">
+            Open the GitHub profile
+          </a>
+        </div>
       </div>
-    </section>
+
+      <aside class="orbit__panel" data-orbit-panel hidden aria-live="polite">
+        <p class="card__meta" data-orbit-meta></p>
+        <h2 class="card__name" data-orbit-name></h2>
+        <p class="card__body" data-orbit-body></p>
+        <div class="actions">
+          <a
+            class="card__link"
+            data-orbit-link
+            href={identity.github}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open on GitHub →
+          </a>
+          <button class="to-top" type="button" data-orbit-close>Close</button>
+        </div>
+      </aside>
+    </div>
+
+    <div class="shell orbit__bar">
+      <button class="to-top" type="button" data-orbit-prev>← Prev world</button>
+      <button class="to-top" type="button" data-orbit-next>Next world →</button>
+      <span class="orbit__hint">Drag to spin · click a world to land</span>
+    </div>
+
+    <script type="application/json" data-orbit-data set:html={JSON.stringify(techFeatured)} />
+  </section>
+
+  <div class="shell">
 
     <section class="section" aria-label="Featured builds">
       <div class="section__head" data-reveal>
@@ -69,4 +104,8 @@ import { identity, techFeatured, techMore } from '../data/site';
       </ul>
     </section>
   </div>
+
+  <script>
+    import '../scripts/orbits.js';
+  </script>
 </Layout>
