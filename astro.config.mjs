@@ -11,6 +11,11 @@ export default defineConfig({
   vite: {
     build: {
       assetsInlineLimit: 2048,
+      // three.js loads at runtime through the import map in Layout.astro,
+      // so the bundler must leave the bare specifier alone.
+      rollupOptions: {
+        external: ['three'],
+      },
     },
   },
 });

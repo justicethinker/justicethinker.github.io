@@ -1,8 +1,8 @@
 /**
- * The site's entire script.
+ * The site's entire shared script.
  *
- * Reveals, the menu, back-to-top and the contact form. Nothing here is
- * load-bearing: with scripting off, every page reads normally.
+ * Reveals, the menu, 3D card tilt, the portrait swap and back-to-top.
+ * Nothing here is load-bearing: with scripting off, every page reads.
  */
 
 const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -10,7 +10,7 @@ const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 /* ---------------------------------------------------------------- reveals */
 
 function initReveals() {
-  const targets = document.querySelectorAll('[data-reveal], [data-plate]');
+  const targets = document.querySelectorAll('[data-reveal]');
   if (targets.length === 0) return;
 
   if (reduceQuery.matches || !('IntersectionObserver' in window)) {
@@ -29,15 +29,11 @@ function initReveals() {
         if (entry.isIntersecting) light(entry.target);
       }
     },
-    // threshold 0 so a tall image that only ever shows a sliver still fires;
-    // the negative bottom margin is what holds a reveal back until it is read.
     { rootMargin: '0px 0px -6% 0px', threshold: 0 },
   );
 
   targets.forEach((el) => observer.observe(el));
 
-  // Safety net for content parked at the very end of a document, or stranded by
-  // a restored scroll position: if a reader can see it, it gets lit.
   const sweep = () => {
     const viewport = window.innerHeight;
     for (const el of targets) {
@@ -56,6 +52,7 @@ function initReveals() {
 
 function initMenu() {
   const drawer = document.querySelector('[data-drawer]');
+  const scrim = document.querySelector('[data-scrim]');
   const openBtn = document.querySelector('[data-drawer-toggle]');
   const closeBtn = document.querySelector('[data-drawer-close]');
   if (!(drawer instanceof HTMLElement) || !(openBtn instanceof HTMLElement)) return;
@@ -71,12 +68,14 @@ function initMenu() {
 
   function open() {
     drawer.hidden = false;
+    if (scrim instanceof HTMLElement) scrim.hidden = false;
     requestAnimationFrame(() => {
-      drawer.setAttribute('data-open', 'true');
+      requestAnimationFrame(() => {
+        drawer.setAttribute('data-open', 'true');
+        if (scrim instanceof HTMLElement) scrim.style.opacity = '1';
+      });
       openBtn.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
-      // Focus can only land once the panel is actually visible, and visibility
-      // arrives with the transition rather than with the attribute.
       grabFocus();
       window.setTimeout(grabFocus, 60);
     });
@@ -87,11 +86,15 @@ function initMenu() {
     drawer.setAttribute('data-open', 'false');
     openBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
+    if (scrim instanceof HTMLElement) scrim.style.opacity = '0';
     window.setTimeout(
       () => {
-        if (drawer.getAttribute('data-open') === 'false') drawer.hidden = true;
+        if (drawer.getAttribute('data-open') === 'false') {
+          drawer.hidden = true;
+          if (scrim instanceof HTMLElement) scrim.hidden = true;
+        }
       },
-      reduceQuery.matches ? 0 : 700,
+      reduceQuery.matches ? 0 : 500,
     );
     if (restoreFocus) openBtn.focus();
     restoreFocus = false;
@@ -103,6 +106,7 @@ function initMenu() {
   });
 
   closeBtn?.addEventListener('click', close);
+  scrim?.addEventListener('click', close);
 
   drawer.addEventListener('click', (event) => {
     const target = event.target;
@@ -135,10 +139,38 @@ function initMenu() {
     }
   });
 
-  // Passing the breakpoint must not leave the page locked behind the panel.
   window.matchMedia('(min-width: 861px)').addEventListener('change', (event) => {
     if (event.matches && drawer.getAttribute('data-open') === 'true') close();
   });
+}
+
+/* ------------------------------------------------------------------- tilt
+   Cards lean toward the pointer in real 3D. Pure CSS transform, no library. */
+
+function initTilt() {
+  // No pointer-type gate: on touch screens pointermove simply never fires,
+  // so the effect is desktop-only by nature rather than by media query.
+  if (reduceQuery.matches) return;
+
+  for (const card of document.querySelectorAll('[data-tilt]')) {
+    if (!(card instanceof HTMLElement)) continue;
+    let frame = 0;
+
+    card.addEventListener('pointermove', (event) => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const rect = card.getBoundingClientRect();
+        const px = (event.clientX - rect.left) / rect.width - 0.5;
+        const py = (event.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(900px) rotateY(${px * 7}deg) rotateX(${-py * 7}deg) translateZ(6px)`;
+      });
+    });
+
+    card.addEventListener('pointerleave', () => {
+      cancelAnimationFrame(frame);
+      card.style.transform = '';
+    });
+  }
 }
 
 /* -------------------------------------------------------------- back to top */
@@ -151,51 +183,9 @@ function initToTop() {
   }
 }
 
-/* ---------------------------------------------------------- contact form */
-
-function initContactForm() {
-  const form = document.querySelector('[data-contact-form]');
-  if (!(form instanceof HTMLFormElement)) return;
-
-  const status = form.querySelector('[data-form-status]');
-
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const data = new FormData(form);
-    const name = String(data.get('name') || '').trim();
-    const email = String(data.get('email') || '').trim();
-    const message = String(data.get('message') || '').trim();
-    const subject = String(data.get('subject') || '').trim() || 'Hello from your site';
-
-    if (!name || !email || !message) {
-      if (status) status.textContent = 'A name, an email address and a message, please.';
-      form.querySelector('input[name="name"]')?.focus();
-      return;
-    }
-
-    const body = [message, '', `— ${name}`, email].join('\r\n');
-    const href = `mailto:${form.dataset.contactEmail}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
-
-    // A draft that cannot be re-opened is a dead end for anyone without a mail
-    // client, so the composed message stays on the page.
-    if (status) {
-      status.textContent = 'Opening your mail client… ';
-      const retry = document.createElement('a');
-      retry.href = href;
-      retry.textContent = 'open the draft again';
-      status.append(retry);
-    }
-
-    window.location.href = href;
-  });
-}
-
 /* -------------------------------------------------------------------- boot */
 
 initReveals();
 initMenu();
+initTilt();
 initToTop();
-initContactForm();
