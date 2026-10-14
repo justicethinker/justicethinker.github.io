@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { identity, essays } from '../data/site';
+---
+
+<Layout
+  title="Writing"
+  description="Essays by Justice Thinker on Substack — thought in progress."
+>
+  <div class="shell">
+    <section class="opener">
+      <p class="kicker" data-reveal>Writing</p>
+      <h1 class="display display--md" data-reveal>
+        Thought <span class="gold">in progress.</span>
+      </h1>
+      <p class="lede" data-reveal>
+        Essays published on Substack at {identity.substackHandle} — on fear, judgment, and
+        the difference between feeling right and being right. New pieces land there first.
+      </p>
+      <div class="actions" data-reveal>
+        <a class="btn btn--gold" href={identity.substack} target="_blank" rel="noopener noreferrer">
+          Open the Substack
+        </a>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Essays">
+      <div data-reveal-group>
+        {
+          essays.map((essay) => (
+            <a
+              class="essay"
+              href={essay.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-reveal
+            >
+              <span class="card__meta">
+                <time datetime={essay.iso}>{essay.date}</time> · Substack
+              </span>
+              <h2 class="essay__title">{essay.title}</h2>
+              <p class="essay__body">{essay.body}</p>
+              <span class="essay__go">Read the essay →</span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section" aria-label="Subscribe">
+      <div class="section__head" data-reveal>
+        <h2 class="title">Follow along</h2>
+        <p class="note">Subscribing is free. The thinking is the point.</p>
+      </div>
+      <div class="actions" data-reveal>
+        <a class="btn btn--ghost" href={`${identity.substack}/archive`} target="_blank" rel="noopener noreferrer">
+          Browse the archive
+        </a>
+      </div>
+    </section>
+  </div>
+</Layout>

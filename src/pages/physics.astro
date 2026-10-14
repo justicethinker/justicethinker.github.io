@@ -1,125 +1,93 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Figure from '../components/Figure.astro';
-import { projects, publications, researchAreas, education } from '../data/site';
-
-const physicsProjects = projects.filter((project) => project.category === 'Physics');
+import { physicsInterests, background } from '../data/site';
 ---
 
 <Layout
   title="Physics"
-  description="Quantum mechanics, wave dynamics and instrumentation — research areas, papers and the projects behind them."
+  description="Physics — research interests and a wave interference tank you can play with."
 >
   <div class="shell">
     <section class="opener">
-      <p class="opener__kicker">Physics</p>
-      <h1 class="display display--md">
-        The interesting part is where a system stops behaving the way the maths says it should.
+      <p class="kicker" data-reveal>Physics</p>
+      <h1 class="display display--md" data-reveal>
+        Where the maths <span class="gold">meets the apparatus.</span>
       </h1>
-      <p class="lede">
-        I work on the quantum-to-classical boundary, on wave behaviour in real apparatus, and on the
-        numerical methods that let either be checked against data.
+      <p class="lede" data-reveal>
+        I read physics at university and worked on the boundary where quantum behaviour
+        gives way to classical behaviour. Below is the honest version: what I work on, and
+        a tank of waves you can disturb yourself.
       </p>
     </section>
 
-    <section class="section">
-      <div class="section__head">
-        <h2 class="title">Research areas</h2>
-        <p class="note">Each with its own apparatus. The method does not change between them.</p>
+    <section class="section" aria-label="Wave lab">
+      <div class="section__head" data-reveal>
+        <h2 class="title">The wave tank</h2>
+        <p class="note">A live interference simulation. Drag an emitter — the pattern renegotiates.</p>
       </div>
 
-      <div class="work work--plain">
+      <div class="lab" data-wave-stage data-reveal>
+        <div class="lab__stage">
+          <canvas aria-label="Interactive wave interference simulation with draggable emitters"></canvas>
+        </div>
+        <div class="lab__bar">
+          <label>
+            Frequency
+            <input type="range" data-wave-freq min="8" max="26" value="14" step="1" />
+          </label>
+          <button class="btn btn--ghost" type="button" data-wave-add>Add a source</button>
+          <button class="btn btn--ghost" type="button" data-wave-reset>Reset</button>
+          <span class="lab__hint" data-wave-readout role="status"></span>
+        </div>
+      </div>
+      <p class="lab__hint" style="margin-top: 0.75rem;" data-reveal>
+        Two sources make stripes; three make arguments. Double-click the tank to pause it.
+      </p>
+    </section>
+
+    <section class="section" aria-label="Research interests">
+      <div class="section__head" data-reveal>
+        <h2 class="title">What I work on</h2>
+        <p class="note">Interests, stated plainly. No borrowed prestige.</p>
+      </div>
+
+      <div class="cards cards--two" data-reveal-group>
         {
-          researchAreas.map((area) => (
-            <article class="work__item">
-              <div class="work__row">
-                <h3 class="work__name">{area.name}</h3>
-              </div>
-              <p class="work__line">{area.body}</p>
+          physicsInterests.map((area) => (
+            <article class="card" data-tilt data-reveal>
+              <h3 class="card__name">{area.name}</h3>
+              <p class="card__body">{area.body}</p>
             </article>
           ))
         }
       </div>
     </section>
 
-    <section class="section">
-      <Figure
-        src="/art/ink.webp"
-        width={1600}
-        height={1000}
-        alt="Fine black contour lines on warm paper, forming a dense wave interference pattern that fades toward the edges of the sheet."
-        caption="An interference field drawn as contours: three sources summed, the ink placed where the sum crosses a fixed value."
-      />
-    </section>
-
-    <section class="section">
-      <div class="section__head">
-        <h2 class="title">Papers</h2>
-        <p class="note">Peer reviewed and in review.</p>
+    <section class="section" aria-label="Background">
+      <div class="section__head" data-reveal>
+        <h2 class="title">Background</h2>
       </div>
 
-      <div class="work">
-        {
-          publications.map((paper) => (
-            <article class="work__item">
-              <div class="work__row">
-                <h3 class="work__name">{paper.title}</h3>
-                <span class="work__meta">{paper.state}</span>
-              </div>
-              <p class="work__line">
-                {paper.venue} — {paper.abstract}
-              </p>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section__head">
-        <h2 class="title">Built for the work</h2>
-        <p class="note">When nothing affordable resolves the effect, you build the thing that does.</p>
-      </div>
-
-      <div class="work">
-        {
-          physicsProjects.map((project) => (
-            <article class="work__item">
-              <div class="work__row">
-                <h3 class="work__name">{project.name}</h3>
-                <span class="work__meta">
-                  {project.year} · {project.status}
-                </span>
-              </div>
-              <p class="work__line">{project.detail}</p>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section__head">
-        <h2 class="title">Education</h2>
-      </div>
-
-      <div class="facts">
+      <div class="facts" data-reveal>
         <div class="facts__row">
           <span class="facts__key">Degree</span>
           <p class="facts__value">
-            <strong>{education.degree}</strong>
-            {education.honours} · {education.years}
+            <strong>{background.degree}</strong> — {background.detail}
           </p>
         </div>
         <div class="facts__row">
           <span class="facts__key">Thesis</span>
-          <p class="facts__value">{education.thesis}</p>
+          <p class="facts__value">{background.thesis}</p>
         </div>
         <div class="facts__row">
-          <span class="facts__key">Coursework</span>
-          <p class="facts__value">{education.coursework.join(' · ')}</p>
+          <span class="facts__key">Coaching</span>
+          <p class="facts__value">{background.coaching}</p>
         </div>
       </div>
     </section>
   </div>
+
+  <script>
+    import '../scripts/wave.js';
+  </script>
 </Layout>

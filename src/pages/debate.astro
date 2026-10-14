@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { debateResults, talks, debateRules } from '../data/site';
+---
+
+<Layout
+  title="Debate"
+  description="Competitive debate record, public talks, and the four rules every argument is held to."
+>
+  <div class="shell">
+    <section class="opener">
+      <p class="kicker" data-reveal>Debate &amp; public speaking</p>
+      <h1 class="display display--md" data-reveal>
+        An argument is <span class="gold">a test.</span>
+      </h1>
+      <p class="lede" data-reveal>
+        Four years of competitive finals, national titles, and coaching more than a hundred
+        and fifty students to the same standard. You find out what an idea is made of when
+        someone good pushes on it.
+      </p>
+    </section>
+
+    <section class="section" aria-label="Results">
+      <div class="section__head" data-reveal>
+        <h2 class="title">Results</h2>
+        <p class="note">Judged by people who were trying to win.</p>
+      </div>
+
+      <div class="cards" data-reveal-group>
+        {
+          debateResults.map((result) => (
+            <article class="card" data-tilt data-reveal>
+              <span class="card__meta">
+                {result.when} · {result.placing} · {result.format}
+              </span>
+              <h3 class="card__name">{result.event}</h3>
+              <p class="card__body">{result.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section" aria-label="Talks">
+      <div class="section__head" data-reveal>
+        <h2 class="title">Talks</h2>
+        <p class="note">The same method, pointed at a room instead of an opponent.</p>
+      </div>
+
+      <div class="cards" data-reveal-group>
+        {
+          talks.map((talk) => (
+            <article class="card" data-tilt data-reveal>
+              <span class="card__meta">
+                {talk.venue} · {talk.meta}
+              </span>
+              <h3 class="card__name">{talk.title}</h3>
+              <p class="card__body">{talk.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section" aria-label="The four rules">
+      <div class="section__head" data-reveal>
+        <h2 class="title">Four rules</h2>
+        <p class="note">Non-negotiable. Applied to papers and code reviews as much as to debates.</p>
+      </div>
+
+      <div class="cards cards--two" data-reveal-group>
+        {
+          debateRules.map((rule, i) => (
+            <article class="card" data-tilt data-reveal>
+              <span class="gate__index">0{i + 1}</span>
+              <h3 class="card__name">{rule.name}</h3>
+              <p class="card__body">{rule.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</Layout>

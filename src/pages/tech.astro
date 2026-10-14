@@ -1,0 +1,72 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { identity, techFeatured, techMore } from '../data/site';
+---
+
+<Layout
+  title="Tech"
+  description="Software by Justice Thinker — featured builds and the full public repo record on GitHub."
+>
+  <div class="shell">
+    <section class="opener">
+      <p class="kicker" data-reveal>Tech</p>
+      <h1 class="display display--md" data-reveal>
+        I build software <span class="gold">in the open.</span>
+      </h1>
+      <p class="lede" data-reveal>
+        {identity.githubHandle} — the builds worth walking you through first, then the rest of
+        the public record. Nothing here is described as more than it is, and every entry links
+        to the code.
+      </p>
+      <div class="actions" data-reveal>
+        <a class="btn btn--gold" href={identity.github} target="_blank" rel="noopener noreferrer">
+          Open the GitHub profile
+        </a>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Featured builds">
+      <div class="section__head" data-reveal>
+        <h2 class="title">Featured builds</h2>
+        <p class="note">The ones I'd walk you through first.</p>
+      </div>
+
+      <div class="cards cards--two" data-reveal-group>
+        {
+          techFeatured.map((repo) => (
+            <article class="card" data-tilt data-reveal>
+              <span class="card__meta">{repo.language}</span>
+              <h3 class="card__name">{repo.name}</h3>
+              <p class="card__body">{repo.body}</p>
+              <a class="card__link" href={repo.url} target="_blank" rel="noopener noreferrer">
+                Open on GitHub →
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section" aria-label="The rest of the record">
+      <div class="section__head" data-reveal>
+        <h2 class="title">More of the record</h2>
+        <p class="note">Learning work, experiments and tools — in the open the whole way.</p>
+      </div>
+
+      <ul class="index" data-reveal-group>
+        {
+          techMore.map((repo) => (
+            <li data-reveal>
+              <a class="index__row" href={repo.url} target="_blank" rel="noopener noreferrer">
+                <span class="index__name">{repo.name}</span>
+                <span class="index__detail">
+                  {repo.language} — {repo.body}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</Layout>

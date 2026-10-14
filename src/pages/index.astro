@@ -1,105 +1,93 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Figure from '../components/Figure.astro';
-import { identity, projects, posts } from '../data/site';
-
-const featured = projects.filter((project) => project.featured).slice(0, 4);
-const latest = posts.slice(0, 3);
+import Portrait from '../components/Portrait.astro';
+import { identity, techFeatured, essays, debateResults } from '../data/site';
 ---
 
-<Layout title={identity.name}>
+<Layout title={identity.name} description={identity.statement} hero3d>
+  <section class="hero hero--me" aria-label="Introduction">
+    <div class="hero__canvas">
+      <canvas data-hero-field aria-hidden="true"></canvas>
+    </div>
+    <div class="hero__veil" aria-hidden="true"></div>
+
+    <div class="shell hero__inner">
+      <div>
+        <p class="kicker" data-reveal>{identity.role}</p>
+        <h1 class="display" data-reveal>
+          Justice <span class="gold">Thinker</span>
+        </h1>
+        <p class="lede" data-reveal>
+          {identity.statement} Software pays the bills, physics feeds the curiosity, and
+          debate is where ideas get tested.
+        </p>
+        <div class="actions" data-reveal>
+          <a class="btn btn--gold" href="/tech">See the work</a>
+          <a class="btn btn--ghost" href={identity.substack} target="_blank" rel="noopener noreferrer">
+            Read the essays
+          </a>
+        </div>
+        <p class="hero__hint" data-reveal>Hover or drag · the field answers, then settles</p>
+      </div>
+
+      <Portrait />
+    </div>
+  </section>
+
   <div class="shell">
-    <section class="opener">
-      <p class="opener__kicker">{identity.role}</p>
-      <h1 class="display">I study how things separate when they are measured.</h1>
-      <p class="lede">
-        Quantum systems, arguments, and software. Three disciplines, one method — build the
-        instrument, then trust what it says.
-      </p>
+    <section class="section" aria-label="The three registers">
+      <div class="section__head" data-reveal>
+        <h2 class="title">One person, three registers</h2>
+        <p class="note">Each page below is the real record, not a brochure.</p>
+      </div>
+
+      <div class="cards cards--three" data-reveal-group>
+        <article class="card" data-tilt data-reveal>
+          <span class="gate__index">01</span>
+          <h3 class="card__name">Tech</h3>
+          <p class="card__body">
+            {techFeatured.length} featured builds and {17} more public repos — offline-first
+            apps, trading front ends, agents, bots. Everything linked to the code.
+          </p>
+          <a class="card__link" href="/tech">Browse the repos →</a>
+        </article>
+
+        <article class="card" data-tilt data-reveal>
+          <span class="gate__index">02</span>
+          <h3 class="card__name">Debate &amp; speaking</h3>
+          <p class="card__body">
+            {debateResults[0].placing} at the {debateResults[0].event}, a season title, an
+            international final — plus the talks and the four rules behind them.
+          </p>
+          <a class="card__link" href="/debate">See the record →</a>
+        </article>
+
+        <article class="card" data-tilt data-reveal>
+          <span class="gate__index">03</span>
+          <h3 class="card__name">Writing</h3>
+          <p class="card__body">
+            “{essays[0].title}” and the rest of the essays, published on Substack as
+            “{identity.tagline}”
+          </p>
+          <a class="card__link" href="/writing">Read the essays →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Contact">
+      <div class="section__head" data-reveal>
+        <h2 class="title">Write to me</h2>
+        <p class="note">A problem first, an introduction second. That order works best.</p>
+      </div>
+      <div class="actions" data-reveal>
+        <a class="btn btn--gold" href={`mailto:${identity.email}`}>{identity.email}</a>
+        <a class="btn btn--ghost" href={identity.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="btn btn--ghost" href={identity.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
     </section>
   </div>
 
-  <div class="shell">
-    <Figure
-      src="/art/ink.webp"
-      width={1600}
-      height={1000}
-      bleed
-      priority
-      alt="Fine black contour lines on warm paper, forming a dense interference pattern that opens out and fades toward the edges of the sheet."
-      caption="Three emitters summed into one field and drawn as line work: ink where the sum crosses a fixed value. Generated from the wave equation — nothing on this site was photographed or bought."
-    />
-  </div>
-
-  <div class="shell">
-    <section class="section">
-      <div class="section__head">
-        <h2 class="title">Selected work</h2>
-        <p class="note">
-          Four of ten. The rest, with the detail behind each, are on the
-          <a class="link" href="/projects">work page</a>.
-        </p>
-      </div>
-
-      <div class="work">
-        {
-          featured.map((project) => (
-            <article class="work__item">
-              <div class="work__row">
-                <h3 class="work__name">{project.name}</h3>
-                <span class="work__meta">
-                  {project.year} · {project.status}
-                </span>
-              </div>
-              <p class="work__line">{project.summary}</p>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section__head">
-        <h2 class="title">Writing</h2>
-        <p class="note">Physics, software, and the space where they argue.</p>
-      </div>
-
-      <div class="posts">
-        {
-          latest.map((post) => (
-            <article class="post">
-              <time class="post__date" datetime={post.iso}>
-                {post.date} · {post.reading}
-              </time>
-              <h3 class="post__title">{post.title}</h3>
-              <p class="post__dek">{post.dek}</p>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section__head">
-        <h2 class="title">About</h2>
-      </div>
-
-      <div class="prose">
-        <p>
-          I read physics at university, spent four years on the quantum-to-classical boundary, and
-          have been writing software for longer than that. Between the two I argue — competitively,
-          in finals, and on behalf of students I coach.
-        </p>
-        <p>
-          The through-line is measurement: a model of a system that cannot be seen, a service that
-          has to survive contact with real users, an argument tested against someone trying to break
-          it. The method transfers, which is the only interesting part.
-        </p>
-        <p>
-          <a class="link link--accent" href="/about">More about me</a> — or
-          <a class="link" href={`mailto:${identity.email}`}>write to me</a>.
-        </p>
-      </div>
-    </section>
-  </div>
+  <script>
+    import '../scripts/hero.js';
+  </script>
 </Layout>
