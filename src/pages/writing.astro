@@ -7,9 +7,9 @@ import { identity, essays } from '../data/site';
   title="Writing"
   description="Essays by Justice Thinker on Substack — thought in progress."
 >
-  <section class="inkwell" data-ink-stage aria-label="Gold ink blooming in dark water">
+  <section class="inkwell inkwell--full" data-titles-stage aria-label="The essays written in living gold particles">
     <div class="inkwell__canvas">
-      <canvas data-ink-canvas aria-hidden="true"></canvas>
+      <canvas data-titles-canvas aria-hidden="true"></canvas>
     </div>
     <div class="inkwell__veil" aria-hidden="true"></div>
 
@@ -19,9 +19,8 @@ import { identity, essays } from '../data/site';
         Thought <span class="gold">in progress.</span>
       </h1>
       <p class="lede" data-reveal>
-        Essays published on Substack at {identity.substackHandle} — on fear, judgment, and
-        the difference between feeling right and being right. Drag through the ink while
-        you decide where to start.
+        Essays published on Substack at {identity.substackHandle}. Brush a title to
+        scatter it — click one to read it.
       </p>
       <div class="actions" data-reveal>
         <a class="btn btn--gold" href={identity.substack} target="_blank" rel="noopener noreferrer">
@@ -29,6 +28,12 @@ import { identity, essays } from '../data/site';
         </a>
       </div>
     </div>
+
+    <script
+      type="application/json"
+      data-titles-data
+      set:html={JSON.stringify(essays.map((e) => ({ title: e.title, url: e.url })))}
+    />
   </section>
 
   <div class="shell">
@@ -70,6 +75,6 @@ import { identity, essays } from '../data/site';
   </div>
 
   <script>
-    import '../scripts/ink.js';
+    import '../scripts/titles.js';
   </script>
 </Layout>
