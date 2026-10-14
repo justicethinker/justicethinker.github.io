@@ -29,8 +29,8 @@
         height: 630px;
         display: grid;
         grid-template-columns: 1.1fr 0.9fr;
-        background: #f7f5f1;
-        color: #1b1815;
+        background: #0a0908;
+        color: #ece7db;
         font-family: ui-sans-serif, -apple-system, 'Segoe UI', Roboto, sans-serif;
         overflow: hidden;
       }
@@ -40,6 +40,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        border-right: 1px solid rgb(212 175 55 / 0.25);
       }
 
       .mark {
@@ -50,13 +51,19 @@
         font-size: 30px;
         line-height: 1;
         letter-spacing: -0.02em;
+        color: #f0d878;
       }
 
       .mark i {
-        width: 8px;
-        height: 8px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
-        background: #a4472c;
+        background: radial-gradient(circle at 32% 28%, #f6e58d, #d4af37 55%, #9a7b1e);
+        display: inline-grid;
+        place-items: center;
+        font-style: normal;
+        font-size: 17px;
+        color: #141004;
       }
 
       h1 {
@@ -69,11 +76,12 @@
 
       h1 em {
         font-style: italic;
+        color: #d4af37;
       }
 
       .role {
         font-size: 21px;
-        color: #4c463e;
+        color: #b9b4a8;
         margin-top: 22px;
         max-width: 34ch;
         line-height: 1.5;
@@ -83,39 +91,46 @@
         font-size: 16px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #7b746a;
+        color: #847e71;
       }
 
       .right {
         position: relative;
-        border-left: 1px solid rgb(27 24 21 / 0.12);
+        background:
+          radial-gradient(420px 300px at 60% 40%, rgb(212 175 55 / 0.35), transparent 70%),
+          radial-gradient(700px 500px at 80% 90%, rgb(212 175 55 / 0.12), transparent 60%),
+          #12100d;
       }
 
-      .right img {
+      .right::after {
+        content: 'JT';
         position: absolute;
         inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        display: grid;
+        place-items: center;
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-size: 220px;
+        color: transparent;
+        background: linear-gradient(100deg, #8a6d14, #d4af37 30%, #f6e58d 50%, #d4af37 70%, #8a6d14);
+        -webkit-background-clip: text;
+        background-clip: text;
       }
     </style>
   </head>
   <body>
     <div class="left">
-      <span class="mark"><i></i> Justice Thinker</span>
+      <span class="mark"><i>J</i> Justice Thinker</span>
 
       <div>
-        <h1>Measure it. <em>Then argue.</em></h1>
+        <h1>Build it. <em>Then argue.</em></h1>
         <p class="role">
-          Physics, software and competitive debate — three disciplines, one method.
+          Software, physics and competitive debate — one person, three registers.
         </p>
       </div>
 
       <span class="site">justicethinker.github.io</span>
     </div>
 
-    <div class="right">
-      <img src="../public/art/ink.webp" alt="" />
-    </div>
+    <div class="right"></div>
   </body>
 </html>
