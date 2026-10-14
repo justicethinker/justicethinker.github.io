@@ -1,10 +1,12 @@
 /**
  * The scales — a debate record you can weigh.
  *
- * One gold beam on a pillar fills the screen. Every result hangs on the pan
+ * One warm beam on a pillar fills the screen. Every result hangs on the pan
  * it belongs to; add a weight to see the beam answer, or push the pointer at
  * one side and it leans that way. The beam is a spring-and-damper system: it
  * overshoots once and settles, the way a real balance does.
+ *
+ * Effect-local palette: independent of the site's silver/white theme.
  *
  * Plain Canvas 2D, no library.
  */
@@ -30,6 +32,19 @@ function boot(stage) {
     data = [];
   }
   if (!Array.isArray(data)) data = [];
+
+  // Effect-local palette: this balance keeps its own warm metal and silver
+  // pan, deliberately independent of the site theme.
+  const EFFECT = {
+    pillar: 'rgba(212,175,55,0.5)',
+    base: 'rgba(212,175,55,0.22)',
+    panFor: '#f0d878',
+    panAgainst: '#c8c9ce',
+    beam: '#d4af37',
+    glowHot: '#f6e58d',
+    glowFar: 'rgba(212,175,55,0)',
+    dish: 'rgba(212,175,55,0.08)',
+  };
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -80,14 +95,14 @@ function boot(stage) {
     const rightEnd = { x: p.x + armX, y: p.y + armY };
 
     // The pillar and its base.
-    ctx.strokeStyle = 'rgba(212,175,55,0.5)';
+    ctx.strokeStyle = EFFECT.pillar;
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(p.x, p.y);
     ctx.lineTo(p.x, p.y + H * 0.34);
     ctx.stroke();
 
-    ctx.fillStyle = 'rgba(212,175,55,0.22)';
+    ctx.fillStyle = EFFECT.base;
     ctx.beginPath();
     ctx.moveTo(p.x - 46, p.y + H * 0.34);
     ctx.lineTo(p.x + 46, p.y + H * 0.34);
@@ -97,7 +112,7 @@ function boot(stage) {
     ctx.fill();
 
     // Chains.
-    ctx.strokeStyle = 'rgba(236,231,219,0.35)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
     ctx.lineWidth = 1;
     for (const end of [leftEnd, rightEnd]) {
       ctx.beginPath();
@@ -107,11 +122,11 @@ function boot(stage) {
     }
 
     // Pans.
-    drawPan(leftEnd, pans.for, '#f0d878', 'INDEX');
-    drawPan(rightEnd, pans.against, '#c8c9ce', 'OPPOSE');
+    drawPan(leftEnd, pans.for, EFFECT.panFor, 'INDEX');
+    drawPan(rightEnd, pans.against, EFFECT.panAgainst, 'OPPOSE');
 
     // The beam last, so weights sit under it.
-    ctx.strokeStyle = '#d4af37';
+    ctx.strokeStyle = EFFECT.beam;
     ctx.lineWidth = 6;
     ctx.lineCap = 'round';
     ctx.beginPath();
@@ -120,8 +135,8 @@ function boot(stage) {
     ctx.stroke();
 
     const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 30);
-    glow.addColorStop(0, '#f6e58d');
-    glow.addColorStop(1, 'rgba(212,175,55,0)');
+    glow.addColorStop(0, EFFECT.glowHot);
+    glow.addColorStop(1, EFFECT.glowFar);
     ctx.fillStyle = glow;
     ctx.beginPath();
     ctx.arc(p.x, p.y, 30, 0, Math.PI * 2);
@@ -134,7 +149,7 @@ function boot(stage) {
     const y = end.y + H * 0.16;
     const w = Math.min(W * 0.3, 240);
 
-    ctx.fillStyle = 'rgba(212,175,55,0.08)';
+    ctx.fillStyle = EFFECT.dish;
     ctx.beginPath();
     ctx.ellipse(end.x, y, w / 2, 16, 0, 0, Math.PI * 2);
     ctx.fill();
@@ -147,7 +162,7 @@ function boot(stage) {
       const t = items.length === 1 ? 0.5 : i / (items.length - 1);
       const x = end.x - w / 2 + 26 + t * (w - 52);
       const ty = y - 6;
-      ctx.fillStyle = 'rgba(10,9,8,0.9)';
+      ctx.fillStyle = 'rgba(10,10,11,0.9)';
       ctx.strokeStyle = colour;
       ctx.lineWidth = 1.5;
       ctx.beginPath();

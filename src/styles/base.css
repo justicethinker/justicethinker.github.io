@@ -1,6 +1,6 @@
 /* ==========================================================================
    AURUM — base
-   A dark document. Type in silver-white, structure in gold hairlines.
+   A dark document. Type in white, structure in silver hairlines.
    ========================================================================== */
 
 *,
@@ -22,7 +22,7 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
   background: var(--black);
-  -webkit-tap-highlight-color: var(--gold-wash);
+  -webkit-tap-highlight-color: var(--silver-wash);
 }
 
 body {
@@ -31,16 +31,16 @@ body {
   line-height: var(--lh-body);
   color: var(--ink);
   background:
-    radial-gradient(1100px 500px at 85% -5%, rgb(212 175 55 / 0.08), transparent 60%),
-    radial-gradient(900px 600px at -10% 30%, rgb(212 175 55 / 0.05), transparent 60%),
+    radial-gradient(1100px 500px at 85% -5%, rgb(200 200 210 / 0.08), transparent 60%),
+    radial-gradient(900px 600px at -10% 30%, rgb(200 200 210 / 0.05), transparent 60%),
     var(--black);
   min-height: 100vh;
   overflow-x: clip;
 }
 
 ::selection {
-  background: var(--gold);
-  color: #141004;
+  background: var(--silver);
+  color: #101012;
 }
 
 img,
@@ -55,9 +55,9 @@ a {
   color: inherit;
 }
 
-/* Visible gold focus everywhere — keyboard users get the metal too. */
+/* Visible silver focus everywhere — keyboard users get the metal too. */
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--silver-bright);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -67,8 +67,8 @@ a {
   left: var(--gutter);
   top: -4rem;
   z-index: 200;
-  background: var(--gold);
-  color: #141004;
+  background: var(--silver);
+  color: #101012;
   font-weight: 650;
   padding: 0.6rem 1.1rem;
   border-radius: 999px;
@@ -96,11 +96,13 @@ a {
   font-size: var(--t-display);
 }
 
+/* Emphasised display words are plain white now; the class name stays
+   so existing pages keep working. */
 .display .gold {
-  background: var(--gold-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: #fff;
 }
 
 .title {
@@ -122,7 +124,7 @@ a {
   font-size: var(--t-micro);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--gold);
+  color: #fff;
   font-weight: 650;
 }
 
@@ -152,9 +154,9 @@ a {
 /* --- LINKS -------------------------------------------------------------- */
 
 .link {
-  color: var(--gold-bright);
+  color: var(--silver-bright);
   text-decoration: underline;
-  text-decoration-color: rgb(212 175 55 / 0.45);
+  text-decoration-color: rgb(200 200 210 / 0.45);
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
   transition: text-decoration-color var(--dur) var(--ease), color var(--dur) var(--ease);
@@ -162,7 +164,7 @@ a {
 
 .link:hover {
   color: #fff;
-  text-decoration-color: var(--gold-bright);
+  text-decoration-color: var(--silver-bright);
 }
 
 /* --- LAYOUT -------------------------------------------------------------- */

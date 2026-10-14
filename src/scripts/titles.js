@@ -1,7 +1,8 @@
 /**
  * Living titles — the essays are the visual.
- *
- * Each essay title is sampled into a field of gold particles that drift,
+ * Each essay title is sampled into a field of warm particles that drift,
+ * scatter from the pointer, and spring back. Effect-local palette:
+ * independent of the site's silver/white theme.
  * scatter from the pointer, and spring back to reform the words. Click a
  * title to open it. The essay list below stays as the readable record.
  *
@@ -27,6 +28,13 @@ function boot(stage) {
   if (!Array.isArray(essays) || essays.length === 0) return;
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Effect-local palette: these titles keep their own warm ink,
+  // deliberately independent of the site's silver/white theme.
+  const EFFECT = {
+    ink: '#e9c860',
+    underline: 'rgba(240,216,120,0.5)',
+  };
 
   const FAMILIES = 3; // bands on screen; extra essays share the last band
   let fields = []; // {essay, hx,hy,vx,vy arrays, box}
@@ -167,7 +175,7 @@ function boot(stage) {
 
   function paint() {
     ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = '#e9c860';
+    ctx.fillStyle = EFFECT.ink;
     const s = W < 700 ? 2 : 2.4;
     fields.forEach((f, fi) => {
       const L = live[fi];
@@ -184,7 +192,7 @@ function boot(stage) {
     // Underline the hovered title: an invitation, not a button chrome.
     if (hovered >= 0 && fields[hovered]?.box) {
       const b = fields[hovered].box;
-      ctx.strokeStyle = 'rgba(240,216,120,0.5)';
+      ctx.strokeStyle = EFFECT.underline;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(b.x0 + 10, b.y1 - 8);

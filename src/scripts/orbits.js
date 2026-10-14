@@ -1,5 +1,5 @@
-/**
- * The solar system — the featured builds as planets around a gold sun.
+/**  * The solar system — the featured builds as planets around a warm sun.
+  * Effect-local palette: independent of the site's silver/white theme.
  *
  * Six planets on tilted ellipses with Kepler-ish speeds (inner worlds run
  * faster), depth scaling so they pass behind and before the sun, hover and
@@ -33,6 +33,20 @@ function boot(stage) {
   }
   if (!Array.isArray(repos) || repos.length === 0) return;
 
+  // Effect-local palette: this scene keeps its own warm hues,
+  // deliberately independent of the site's silver/white theme.
+  const EFFECT = {
+    tints: ['#f0d878', '#d4af37', '#e8c96a', '#c9a227', '#f6e58d', '#b08d2a'],
+    orbit: 'rgba(212,175,55,0.16)',
+    haloHot: 'rgba(246,229,141,0.9)',
+    haloMid: 'rgba(212,175,55,0.45)',
+    haloFar: 'rgba(212,175,55,0)',
+    sunCore: ['#f6e58d', '#d4af37', '#9a7b1e'],
+    select: '#f0d878',
+    hover: 'rgba(240,216,120,0.6)',
+    crescent: '#fff8dd',
+  };
+
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const TILT = 0.42; // orbit inclination: the pseudo-3D
   const N = repos.length;
@@ -44,7 +58,7 @@ function boot(stage) {
     frac: 0.34 + (i / Math.max(N - 1, 1)) * 0.58,
     angle: (i / N) * Math.PI * 2 + 0.6,
     size: 11 - i * 0.7,
-    tint: ['#f0d878', '#d4af37', '#e8c96a', '#c9a227', '#f6e58d', '#b08d2a'][i % 6],
+    tint: EFFECT.tints[i % EFFECT.tints.length],
   }));
   const speedBase = 0.16;
   const speedOf = (w) => speedBase * Math.pow(0.34 / w.frac, 1.5);
@@ -98,7 +112,7 @@ function boot(stage) {
 
     for (const s of stars) {
       ctx.globalAlpha = s.a;
-      ctx.fillStyle = '#ece7db';
+      ctx.fillStyle = '#ffffff';
       ctx.beginPath();
       ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
       ctx.fill();
@@ -106,7 +120,7 @@ function boot(stage) {
     ctx.globalAlpha = 1;
 
     // Orbit paths.
-    ctx.strokeStyle = 'rgba(212,175,55,0.16)';
+    ctx.strokeStyle = EFFECT.orbit;
     ctx.lineWidth = 1;
     for (const w of worlds) {
       const r = R() * w.frac;
@@ -129,18 +143,18 @@ function boot(stage) {
   function drawSun() {
     const r = Math.max(26, Math.min(W, H) * 0.055);
     const g = ctx.createRadialGradient(cx(), cy(), 0, cx(), cy(), r * 3.2);
-    g.addColorStop(0, 'rgba(246,229,141,0.9)');
-    g.addColorStop(0.25, 'rgba(212,175,55,0.45)');
-    g.addColorStop(1, 'rgba(212,175,55,0)');
+    g.addColorStop(0, EFFECT.haloHot);
+    g.addColorStop(0.25, EFFECT.haloMid);
+    g.addColorStop(1, EFFECT.haloFar);
     ctx.fillStyle = g;
     ctx.beginPath();
     ctx.arc(cx(), cy(), r * 3.2, 0, Math.PI * 2);
     ctx.fill();
 
     const core = ctx.createRadialGradient(cx() - r * 0.3, cy() - r * 0.3, r * 0.1, cx(), cy(), r);
-    core.addColorStop(0, '#f6e58d');
-    core.addColorStop(0.6, '#d4af37');
-    core.addColorStop(1, '#9a7b1e');
+    core.addColorStop(0, EFFECT.sunCore[0]);
+    core.addColorStop(0.6, EFFECT.sunCore[1]);
+    core.addColorStop(1, EFFECT.sunCore[2]);
     ctx.fillStyle = core;
     ctx.beginPath();
     ctx.arc(cx(), cy(), r, 0, Math.PI * 2);
@@ -166,14 +180,14 @@ function boot(stage) {
 
     // Lit crescent facing the sun.
     ctx.globalAlpha = dim * 0.9;
-    ctx.fillStyle = '#fff8dd';
+    ctx.fillStyle = EFFECT.crescent;
     ctx.beginPath();
     ctx.arc(p.x - r * 0.28, p.y - r * 0.28, r * 0.42, 0, Math.PI * 2);
     ctx.fill();
     ctx.globalAlpha = 1;
 
     if (i === selected || i === hovered) {
-      ctx.strokeStyle = i === selected ? '#f0d878' : 'rgba(240,216,120,0.6)';
+      ctx.strokeStyle = i === selected ? EFFECT.select : EFFECT.hover;
       ctx.lineWidth = i === selected ? 2 : 1;
       ctx.beginPath();
       ctx.arc(p.x, p.y, r + 6, 0, Math.PI * 2);
@@ -182,7 +196,7 @@ function boot(stage) {
 
     // Labels ride beside their worlds, fading with depth.
     ctx.globalAlpha = 0.35 + ((p.depth + 1) / 2) * 0.6;
-    ctx.fillStyle = '#ece7db';
+    ctx.fillStyle = '#ffffff'; // words are white
     ctx.font = '12px ui-sans-serif, system-ui, sans-serif';
     ctx.textBaseline = 'middle';
     const short = w.repo.name.length > 18 ? w.repo.name.slice(0, 17) + '…' : w.repo.name;

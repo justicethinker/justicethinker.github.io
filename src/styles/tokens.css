@@ -1,29 +1,37 @@
 /* ==========================================================================
-   AURUM — tokens
-   Black, gold, silver-white. One metal accent, spent where it matters.
+   ARGENT — tokens
+   Black, silver, white. One metal accent, spent where it matters.
+   Words are white; silver is the only accent.
+   Canvas effects carry their own local palettes (see each script's
+   EFFECT constants) and never read these tokens.
    ========================================================================== */
 
 :root {
   color-scheme: dark;
 
   /* --- FIELD ----------------------------------------------------------- */
-  --black: #0a0908;
-  --coal: #12100d;
-  --coal-2: #1a1712;
-  --line: rgb(212 175 55 / 0.22);
-  --line-soft: rgb(212 175 55 / 0.12);
+  --black: #0a0a0b;
+  --coal: #121214;
+  --coal-2: #1a1a1e;
+  --line: rgb(200 200 210 / 0.22);
+  --line-soft: rgb(200 200 210 / 0.12);
 
-  /* --- METAL ----------------------------------------------------------- */
-  --gold: #d4af37;
-  --gold-bright: #f0d878;
-  --gold-deep: #9a7b1e;
-  --gold-wash: rgb(212 175 55 / 0.1);
-
-  /* --- TYPE ------------------------------------------------------------ */
-  --ink: #ece7db; /* silver-white body text */
-  --ink-2: #b9b4a8; /* secondary text */
-  --ink-3: #847e71; /* muted text */
+  /* --- METAL (silver is the accent) ------------------------------------ */
   --silver: #c8c9ce;
+  --silver-bright: #f2f3f5;
+  --silver-deep: #8a8d94;
+  --silver-wash: rgb(200 200 210 / 0.1);
+
+  /* --- COMPAT: --gold* aliases silver. Do not use in new code. --------- */
+  --gold: var(--silver);
+  --gold-bright: var(--silver-bright);
+  --gold-deep: var(--silver-deep);
+  --gold-wash: var(--silver-wash);
+
+  /* --- TYPE (words are white) ------------------------------------------ */
+  --ink: #ffffff; /* white body text */
+  --ink-2: #e6e6e9; /* secondary text */
+  --ink-3: #b3b3ba; /* muted text */
 
   --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-text: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -59,10 +67,13 @@
 
   /* --- SURFACE ---------------------------------------------------------- */
   --radius: 14px;
-  --card: linear-gradient(160deg, rgb(212 175 55 / 0.09), rgb(212 175 55 / 0.02) 55%),
+  --card: linear-gradient(160deg, rgb(200 200 210 / 0.09), rgb(200 200 210 / 0.02) 55%),
     var(--coal);
-  --shadow: 0 1px 0 rgb(240 216 120 / 0.12) inset, 0 24px 60px rgb(0 0 0 / 0.55);
-  --gold-text: linear-gradient(100deg, #8a6d14 0%, var(--gold) 30%, #f6e58d 50%, var(--gold) 70%, #8a6d14 100%);
+  --shadow: 0 1px 0 rgb(242 243 245 / 0.12) inset, 0 24px 60px rgb(0 0 0 / 0.55);
+  --silver-text: linear-gradient(100deg, #6e7076 0%, var(--silver) 30%, #ffffff 50%, var(--silver) 70%, #6e7076 100%);
+
+  /* --- COMPAT: --gold-text aliases silver. Do not use in new code. ------ */
+  --gold-text: var(--silver-text);
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --dur: 420ms;

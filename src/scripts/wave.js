@@ -3,8 +3,8 @@
  *
  * Two or three emitters radiate circular waves across a tank; where they
  * meet, they add. Drag an emitter to move it, change the frequency, add or
- * remove a source. Computed per-pixel on a small offscreen grid and blitted
- * up, in gold on black. No library.
+ * remove a source. Computed per-pixel on a small offscreen grid and blitted  * up, in its own warm hue on black. No library.
+  * Effect-local palette: independent of the site's silver/white theme.
  */
 
 const stage = document.querySelector('[data-wave-stage]');
@@ -66,11 +66,11 @@ function boot(stage) {
     const data = img.data;
     for (let i = 0; i < field.length; i++) {
       const v = field[i]; // -1..1
-      const gold = Math.abs(v);
+      const glow = Math.abs(v);
       const o = i * 4;
-      data[o] = 12 + gold * 228; // r
-      data[o + 1] = 10 + gold * 188; // g
-      data[o + 2] = 8 + gold * 90; // b
+      data[o] = 12 + glow * 228; // r
+      data[o + 1] = 10 + glow * 188; // g
+      data[o + 2] = 8 + glow * 90; // b
       data[o + 3] = 255;
     }
     offCtx.putImageData(img, 0, 0);
@@ -87,14 +87,14 @@ function boot(stage) {
       const y = sources[s].y * h;
       ctx.beginPath();
       ctx.arc(x, y, 9, 0, Math.PI * 2);
-      ctx.fillStyle = '#0a0908';
+      ctx.fillStyle = '#0a0a0b';
       ctx.fill();
       ctx.lineWidth = 2;
-      ctx.strokeStyle = '#f0d878';
+      ctx.strokeStyle = '#f0d878'; // effect-local emitter ring
       ctx.stroke();
       ctx.beginPath();
       ctx.arc(x, y, 3, 0, Math.PI * 2);
-      ctx.fillStyle = '#f0d878';
+      ctx.fillStyle = '#f0d878'; // effect-local emitter dot
       ctx.fill();
     }
   }

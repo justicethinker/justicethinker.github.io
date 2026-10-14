@@ -1,5 +1,6 @@
 /**
- * The hero field — a golden constellation with its own small physics engine.
+ * The hero field — a warm constellation with its own small physics engine.
+ * Its palette is effect-local and independent of the site theme.
  *
  * ~700 particles drift on spring return-to-home forces, push away from the
  * pointer (or the first touch), and link to near neighbours with faint gold
@@ -56,14 +57,26 @@ async function boot() {
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
 
+  // Effect-local palette: this constellation keeps its own warm hue,
+  // deliberately independent of the site's silver/white theme.
+  const EFFECT = {
+    hot: 'rgba(246,229,141,1)',
+    mid: 'rgba(212,175,55,0.85)',
+    faint: 'rgba(212,175,55,0)',
+    dot: 0xd4af37,
+    link: 0xd4af37,
+    core: 0xf0d878,
+    ring: 0xd4af37,
+  };
+
   const sprite = (() => {
     const c = document.createElement('canvas');
     c.width = c.height = 64;
     const g = c.getContext('2d');
     const grad = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-    grad.addColorStop(0, 'rgba(246,229,141,1)');
-    grad.addColorStop(0.35, 'rgba(212,175,55,0.85)');
-    grad.addColorStop(1, 'rgba(212,175,55,0)');
+    grad.addColorStop(0, EFFECT.hot);
+    grad.addColorStop(0.35, EFFECT.mid);
+    grad.addColorStop(1, EFFECT.faint);
     g.fillStyle = grad;
     g.fillRect(0, 0, 64, 64);
     const tex = new THREE.CanvasTexture(c);
@@ -79,7 +92,7 @@ async function boot() {
       opacity: 0.9,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
-      color: 0xd4af37,
+      color: EFFECT.dot,
     }),
   );
   scene.add(dots);
@@ -93,7 +106,7 @@ async function boot() {
   const links = new THREE.LineSegments(
     linkGeo,
     new THREE.LineBasicMaterial({
-      color: 0xd4af37,
+      color: EFFECT.link,
       transparent: true,
       opacity: 0.14,
       blending: THREE.AdditiveBlending,
@@ -107,7 +120,7 @@ async function boot() {
   const core = new THREE.LineSegments(
     new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(2.1, 1)),
     new THREE.LineBasicMaterial({
-      color: 0xf0d878,
+      color: EFFECT.core,
       transparent: true,
       opacity: 0.28,
       blending: THREE.AdditiveBlending,
@@ -124,7 +137,7 @@ async function boot() {
       }),
     ),
     new THREE.LineBasicMaterial({
-      color: 0xd4af37,
+      color: EFFECT.ring,
       transparent: true,
       opacity: 0.22,
       blending: THREE.AdditiveBlending,
