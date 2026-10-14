@@ -179,7 +179,15 @@ try {
       width: Math.round(rect.width),
       height: Math.round(rect.height),
       threePinned: (importmap?.textContent || '').includes('three@'),
-      portrait: !!document.querySelector('[data-portrait-empty]'),
+      // The frame holds either the owner's photograph or the monogram that
+      // reserves its seat — never an empty box, never a broken image.
+      portrait: (() => {
+        const photo = document.querySelector('.portrait__inner > img');
+        if (photo instanceof HTMLImageElement) {
+          return photo.complete && photo.naturalWidth > 0;
+        }
+        return !!document.querySelector('[data-portrait-empty]');
+      })(),
       tiltCards: document.querySelectorAll('[data-tilt]').length,
       live: canvas?.dataset.field === 'live',
       particles: Number(canvas?.dataset.particles || 0),
