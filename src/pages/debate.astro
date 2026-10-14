@@ -7,33 +7,34 @@ import { debateResults, talks, debateRules } from '../data/site';
   title="Debate"
   description="Competitive debate record, public talks, and the four rules every argument is held to."
 >
-  <section class="arena" data-tug-stage aria-label="A tug-of-war between proposition and opposition">
+  <section class="arena arena--full" data-scale-stage aria-label="The debate record weighed on a gold balance">
     <div class="arena__canvas">
-      <canvas data-tug-canvas aria-hidden="true"></canvas>
+      <canvas data-scale-canvas aria-hidden="true"></canvas>
     </div>
     <div class="arena__veil" aria-hidden="true"></div>
 
     <div class="shell arena__inner">
       <p class="kicker" data-reveal>Debate &amp; public speaking</p>
       <h1 class="display display--md" data-reveal>
-        Pick a side. <span class="gold">Push.</span>
+        Every title has <span class="gold">weight.</span>
       </h1>
       <p class="lede" data-reveal>
-        Four years of competitive finals, national titles, and coaching more than a hundred
-        and fifty students. Stand anywhere in the field and it pulls your way — that is what
-        an audience does too.
+        Four years of finals hang on these pans. Add a win to either side and watch the
+        beam answer — or lean on it yourself.
       </p>
       <div class="actions" data-reveal>
-        <button class="btn btn--gold" type="button" data-tug-for>Argue for</button>
-        <button class="btn btn--ghost" type="button" data-tug-against>Argue against</button>
+        <button class="btn btn--gold" type="button" data-scale-add-for>Weigh a win for</button>
+        <button class="btn btn--ghost" type="button" data-scale-add-against>Weigh a win against</button>
+        <button class="to-top" type="button" data-scale-reset>Reset</button>
       </div>
-      <div class="arena__meter" data-reveal>
-        <div class="arena__track">
-          <div class="arena__fill" data-tug-bar-for></div>
-        </div>
-        <p class="arena__verdict" data-tug-meter role="status">Dead even</p>
-      </div>
+      <p class="arena__verdict" data-scale-readout role="status" data-reveal></p>
     </div>
+
+    <script
+      type="application/json"
+      data-scale-data
+      set:html={JSON.stringify(debateResults.map((r) => ({ placing: r.placing, event: r.event })))}
+    />
   </section>
 
   <div class="shell">
@@ -101,6 +102,6 @@ import { debateResults, talks, debateRules } from '../data/site';
   </div>
 
   <script>
-    import '../scripts/tug.js';
+    import '../scripts/scales.js';
   </script>
 </Layout>
