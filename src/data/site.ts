@@ -11,10 +11,10 @@ export const identity = {
   tagline: 'Thought in progress.',
   statement:
     'I build software, study physics, and argue competitively. This site holds the three in one place.',
-  email: 'justicethinker2@gmail.com',
+  email: 'justicethinker@justicethinker.com',
   github: 'https://github.com/justicethinker',
   githubHandle: 'github.com/justicethinker',
-  linkedin: 'https://www.linkedin.com/in/justicethinker/',
+  linkedin: 'https://www.linkedin.com/in/justice-thinker/',
   substack: 'https://justicethinker.substack.com',
   substackHandle: 'justicethinker.substack.com',
   site: 'justicethinker.github.io',
