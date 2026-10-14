@@ -7,18 +7,36 @@ import { debateResults, talks, debateRules } from '../data/site';
   title="Debate"
   description="Competitive debate record, public talks, and the four rules every argument is held to."
 >
-  <div class="shell">
-    <section class="opener">
+  <section class="arena" data-tug-stage aria-label="A tug-of-war between proposition and opposition">
+    <div class="arena__canvas">
+      <canvas data-tug-canvas aria-hidden="true"></canvas>
+    </div>
+    <div class="arena__veil" aria-hidden="true"></div>
+
+    <div class="shell arena__inner">
       <p class="kicker" data-reveal>Debate &amp; public speaking</p>
       <h1 class="display display--md" data-reveal>
-        An argument is <span class="gold">a test.</span>
+        Pick a side. <span class="gold">Push.</span>
       </h1>
       <p class="lede" data-reveal>
         Four years of competitive finals, national titles, and coaching more than a hundred
-        and fifty students to the same standard. You find out what an idea is made of when
-        someone good pushes on it.
+        and fifty students. Stand anywhere in the field and it pulls your way — that is what
+        an audience does too.
       </p>
-    </section>
+      <div class="actions" data-reveal>
+        <button class="btn btn--gold" type="button" data-tug-for>Argue for</button>
+        <button class="btn btn--ghost" type="button" data-tug-against>Argue against</button>
+      </div>
+      <div class="arena__meter" data-reveal>
+        <div class="arena__track">
+          <div class="arena__fill" data-tug-bar-for></div>
+        </div>
+        <p class="arena__verdict" data-tug-meter role="status">Dead even</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="shell">
 
     <section class="section" aria-label="Results">
       <div class="section__head" data-reveal>
@@ -81,4 +99,8 @@ import { debateResults, talks, debateRules } from '../data/site';
       </div>
     </section>
   </div>
+
+  <script>
+    import '../scripts/tug.js';
+  </script>
 </Layout>
