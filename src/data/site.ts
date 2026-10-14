@@ -10,7 +10,7 @@ export const identity = {
   role: 'AI & Software Developer',
   tagline: 'Thought in progress.',
   statement:
-    'I build software, study physics, and argue competitively. This site holds the three in one place.',
+    'I build software, study physics, and argue competitively. This site holds all four registers in one place.',
   email: 'justicethinker@justicethinker.com',
   github: 'https://github.com/justicethinker',
   githubHandle: 'github.com/justicethinker',

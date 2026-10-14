@@ -1,89 +1,118 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { identity, techFeatured, techMore } from '../data/site';
+
+const tints = ['#f0d878', '#d4af37', '#e8c96a', '#c9a227', '#f6e58d', '#b08d2a'];
 ---
 
 <Layout
   title="Tech"
   description="Software by Justice Thinker — featured builds and the full public repo record on GitHub."
 >
-  <section class="orbit" data-orbit-stage aria-label="The featured builds as a solar system">
-    <div class="orbit__canvas">
-      <canvas data-orbit-canvas aria-hidden="true"></canvas>
-    </div>
-    <div class="orbit__veil" aria-hidden="true"></div>
+  <div class="stage" data-orbit-stage>
+    <canvas class="stage__canvas" data-orbit-canvas aria-hidden="true"></canvas>
+    <div class="stage__scrim stage__scrim--orbit" aria-hidden="true"></div>
 
-    <div class="shell orbit__inner">
-      <div class="orbit__copy">
-        <p class="kicker" data-reveal>Tech</p>
-        <h1 class="display display--md" data-reveal>
+    <script type="application/json" data-orbit-data set:html={JSON.stringify(techFeatured)} />
+  </div>
+
+  {/*
+    The scene's controls live outside the stage wrapper, in the same layer as
+    the content, so a line of copy can never paint over a button.
+  */}
+  <aside class="orbit__panel" data-orbit-panel data-orbit-avoid hidden aria-live="polite">
+    <p class="card__meta" data-orbit-meta></p>
+    <h2 class="card__name" data-orbit-name></h2>
+    <p class="card__body" data-orbit-body></p>
+    <div class="actions">
+      <a
+        class="card__link"
+        data-orbit-link
+        href={identity.github}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Open on GitHub →
+      </a>
+      <button class="to-top" type="button" data-orbit-close>Close</button>
+    </div>
+  </aside>
+
+  <div class="orbit__bar" data-orbit-avoid>
+    <button class="to-top" type="button" data-orbit-prev>← Prev world</button>
+    <button class="to-top" type="button" data-orbit-next>Next world →</button>
+    <button class="to-top" type="button" data-orbit-zoom-in aria-label="Dive toward the sun">+</button>
+    <button class="to-top" type="button" data-orbit-zoom-out aria-label="Dive away from the sun">−</button>
+    <span class="orbit__hint">Scroll to dive · drag to spin · click a world to land</span>
+  </div>
+
+  <div class="page">
+    <div class="shell">
+      <section class="opener plate" aria-label="Introduction" data-orbit-intro>
+        <p class="kicker">Tech</p>
+        <h1 class="display display--md">
           Six worlds around <span class="gold">one sun.</span>
         </h1>
-        <p class="lede" data-reveal>
+        <p class="lede" data-selectable>
           {identity.githubHandle} — every featured build in orbit. Click a world to read
           what it is and where the code lives.
         </p>
-        <div class="actions" data-reveal>
+        <div class="actions">
           <a class="btn btn--gold" href={identity.github} target="_blank" rel="noopener noreferrer">
             Open the GitHub profile
           </a>
         </div>
-      </div>
+      </section>
 
-      <aside class="orbit__panel" data-orbit-panel hidden aria-live="polite">
-        <p class="card__meta" data-orbit-meta></p>
-        <h2 class="card__name" data-orbit-name></h2>
-        <p class="card__body" data-orbit-body></p>
-        <div class="actions">
-          <a
-            class="card__link"
-            data-orbit-link
-            href={identity.github}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Open on GitHub →
-          </a>
-          <button class="to-top" type="button" data-orbit-close>Close</button>
+      <section class="section" aria-label="The rest of the record" id="record">
+        <div class="section__head plate" data-orbit-avoid>
+          <h2 class="title">More of the record</h2>
+          <p class="note">Learning work, experiments and tools — in the open the whole way.</p>
         </div>
-      </aside>
+
+        <ul class="index" data-reveal-group>
+          {
+            techMore.map((repo) => (
+              <li data-reveal>
+                <a class="index__row" href={repo.url} target="_blank" rel="noopener noreferrer">
+                  <span class="index__name">{repo.name}</span>
+                  <span class="index__detail">
+                    {repo.language} — {repo.body}
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
     </div>
-
-    <div class="shell orbit__bar">
-      <button class="to-top" type="button" data-orbit-prev>← Prev world</button>
-      <button class="to-top" type="button" data-orbit-next>Next world →</button>
-      <button class="to-top" type="button" data-orbit-zoom-in aria-label="Zoom in">+</button>
-      <button class="to-top" type="button" data-orbit-zoom-out aria-label="Zoom out">−</button>
-      <span class="orbit__hint">Scroll to dive · drag to spin · click a world to land</span>
-    </div>
-
-    <script type="application/json" data-orbit-data set:html={JSON.stringify(techFeatured)} />
-  </section>
-
-  <div class="shell">
-
-    <section class="section" aria-label="The rest of the record">
-      <div class="section__head" data-reveal>
-        <h2 class="title">More of the record</h2>
-        <p class="note">Learning work, experiments and tools — in the open the whole way.</p>
-      </div>
-
-      <ul class="index" data-reveal-group>
-        {
-          techMore.map((repo) => (
-            <li data-reveal>
-              <a class="index__row" href={repo.url} target="_blank" rel="noopener noreferrer">
-                <span class="index__name">{repo.name}</span>
-                <span class="index__detail">
-                  {repo.language} — {repo.body}
-                </span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </section>
   </div>
+
+  <aside class="hud hud--corner hud--repos" aria-label="Repositories">
+    <div class="repo-hud__head">
+      <span class="micro">In orbit</span>
+      <a class="repo-hud__jump link" href="#record">See all {techMore.length} more ↓</a>
+    </div>
+
+    <ul class="repo-hud__list">
+      {
+        techFeatured.map((repo, i) => (
+          <li>
+            <a
+              href={repo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-sends={`planet:${i}`}
+              data-orbit-focus={i}
+            >
+              <span class="repo-hud__dot" style={`background:${tints[i % tints.length]}`} aria-hidden="true" />
+              {repo.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </aside>
 
   <script>
     import '../scripts/orbits.js';

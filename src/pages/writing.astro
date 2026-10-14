@@ -7,71 +7,93 @@ import { identity, essays } from '../data/site';
   title="Writing"
   description="Essays by Justice Thinker on Substack — thought in progress."
 >
-  <section class="inkwell inkwell--full" data-titles-stage aria-label="The essays written in living gold particles">
-    <div class="inkwell__canvas">
-      <canvas data-titles-canvas aria-hidden="true"></canvas>
-    </div>
-    <div class="inkwell__veil" aria-hidden="true"></div>
-
-    <div class="shell inkwell__inner">
-      <p class="kicker" data-reveal>Writing</p>
-      <h1 class="display display--md" data-reveal>
-        Thought <span class="gold">in progress.</span>
-      </h1>
-      <p class="lede" data-reveal>
-        Essays published on Substack at {identity.substackHandle}. Brush a title to
-        scatter it — click one to read it.
-      </p>
-      <div class="actions" data-reveal>
-        <a class="btn btn--gold" href={identity.substack} target="_blank" rel="noopener noreferrer">
-          Open the Substack
-        </a>
-      </div>
-    </div>
+  <div class="stage" data-titles-stage>
+    <canvas class="stage__canvas" data-titles-canvas aria-hidden="true"></canvas>
+    <div class="stage__scrim stage__scrim--titles" aria-hidden="true"></div>
 
     <script
       type="application/json"
       data-titles-data
       set:html={JSON.stringify(essays.map((e) => ({ title: e.title, url: e.url })))}
     />
-  </section>
+  </div>
 
-  <div class="shell">
+  <div class="page">
+    <div class="shell">
+      <section class="opener plate" aria-label="Introduction" data-titles-content>
+        <p class="kicker">Writing</p>
+        <h1 class="display display--md">
+          Thought <span class="gold">in progress.</span>
+        </h1>
+        <p class="lede" data-selectable>
+          Essays published on Substack at {identity.substackHandle}. Brush a title to
+          scatter it — click one to read it.
+        </p>
+        <div class="actions">
+          <a class="btn btn--gold" href={identity.substack} target="_blank" rel="noopener noreferrer">
+            Open the Substack
+          </a>
+        </div>
+      </section>
 
-    <section class="section" aria-label="Essays">
-      <div data-reveal-group>
-        {
-          essays.map((essay) => (
-            <a
-              class="essay"
-              href={essay.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-reveal
-            >
-              <span class="card__meta">
-                <time datetime={essay.iso}>{essay.date}</time> · Substack
-              </span>
-              <h2 class="essay__title">{essay.title}</h2>
-              <p class="essay__body">{essay.body}</p>
-              <span class="essay__go">Read the essay →</span>
-            </a>
-          ))
-        }
-      </div>
-    </section>
+      <section class="section" data-titles-next aria-label="Essays">
+        <div data-reveal-group>
+          {
+            essays.map((essay) => (
+              <a
+                class="essay"
+                href={essay.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-reveal
+              >
+                <span class="card__meta">
+                  <time datetime={essay.iso}>{essay.date}</time> · Substack
+                </span>
+                <h2 class="essay__title">{essay.title}</h2>
+                <p class="essay__body">{essay.body}</p>
+                <span class="essay__go">Read the essay →</span>
+              </a>
+            ))
+          }
+        </div>
+      </section>
 
-    <section class="section" aria-label="Subscribe">
-      <div class="section__head" data-reveal>
-        <h2 class="title">Follow along</h2>
-        <p class="note">Subscribing is free. The thinking is the point.</p>
-      </div>
-      <div class="actions" data-reveal>
-        <a class="btn btn--ghost" href={`${identity.substack}/archive`} target="_blank" rel="noopener noreferrer">
-          Browse the archive
-        </a>
-      </div>
-    </section>
+      <section class="section" aria-label="Subscribe">
+        <div class="section__head" data-reveal>
+          <h2 class="title">Follow along</h2>
+          <p class="note">Subscribing is free. The thinking is the point.</p>
+        </div>
+        <div class="actions" data-reveal>
+          <a class="btn btn--ghost" href={`${identity.substack}/archive`} target="_blank" rel="noopener noreferrer">
+            Browse the archive
+          </a>
+        </div>
+      </section>
+    </div>
+
+    {/*
+      The scene's titles are drawn on a canvas, which is invisible to assistive
+      technology and to crawlers. These are the real links: off screen until a
+      keyboard reaches them, then they appear as a panel, and focusing one
+      lights its title in the scene.
+    */}
+    <nav class="link-shelf" data-title-links aria-label="Essays">
+      <p class="link-shelf__head">Essays</p>
+      {
+        essays.map((essay, i) => (
+          <a
+            class="link"
+            href={essay.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-sends={`essay:${i}`}
+          >
+            {essay.title}
+          </a>
+        ))
+      }
+    </nav>
   </div>
 
   <script>

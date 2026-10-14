@@ -1,5 +1,6 @@
 @import './tokens.css';
 @import './fonts.css';
 @import './base.css';
+@import './stage.css';
 @import './components.css';
 @import './motion.css';

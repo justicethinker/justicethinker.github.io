@@ -1,27 +1,47 @@
 /**
- * The hero field — a warm constellation with its own small physics engine.
- * Its palette is effect-local and independent of the site theme.
+ * The home field — the page's whole backdrop, not just its hero.
  *
- * ~700 particles drift on spring return-to-home forces, push away from the
- * pointer (or the first touch), and link to near neighbours with faint gold
- * lines. A slow wireframe icosahedron turns at the centre. No physics
- * library: the integrator below is the engine — semi-implicit Euler on
- * particles with damping, springs and a radial pointer force.
+ * ~700 particles hang off anchors on soft springs, lose energy to damping,
+ * and are shoved radially away from the pointer. Hovering a section card pulls
+ * the particles around that card inward and heats them, so the field answers
+ * the content instead of merely sitting behind it.
+ *
+ * No physics library: the integrator below is the engine — semi-implicit
+ * Euler on particles with damping, springs and a radial pointer force. The
+ * animation runs on the shared stage loop, so there is one rAF per page,
+ * paused when the tab is hidden.
  *
  * Anything can fail (no WebGL, no network for three.js, reduced motion) and
  * the page still reads: the canvas is decoration over a dark gradient.
+ * Effect-local palette: independent of the site's silver/white theme.
  */
+
+import { createStage } from './stage.js';
+import bus, { SCENE } from './bus.js';
+
+const EFFECT = {
+  hot: 'rgba(246,229,141,1)',
+  mid: 'rgba(212,175,55,0.85)',
+  faint: 'rgba(212,175,55,0)',
+  dot: 0xd4af37,
+  link: 0xd4af37,
+  core: 0xf0d878,
+  ring: 0xd4af37,
+  /** per-particle colour, multiplied by the sprite: dim by default, white-hot
+   *  when the card next to it is being hovered. */
+  cool: [0.88, 0.83, 0.62],
+  warm: [1, 1, 0.9],
+};
 
 const canvas = document.querySelector('[data-hero-field]');
 if (canvas instanceof HTMLCanvasElement) boot();
 
 async function boot() {
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let THREE;
   try {
     THREE = await import(/* @vite-ignore */ 'three');
   } catch {
-    return; // CDN unreachable — the gradient behind the canvas carries the hero.
+    return; // CDN unreachable — the gradient behind the canvas carries the page.
   }
 
   const renderer = (() => {
@@ -32,42 +52,10 @@ async function boot() {
     }
   })();
   if (!renderer) return;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
   camera.position.z = 9;
-
-  /* ---------------------------------------------------------- particles */
-
-  const COUNT = window.innerWidth < 700 ? 320 : 700;
-  const home = new Float32Array(COUNT * 3); // anchor positions
-  const pos = new Float32Array(COUNT * 3); // live positions
-  const vel = new Float32Array(COUNT * 3); // live velocities
-
-  const spread = (i, range) => (Math.random() - 0.5) * range;
-
-  for (let i = 0; i < COUNT; i++) {
-    home[i * 3] = spread(i, 22);
-    home[i * 3 + 1] = spread(i, 12);
-    home[i * 3 + 2] = spread(i, 8);
-    pos.set([home[i * 3], home[i * 3 + 1], home[i * 3 + 2]], i * 3);
-  }
-
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-
-  // Effect-local palette: this constellation keeps its own warm hue,
-  // deliberately independent of the site's silver/white theme.
-  const EFFECT = {
-    hot: 'rgba(246,229,141,1)',
-    mid: 'rgba(212,175,55,0.85)',
-    faint: 'rgba(212,175,55,0)',
-    dot: 0xd4af37,
-    link: 0xd4af37,
-    core: 0xf0d878,
-    ring: 0xd4af37,
-  };
 
   const sprite = (() => {
     const c = document.createElement('canvas');
@@ -79,20 +67,45 @@ async function boot() {
     grad.addColorStop(1, EFFECT.faint);
     g.fillStyle = grad;
     g.fillRect(0, 0, 64, 64);
-    const tex = new THREE.CanvasTexture(c);
-    return tex;
+    return new THREE.CanvasTexture(c);
   })();
+
+  /* ---------------------------------------------------------- particles */
+
+  const COUNT = window.innerWidth < 700 ? 320 : window.innerWidth < 1200 ? 520 : 700;
+  const home = new Float32Array(COUNT * 3);
+  const pos = new Float32Array(COUNT * 3);
+  const vel = new Float32Array(COUNT * 3);
+  const colors = new Float32Array(COUNT * 3);
+  const heat = new Float32Array(COUNT);
+
+  const spread = (range) => (Math.random() - 0.5) * range;
+
+  for (let i = 0; i < COUNT; i++) {
+    // Spread across the frustum, not a hero-sized box: the field is the page
+    // now, and it stays behind every section as the reader scrolls. The depth
+    // range is what makes the near particles small and the far ones wide.
+    home[i * 3] = spread(26);
+    home[i * 3 + 1] = spread(15);
+    home[i * 3 + 2] = spread(10);
+    pos.set([home[i * 3], home[i * 3 + 1], home[i * 3 + 2]], i * 3);
+    colors.set(EFFECT.cool, i * 3);
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
   const dots = new THREE.Points(
     geo,
     new THREE.PointsMaterial({
-      size: 0.16,
+      size: 0.19,
       map: sprite,
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.92,
+      vertexColors: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
-      color: EFFECT.dot,
     }),
   );
   scene.add(dots);
@@ -118,11 +131,11 @@ async function boot() {
   /* --------------------------------------------------------------- core */
 
   const core = new THREE.LineSegments(
-    new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(2.1, 1)),
+    new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(2.4, 1)),
     new THREE.LineBasicMaterial({
       color: EFFECT.core,
       transparent: true,
-      opacity: 0.28,
+      opacity: 0.26,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     }),
@@ -133,13 +146,13 @@ async function boot() {
     new THREE.BufferGeometry().setFromPoints(
       Array.from({ length: 128 }, (_, i) => {
         const a = (i / 128) * Math.PI * 2;
-        return new THREE.Vector3(Math.cos(a) * 3.4, Math.sin(a) * 3.4, 0);
+        return new THREE.Vector3(Math.cos(a) * 3.6, Math.sin(a) * 3.6, 0);
       }),
     ),
     new THREE.LineBasicMaterial({
       color: EFFECT.ring,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.2,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     }),
@@ -149,8 +162,6 @@ async function boot() {
 
   /* ------------------------------------------------------------ pointer */
 
-  // World-space repulsor. Eased toward the pointer so the field feels
-  // like water, not like a cursor trail.
   const pointer = { x: 999, y: 999, tx: 999, ty: 999, active: false };
   const toWorld = (clientX, clientY) => {
     const rect = canvas.getBoundingClientRect();
@@ -162,44 +173,69 @@ async function boot() {
     return { x: camera.position.x + dir.x * t, y: camera.position.y + dir.y * t };
   };
 
-  window.addEventListener(
-    'pointermove',
-    (event) => {
-      const p = toWorld(event.clientX, event.clientY);
-      pointer.tx = p.x;
-      pointer.ty = p.y;
-      pointer.active = true;
-    },
-    { passive: true },
-  );
-  document.addEventListener('pointerleave', () => {
-    pointer.active = false;
+  bus.on('pointer', (detail) => {
+    if (!detail?.event) {
+      pointer.active = false;
+      return;
+    }
+    const p = toWorld(detail.event.clientX, detail.event.clientY);
+    pointer.tx = p.x;
+    pointer.ty = p.y;
+    pointer.active = true;
   });
 
-  /* --------------------------------------------------------------- loop
-     The physics: every particle hangs off its anchor on a soft spring,
-     loses energy to damping, and is shoved radially away from the
-     pointer inside a small radius. Semi-implicit Euler, one substep. */
+  /* ----------------------------------------------------------- the cards
+     Content → scene: hovering a section card pulls the neighbouring particles
+     toward it and lights them. */
+
+  const attract = { x: 0, y: 0, tx: 0, ty: 0, on: false, radius: 7 };
+
+  bus.on(SCENE.hover, (detail) => {
+    if (!detail?.rect) {
+      attract.on = false;
+      return;
+    }
+    const r = detail.rect;
+    // Cards closest to the middle of the page pull hardest.
+    const p = toWorld(r.left + r.width / 2, r.top + r.height / 2);
+    attract.tx = p.x;
+    attract.ty = p.y;
+    attract.on = true;
+    if (!attract.x && !attract.y) {
+      attract.x = p.x;
+      attract.y = p.y;
+    }
+  });
+
+  /* --------------------------------------------------------------- loop */
 
   const SPRING = 0.9;
   const DAMPING = 0.94;
   const PUSH_RADIUS = 3.2;
   const PUSH_FORCE = 26;
+  const PULL_FORCE = 30;
 
   function step(dt) {
     pointer.x += (pointer.tx - pointer.x) * 0.08;
     pointer.y += (pointer.ty - pointer.y) * 0.08;
+
+    if (attract.on) {
+      attract.x += (attract.tx - attract.x) * 0.1;
+      attract.y += (attract.ty - attract.y) * 0.1;
+      attract.radius += (7 - attract.radius) * 0.1;
+    }
+
+    const R2 = attract.radius * attract.radius;
 
     for (let i = 0; i < COUNT; i++) {
       const ix = i * 3;
       const px = pos[ix];
       const py = pos[ix + 1];
 
-      // Spring home + damping.
       let ax = (home[ix] - px) * SPRING;
       let ay = (home[ix + 1] - py) * SPRING;
+      let lit = 0;
 
-      // Pointer repulsion.
       if (pointer.active) {
         const dx = px - pointer.x;
         const dy = py - pointer.y;
@@ -212,6 +248,28 @@ async function boot() {
         }
       }
 
+      if (attract.on) {
+        const dx = attract.x - px;
+        const dy = attract.y - py;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < R2 && d2 > 0.0001) {
+          const d = Math.sqrt(d2);
+          const f = (1 - d / attract.radius) * PULL_FORCE;
+          ax += (dx / d) * f;
+          ay += (dy / d) * f;
+          lit = 1 - d / attract.radius;
+        }
+      }
+
+      // Heat fades in near the hovered card and cools again after.
+      const target = lit;
+      heat[i] += (target - heat[i]) * Math.min(1, (dt || 1 / 60) * 4);
+      const h = heat[i];
+      const c = i * 3;
+      colors[c] = EFFECT.cool[0] + (EFFECT.warm[0] - EFFECT.cool[0]) * h;
+      colors[c + 1] = EFFECT.cool[1] + (EFFECT.warm[1] - EFFECT.cool[1]) * h;
+      colors[c + 2] = EFFECT.cool[2] + (EFFECT.warm[2] - EFFECT.cool[2]) * h;
+
       vel[ix] = (vel[ix] + ax * dt) * DAMPING;
       vel[ix + 1] = (vel[ix + 1] + ay * dt) * DAMPING;
       vel[ix + 2] = (vel[ix + 2] + (home[ix + 2] - pos[ix + 2]) * SPRING * dt) * DAMPING;
@@ -220,7 +278,9 @@ async function boot() {
       pos[ix + 1] += vel[ix + 1] * dt * 3;
       pos[ix + 2] += vel[ix + 2] * dt * 3;
     }
+
     geo.attributes.position.needsUpdate = true;
+    geo.attributes.color.needsUpdate = true;
   }
 
   function drawLinks() {
@@ -243,45 +303,51 @@ async function boot() {
     linkGeo.attributes.position.needsUpdate = true;
   }
 
-  /* -------------------------------------------------------------- frame */
+  /* --------------------------------------------------------------- frame */
 
-  function resize() {
-    const w = canvas.clientWidth || 1;
-    const h = canvas.clientHeight || 1;
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-  }
-  resize();
-  window.addEventListener('resize', resize, { passive: true });
+  // `let`, not `const`: the first frame runs from inside createStage, before
+  // this binding exists, so a const would be in its temporal dead zone.
+  let stage = null;
+  stage = createStage({
+    canvas,
+    name: 'field',
+    // The stage publishes the pointer on the bus; the field reads it there
+    // rather than adding a second listener of its own.
+    trackPointer: true,
+    onResize: (s) => {
+      renderer.setPixelRatio(s.dpr);
+      renderer.setSize(s.w, s.h, false);
+      camera.aspect = s.w / s.h;
+      camera.updateProjectionMatrix();
+    },
+    onFrame: (dt) => {
+      step(dt);
+      if (!stage?.still) {
+        core.rotation.y += dt * 0.12;
+        core.rotation.x += dt * 0.05;
+        ring.rotation.z -= dt * 0.08;
+      }
+      drawLinks();
+      renderer.render(scene, camera);
+      canvas.dataset.frames = String(Number(canvas.dataset.frames || 0) + 1);
 
-  // Reduced motion: one composed frame, then stop. The art remains.
-  step(1 / 60);
-  core.rotation.y = 0.5;
-  drawLinks();
-  renderer.render(scene, camera);
+      // Observable state for the field: is a card pulling, how many particles
+      // answered, and how far the pulled ones still are from it.
+      let lit = 0;
+      let sum = 0;
+      for (let i = 0; i < COUNT; i++) {
+        if (heat[i] > 0.25) {
+          lit++;
+          sum += Math.hypot(attract.x - pos[i * 3], attract.y - pos[i * 3 + 1]);
+        }
+      }
+      canvas.dataset.attract = attract.on ? 'on' : 'off';
+      canvas.dataset.lit = String(lit);
+      canvas.dataset.pull = String(lit ? (sum / lit).toFixed(2) : '');
+    },
+  });
+  if (!stage) return;
+
   canvas.dataset.field = 'live';
   canvas.dataset.particles = String(COUNT);
-  if (reduce) return;
-
-  let last = performance.now();
-  let visible = true;
-  let frames = 0;
-  new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-  }).observe(canvas);
-
-  renderer.setAnimationLoop(() => {
-    if (!visible) return;
-    const now = performance.now();
-    const dt = Math.min((now - last) / 1000, 1 / 20);
-    last = now;
-    step(dt);
-    core.rotation.y += dt * 0.12;
-    core.rotation.x += dt * 0.05;
-    ring.rotation.z -= dt * 0.08;
-    drawLinks();
-    renderer.render(scene, camera);
-    canvas.dataset.frames = String(++frames);
-  });
 }

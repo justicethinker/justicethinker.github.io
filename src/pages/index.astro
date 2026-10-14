@@ -1,90 +1,100 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Portrait from '../components/Portrait.astro';
-import { identity, techFeatured, essays, debateResults } from '../data/site';
+import { identity, techFeatured, techMore, essays, debateResults } from '../data/site';
 ---
 
 <Layout title={identity.name} description={identity.statement} hero3d>
-  <section class="hero hero--me" aria-label="Introduction">
-    <div class="hero__canvas">
-      <canvas data-hero-field aria-hidden="true"></canvas>
-    </div>
-    <div class="hero__veil" aria-hidden="true"></div>
+  <div class="stage" data-hero-stage>
+    <canvas class="stage__canvas" data-hero-field aria-hidden="true"></canvas>
+    <div class="stage__scrim stage__scrim--field" aria-hidden="true"></div>
+  </div>
 
-    <div class="shell hero__inner">
-      <div>
-        <p class="kicker" data-reveal>{identity.role}</p>
-        <h1 class="display" data-reveal>
-          Justice <span class="gold">Thinker</span>
-        </h1>
-        <p class="lede" data-reveal>
-          {identity.statement} Software pays the bills, physics feeds the curiosity, and
-          debate is where ideas get tested.
-        </p>
-        <div class="actions" data-reveal>
-          <a class="btn btn--gold" href="/tech">See the work</a>
-          <a class="btn btn--ghost" href={identity.substack} target="_blank" rel="noopener noreferrer">
-            Read the essays
-          </a>
+  <div class="page">
+    <div class="shell">
+      <section class="hero hero--me plate" aria-label="Introduction">
+        <div class="hero__copy">
+          <p class="kicker">{identity.role}</p>
+          <h1 class="display">
+            Justice <span class="gold">Thinker</span>
+          </h1>
+          <p class="lede" data-selectable>
+            {identity.statement} Software pays the bills, physics feeds the curiosity, and
+            debate is where ideas get tested.
+          </p>
+          <div class="actions">
+            <a class="btn btn--gold" href="/tech">See the work</a>
+            <a class="btn btn--ghost" href={identity.substack} target="_blank" rel="noopener noreferrer">
+              Read the essays
+            </a>
+          </div>
+          <p class="hero__hint">Hover or drag · the field answers, then settles</p>
         </div>
-        <p class="hero__hint" data-reveal>Hover or drag · the field answers, then settles</p>
-      </div>
 
-      <Portrait />
+        <Portrait />
+      </section>
+
+      <section class="section" aria-label="The four registers">
+        <div class="section__head">
+          <h2 class="title">One person, four registers</h2>
+          <p class="note">Each page below is the real record, not a brochure.</p>
+        </div>
+
+        <div class="cards cards--two" data-reveal-group>
+          <article class="card" data-tilt data-sends="register:tech" data-reveal>
+            <span class="gate__index">01</span>
+            <h3 class="card__name">Tech</h3>
+            <p class="card__body">
+              {techFeatured.length} featured builds in orbit and {techMore.length} more
+              public repos — the whole open record, every entry linked to its code.
+            </p>
+            <a class="card__link" href="/tech">Browse the repos →</a>
+          </article>
+
+          <article class="card" data-tilt data-sends="register:debate" data-reveal>
+            <span class="gate__index">02</span>
+            <h3 class="card__name">Debate &amp; speaking</h3>
+            <p class="card__body">
+              {debateResults[0].placing} at the {debateResults[0].event}, a season title, an
+              international final — plus the talks and the four rules behind them.
+            </p>
+            <a class="card__link" href="/debate">See the record →</a>
+          </article>
+
+          <article class="card" data-tilt data-sends="register:writing" data-reveal>
+            <span class="gate__index">03</span>
+            <h3 class="card__name">Writing</h3>
+            <p class="card__body">
+              “{essays[0].title}” and the rest of the essays, published on Substack as
+              “{identity.tagline}”
+            </p>
+            <a class="card__link" href="/writing">Read the essays →</a>
+          </article>
+
+          <article class="card" data-tilt data-sends="register:physics" data-reveal>
+            <span class="gate__index">04</span>
+            <h3 class="card__name">Physics</h3>
+            <p class="card__body">
+              The boundary where quantum behaviour gives way to classical, and a tank of
+              waves you can disturb yourself — the working, not the abstract.
+            </p>
+            <a class="card__link" href="/physics">See the tank →</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-label="Contact">
+        <div class="section__head">
+          <h2 class="title">Write to me</h2>
+          <p class="note">A problem first, an introduction second. That order works best.</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn--gold" href={`mailto:${identity.email}`}>{identity.email}</a>
+          <a class="btn btn--ghost" href={identity.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="btn btn--ghost" href={identity.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </section>
     </div>
-  </section>
-
-  <div class="shell">
-    <section class="section" aria-label="The three registers">
-      <div class="section__head" data-reveal>
-        <h2 class="title">One person, three registers</h2>
-        <p class="note">Each page below is the real record, not a brochure.</p>
-      </div>
-
-      <div class="cards cards--three" data-reveal-group>
-        <article class="card" data-tilt data-reveal>
-          <span class="gate__index">01</span>
-          <h3 class="card__name">Tech</h3>
-          <p class="card__body">
-            {techFeatured.length} featured builds and {17} more public repos — offline-first
-            apps, trading front ends, agents, bots. Everything linked to the code.
-          </p>
-          <a class="card__link" href="/tech">Browse the repos →</a>
-        </article>
-
-        <article class="card" data-tilt data-reveal>
-          <span class="gate__index">02</span>
-          <h3 class="card__name">Debate &amp; speaking</h3>
-          <p class="card__body">
-            {debateResults[0].placing} at the {debateResults[0].event}, a season title, an
-            international final — plus the talks and the four rules behind them.
-          </p>
-          <a class="card__link" href="/debate">See the record →</a>
-        </article>
-
-        <article class="card" data-tilt data-reveal>
-          <span class="gate__index">03</span>
-          <h3 class="card__name">Writing</h3>
-          <p class="card__body">
-            “{essays[0].title}” and the rest of the essays, published on Substack as
-            “{identity.tagline}”
-          </p>
-          <a class="card__link" href="/writing">Read the essays →</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" aria-label="Contact">
-      <div class="section__head" data-reveal>
-        <h2 class="title">Write to me</h2>
-        <p class="note">A problem first, an introduction second. That order works best.</p>
-      </div>
-      <div class="actions" data-reveal>
-        <a class="btn btn--gold" href={`mailto:${identity.email}`}>{identity.email}</a>
-        <a class="btn btn--ghost" href={identity.github} target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a class="btn btn--ghost" href={identity.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      </div>
-    </section>
   </div>
 
   <script>

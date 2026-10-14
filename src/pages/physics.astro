@@ -7,84 +7,105 @@ import { physicsInterests, background } from '../data/site';
   title="Physics"
   description="Physics — research interests and a wave interference tank you can play with."
 >
-  <div class="shell">
-    <section class="opener">
-      <p class="kicker" data-reveal>Physics</p>
-      <h1 class="display display--md" data-reveal>
-        Where the maths <span class="gold">meets the apparatus.</span>
-      </h1>
-      <p class="lede" data-reveal>
-        I read physics at university and worked on the boundary where quantum behaviour
-        gives way to classical behaviour. Below is the honest version: what I work on, and
-        a tank of waves you can disturb yourself.
-      </p>
-    </section>
+  <div class="stage" data-wave-stage data-drag="true">
+    <canvas
+      class="stage__canvas"
+      data-wave-canvas
+      aria-label="Interactive wave interference simulation with draggable emitters"
+    ></canvas>
+    <div class="stage__scrim stage__scrim--wave" aria-hidden="true"></div>
+  </div>
 
-    <section class="section" aria-label="Wave lab">
-      <div class="section__head" data-reveal>
-        <h2 class="title">The wave tank</h2>
-        <p class="note">A live interference simulation. Drag an emitter — the pattern renegotiates.</p>
-      </div>
+  <div class="page">
+    <div class="shell">
+      <section class="opener plate" aria-label="Introduction">
+        <p class="kicker">Physics</p>
+        <h1 class="display display--md">
+          Where the maths <span class="gold">meets the apparatus.</span>
+        </h1>
+        <p class="lede" data-selectable>
+          I read physics at university and worked on the boundary where quantum behaviour
+          gives way to classical behaviour. Below is the honest version: what I work on, and
+          a tank of waves you can disturb yourself.
+        </p>
+      </section>
 
-      <div class="lab" data-wave-stage data-reveal>
-        <div class="lab__stage">
-          <canvas aria-label="Interactive wave interference simulation with draggable emitters"></canvas>
-        </div>
-        <div class="lab__bar">
-          <label>
-            Frequency
-            <input type="range" data-wave-freq min="8" max="26" value="14" step="1" />
-          </label>
-          <button class="btn btn--ghost" type="button" data-wave-add>Add a source</button>
-          <button class="btn btn--ghost" type="button" data-wave-reset>Reset</button>
-          <span class="lab__hint" data-wave-readout role="status"></span>
-        </div>
-      </div>
-      <p class="lab__hint" style="margin-top: 0.75rem;" data-reveal>
-        Two sources make stripes; three make arguments. Double-click the tank to pause it.
-      </p>
-    </section>
-
-    <section class="section" aria-label="Research interests">
-      <div class="section__head" data-reveal>
-        <h2 class="title">What I work on</h2>
-        <p class="note">Interests, stated plainly. No borrowed prestige.</p>
-      </div>
-
-      <div class="cards cards--two" data-reveal-group>
-        {
-          physicsInterests.map((area) => (
-            <article class="card" data-tilt data-reveal>
-              <h3 class="card__name">{area.name}</h3>
-              <p class="card__body">{area.body}</p>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    <section class="section" aria-label="Background">
-      <div class="section__head" data-reveal>
-        <h2 class="title">Background</h2>
-      </div>
-
-      <div class="facts" data-reveal>
-        <div class="facts__row">
-          <span class="facts__key">Degree</span>
-          <p class="facts__value">
-            <strong>{background.degree}</strong> — {background.detail}
+      <section class="section" aria-label="The boundary" data-sends="boundary">
+        <div class="section__head plate" data-wave-obstacle>
+          <h2 class="title">The boundary</h2>
+          <p class="note">
+            The question that kept me in the lab: where does quantum behaviour stop
+            behaving quantum?
           </p>
         </div>
-        <div class="facts__row">
-          <span class="facts__key">Thesis</span>
-          <p class="facts__value">{background.thesis}</p>
+
+        <div class="prose" data-selectable>
+          <p data-placeholder>
+            [Placeholder — edit this] My thesis looked at mesoscopic systems, where a
+            device is large enough to be classical at one end and small enough to show
+            interference at the other. The interesting part is never the two extremes; it
+            is the seam between them, and what survives as the system grows.
+          </p>
+          <p data-placeholder>
+            [Placeholder — edit this] Concretely: what decoherence does to a superposition
+            as the number of degrees of freedom climbs, and which observables are still
+            worth measuring once it has.
+          </p>
         </div>
-        <div class="facts__row">
-          <span class="facts__key">Coaching</span>
-          <p class="facts__value">{background.coaching}</p>
+      </section>
+
+      <section class="section" aria-label="Research interests" data-sends="interests">
+        <div class="section__head plate" data-wave-obstacle>
+          <h2 class="title">What I work on</h2>
+          <p class="note">Interests, stated plainly. No borrowed prestige.</p>
         </div>
-      </div>
-    </section>
+
+        <div class="cards cards--two">
+          {
+            physicsInterests.map((area) => (
+              <article class="card" data-tilt data-wave-obstacle data-sends={area.name}>
+                <h3 class="card__name">{area.name}</h3>
+                <p class="card__body">{area.body}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="section" aria-label="Background" data-sends="background">
+        <div class="section__head plate" data-wave-obstacle>
+          <h2 class="title">Background</h2>
+        </div>
+
+        <div class="facts">
+          <div class="facts__row" data-wave-obstacle>
+            <span class="facts__key">Degree</span>
+            <p class="facts__value">
+              <strong>{background.degree}</strong> — {background.detail}
+            </p>
+          </div>
+          <div class="facts__row" data-wave-obstacle>
+            <span class="facts__key">Thesis</span>
+            <p class="facts__value">{background.thesis}</p>
+          </div>
+          <div class="facts__row" data-wave-obstacle>
+            <span class="facts__key">Coaching</span>
+            <p class="facts__value">{background.coaching}</p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="hud hud--bottom" aria-label="Wave tank controls">
+        <label>
+          Frequency
+          <input type="range" data-wave-freq min="8" max="26" value="14" step="1" />
+        </label>
+        <button class="to-top" type="button" data-wave-add>Add a source</button>
+        <button class="to-top" type="button" data-wave-reset>Reset</button>
+        <button class="to-top" type="button" data-wave-pause aria-pressed="false">Pause</button>
+        <span class="hud__hint" data-wave-readout role="status"></span>
+      </aside>
+    </div>
   </div>
 
   <script>

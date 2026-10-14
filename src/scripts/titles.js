@@ -1,54 +1,65 @@
 /**
- * Living titles — the essays are the visual.
- * Each essay title is sampled into a field of warm particles that drift,
- * scatter from the pointer, and spring back. Effect-local palette:
- * independent of the site's silver/white theme.
- * scatter from the pointer, and spring back to reform the words. Click a
- * title to open it. The essay list below stays as the readable record.
+ * Living titles — now the whole page.
  *
- * Plain Canvas 2D, no library. Squares, not arcs: thousands of them.
+ * The essay titles are the scene, but legibility wins: each title is drawn as
+ * crisp canvas text from its own plate, so it reads perfectly at rest. Where
+ * the pointer is, a hole is punched in the plate and the sampled particles
+ * behind it scatter outward and spring back into the letterforms — the words
+ * dissolve under your hand and re-form.
+ *
+ * The title layer fades as the page scrolls past the intro, so the essay list
+ * is never read through a title. Clicking a title opens the essay; the real
+ * links live in the DOM shelf for keyboard, screen readers and crawlers.
+ *
+ * Effect-local palette: independent of the site's theme.
  */
 
-const stage = document.querySelector('[data-titles-stage]');
-if (stage instanceof HTMLElement) boot(stage);
+import { createStage } from './stage.js';
+import bus, { SCENE } from './bus.js';
 
-function boot(stage) {
-  const canvas = stage.querySelector('[data-titles-canvas]');
+const EFFECT = {
+  ink: '#e9c860',
+  underline: 'rgba(240,216,120,0.75)',
+  dust: '#f2dd94',
+};
+
+const stageEl = document.querySelector('[data-titles-stage]');
+if (stageEl instanceof HTMLElement) boot(stageEl);
+
+function boot(stageEl) {
+  const canvas = stageEl.querySelector('[data-titles-canvas]');
   if (!(canvas instanceof HTMLCanvasElement)) return;
-
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
 
   let essays = [];
   try {
-    essays = JSON.parse(stage.querySelector('[data-titles-data]')?.textContent || '[]');
+    essays = JSON.parse(stageEl.querySelector('[data-titles-data]')?.textContent || '[]');
   } catch {
     essays = [];
   }
   if (!Array.isArray(essays) || essays.length === 0) return;
 
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const content = document.querySelector('[data-titles-content]');
+  const shelf = document.querySelector('[data-title-links]');
 
-  // Effect-local palette: these titles keep their own warm ink,
-  // deliberately independent of the site's silver/white theme.
-  const EFFECT = {
-    ink: '#e9c860',
-    underline: 'rgba(240,216,120,0.5)',
-  };
-
-  const FAMILIES = 3; // bands on screen; extra essays share the last band
-  let fields = []; // {essay, hx,hy,vx,vy arrays, box}
+  let stage = null;
+  let fields = []; // one per drawn line
   let W = 0;
   let H = 0;
   let pointer = null;
+  let focused = -1;
   let hovered = -1;
-  let visible = true;
   let built = false;
+  let layer = 1; // 1 near the top of the page, 0 once the essays scroll up
+  let reserved = 0; // px of the flow set aside for the title bands
 
-  // Long titles wrap to two lines instead of truncating: an ellipsis on a
-  // hero reads as a broken promise. Split near the middle on a word boundary.
+  // A scratch plate we reuse every frame: the title, minus a hole where the
+  // pointer is.
+  const scratch = document.createElement('canvas');
+  const sctx = scratch.getContext('2d');
+
+  /** Long titles wrap near the middle on a word boundary instead of clipping. */
   function linesFor(title) {
-    if (title.length <= 30) return [title];
+    if (title.length <= 32) return [title];
     const words = title.split(' ');
     let best = 1;
     let bestScore = 1e9;
@@ -64,250 +75,333 @@ function boot(stage) {
     return [words.slice(0, best).join(' '), words.slice(best).join(' ')];
   }
 
-  function fit() {
-    const rect = canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = Math.max(rect.width, 1);
-    H = Math.max(rect.height, 320);
-    canvas.width = Math.round(W * dpr);
-    canvas.height = Math.round(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    build();
-    paint();
-  }
-
-  function bandLines() {
-    // Flattened lines across essays; each remembers its essay for clicks.
-    const out = [];
-    for (const e of essays.slice(0, FAMILIES)) {
-      for (const line of linesFor(e.title)) out.push({ line, essay: e });
-    }
-    return out;
-  }
-
-  function build() {
+  function build(s) {
     fields = [];
-    const lines = bandLines();
-    const off = document.createElement('canvas');
-    const octx = off.getContext('2d', { willReadFrequently: true });
-    if (!octx) return;
+    if (!sctx) return;
 
-    lines.forEach(({ line, essay }, li) => {
+    const lines = [];
+    essays.forEach((essay, index) => {
+      for (const line of linesFor(essay.title)) lines.push({ line, essay, index });
+    });
+
+    // Titles begin below the measured intro block, so no control can ever sit
+    // on top of a title. The room the bands need is reserved in the content
+    // flow below, which is what keeps the essay list from landing on them.
+    const introBottom = content ? content.getBoundingClientRect().bottom : 0;
+    const top = Math.max(H * 0.34, introBottom + 26);
+    const bottomPad = H < 700 ? 56 : 84;
+    const region = Math.max(140, H - top - bottomPad);
+    const lineH = region / lines.length;
+
+    reserved = Math.max(0, Math.round(top + region - introBottom));
+    document.documentElement.style.setProperty('--title-stage', `${reserved}px`);
+
+    let px = Math.max(19, Math.min(56, Math.min(W / 13, lineH * 0.74)));
+    scratch.width = Math.max(2, Math.ceil(W));
+    scratch.height = Math.max(2, Math.ceil(px * 1.5));
+    const plateH = scratch.height;
+
+    const sample = document.createElement('canvas');
+    const sx = sample.getContext('2d', { willReadFrequently: true });
+    if (!sx) return;
+
+    lines.forEach(({ line, essay, index }, i) => {
       // Fit the line across the stage.
-      let px = Math.min(64, Math.max(26, W / 16));
-      const setFont = (s) => {
-        octx.font = `400 ${s}px "Instrument Serif", Georgia, serif`;
+      let size = px;
+      const setFont = (target, value) => {
+        target.font = `400 ${value}px "Instrument Serif", Georgia, serif`;
       };
-      setFont(px);
-      while (octx.measureText(line).width > W * 0.86 && px > 18) {
-        px -= 2;
-        setFont(px);
+      setFont(sx, size);
+      while (sx.measureText(line).width > W * 0.84 && size > 15) {
+        size -= 1;
+        setFont(sx, size);
       }
 
-      off.width = Math.ceil(W);
-      off.height = Math.ceil(px * 1.6);
-      setFont(px);
-      octx.textBaseline = 'middle';
-      octx.fillStyle = '#fff';
-      octx.fillText(line, (off.width - octx.measureText(line).width) / 2, off.height / 2);
+      const ph = Math.ceil(size * 1.5);
+      sample.width = scratch.width;
+      sample.height = ph;
+      setFont(sx, size);
+      sx.textBaseline = 'middle';
+      sx.fillStyle = '#fff';
+      sx.fillText(line, (sample.width - sx.measureText(line).width) / 2, ph / 2);
 
-      const img = octx.getImageData(0, 0, off.width, off.height).data;
-      // Sample step adapts to hold each field near ~1400 particles.
-      const target = 1400;
-      const coverage = 0.16;
-      const step = Math.max(2, Math.round(Math.sqrt((off.width * off.height * coverage) / target)));
+      const pixels = sx.getImageData(0, 0, sample.width, ph).data;
+
+      // Density: enough particles that a scatter reads as the word breaking up.
+      const target = s.tier === 'low' ? 520 : 900;
+      const step = Math.max(2, Math.round(Math.sqrt((sample.width * ph * 0.18) / target)));
 
       const hx = [];
       const hy = [];
-      for (let y = 0; y < off.height; y += step) {
-        for (let x = 0; x < off.width; x += step) {
-          if (img[(y * off.width + x) * 4] > 128) {
-            hx.push(x + (Math.random() - 0.5) * 1.5);
-            hy.push(y + (Math.random() - 0.5) * 1.5);
+      for (let y = 0; y < ph; y += step) {
+        for (let x = 0; x < sample.width; x += step) {
+          if (pixels[(y * sample.width + x) * 4] > 128) {
+            hx.push(x + (Math.random() - 0.5) * 1.2);
+            hy.push(y + (Math.random() - 0.5) * 1.2);
           }
         }
       }
 
-      const n = hx.length;
-      const bandTop = H * (lines.length === 1 ? 0.6 : 0.42 + (li / (lines.length - 1)) * 0.44);
-      for (let k = 0; k < hy.length; k++) hy[k] += bandTop;
+      const y = top + i * lineH + (lineH - ph) / 2;
+      const plate = document.createElement('canvas');
+      plate.width = sample.width;
+      plate.height = ph;
+      const pctx = plate.getContext('2d');
+      if (!pctx) return;
+      setFont(pctx, size);
+      pctx.textBaseline = 'middle';
+      pctx.fillStyle = EFFECT.ink;
+      pctx.fillText(line, (plate.width - pctx.measureText(line).width) / 2, ph / 2);
+
       fields.push({
         essay,
-        title: line,
+        index,
+        text: line,
+        plate,
+        x: 0,
+        y,
+        h: ph,
         hx: Float32Array.from(hx),
         hy: Float32Array.from(hy),
-        vx: new Float32Array(n),
-        vy: new Float32Array(n),
-        seed: Float32Array.from({ length: n }, () => Math.random() * 1000),
+        vx: new Float32Array(hx.length),
+        vy: new Float32Array(hy.length),
         box: null,
       });
     });
 
-    computeBoxes();
-    built = true;
-  }
-
-  function computeBoxes() {
     for (const f of fields) {
-      if (f.hx.length === 0) {
-        f.box = null;
-        continue;
-      }
+      if (f.hx.length === 0) continue;
       let x0 = 1e9;
       let x1 = -1e9;
-      let y0 = 1e9;
-      let y1 = -1e9;
       for (let i = 0; i < f.hx.length; i++) {
         if (f.hx[i] < x0) x0 = f.hx[i];
         if (f.hx[i] > x1) x1 = f.hx[i];
-        if (f.hy[i] < y0) y0 = f.hy[i];
-        if (f.hy[i] > y1) y1 = f.hy[i];
       }
-      f.box = { x0: x0 - 24, x1: x1 + 24, y0: y0 - 26, y1: y1 + 26 };
+      f.box = { x0: x0 - 18, x1: x1 + 18, y0: f.y - 14, y1: f.y + f.h + 14 };
     }
+
+    built = true;
   }
 
-  // Live positions start at home; keep a parallel copy for motion.
-  let live = [];
-  function syncLive() {
-    live = fields.map((f) => ({ x: Float32Array.from(f.hx), y: Float32Array.from(f.hy) }));
-  }
+  /* ---------------------------------------------------------------- paint */
 
-  function paint() {
+  function paint(s) {
+    if (!sctx) return;
+    const ctx = s.ctx;
     ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = EFFECT.ink;
-    const s = W < 700 ? 2 : 2.4;
-    fields.forEach((f, fi) => {
-      const L = live[fi];
-      if (!L) return;
-      ctx.globalAlpha = fi === hovered ? 0.95 : 0.75;
-      ctx.beginPath();
-      for (let i = 0; i < f.hx.length; i++) {
-        ctx.rect(L.x[i], L.y[i], s, s);
-      }
-      ctx.fill();
-    });
-    ctx.globalAlpha = 1;
+    if (!built) return;
 
-    // Underline the hovered title: an invitation, not a button chrome.
-    if (hovered >= 0 && fields[hovered]?.box) {
-      const b = fields[hovered].box;
-      ctx.strokeStyle = EFFECT.underline;
-      ctx.lineWidth = 1;
+    ctx.globalAlpha = layer;
+
+    const scatterR = s.tier === 'low' ? 92 : SCATTER_R;
+
+    for (const f of fields) {
+      const active = f.index === hovered || f.index === focused;
+      const alpha = active ? 1 : 0.82;
+
+      // 1. The crisp title, with a hole punched where the pointer is.
+      scratch.width = f.plate.width;
+      scratch.height = f.plate.height;
+      sctx.globalCompositeOperation = 'source-over';
+      sctx.clearRect(0, 0, scratch.width, scratch.height);
+      sctx.drawImage(f.plate, 0, 0);
+
+      if (pointer) {
+        const lx = pointer.x - f.x;
+        const ly = pointer.y - f.y;
+        if (lx > -scatterR && lx < scratch.width + scatterR && ly > -scatterR && ly < scratch.height + scatterR) {
+          const hole = sctx.createRadialGradient(lx, ly, 0, lx, ly, scatterR * 0.85);
+          hole.addColorStop(0, 'rgba(0,0,0,1)');
+          hole.addColorStop(0.55, 'rgba(0,0,0,0.85)');
+          hole.addColorStop(1, 'rgba(0,0,0,0)');
+          sctx.globalCompositeOperation = 'destination-out';
+          sctx.fillStyle = hole;
+          sctx.fillRect(lx - scatterR, ly - scatterR, scatterR * 2, scatterR * 2);
+          sctx.globalCompositeOperation = 'source-over';
+        }
+      }
+
+      ctx.globalAlpha = layer * alpha;
+      ctx.drawImage(scratch, f.x, f.y);
+
+      // 2. The dust that has been knocked off the letters. Displacement is
+      //    stored in vx/vy, so a settled particle (offset ~0) is not drawn at
+      //    all — the plate is what you read.
+      ctx.fillStyle = EFFECT.dust;
       ctx.beginPath();
-      ctx.moveTo(b.x0 + 10, b.y1 - 8);
-      ctx.lineTo(b.x1 - 10, b.y1 - 8);
-      ctx.stroke();
+      let drawn = 0;
+      for (let i = 0; i < f.hx.length; i++) {
+        const ox = f.vx[i];
+        const oy = f.vy[i];
+        const lx = f.x + f.hx[i] + ox;
+        const ly = f.y + f.hy[i] + oy;
+        const settled = Math.abs(ox) + Math.abs(oy) < 0.4;
+        const near = pointer ? Math.hypot(lx - pointer.x, ly - pointer.y) < scatterR : false;
+        if (settled && !near) continue;
+        ctx.rect(lx, ly, 2, 2);
+        drawn++;
+        if (drawn > 4000) break;
+      }
+      if (drawn) ctx.fill();
+
+      // Underline the title whose link has focus or the pointer.
+      if (active && f.box) {
+        ctx.globalAlpha = layer * 0.9;
+        ctx.strokeStyle = EFFECT.underline;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(f.box.x0 + 12, f.box.y1 - 4);
+        ctx.lineTo(f.box.x1 - 12, f.box.y1 - 4);
+        ctx.stroke();
+      }
     }
 
+    ctx.globalAlpha = 1;
     canvas.dataset.titles = 'live';
+    // Where each title sits, so the scene's geometry is inspectable rather
+    // than guessed at from outside.
+    canvas.dataset.bands = JSON.stringify(
+      fields.map((f) => ({ x: Math.round(f.x + f.plate.width / 2), y: Math.round(f.y + f.h / 2) })),
+    );
+    canvas.dataset.pointer = pointer ? `${Math.round(pointer.x)},${Math.round(pointer.y)}` : '';
+    canvas.dataset.frames = String(Number(canvas.dataset.frames || 0) + 1);
   }
 
-  function step(dt, t) {
-    fields.forEach((f, fi) => {
-      const L = live[fi];
+  /* -------------------------------------------------------------- physics */
+
+  // vx/vy hold the displacement from the letterform. A spring pulls each
+  // particle home, damping settles it, and the pointer shoves it outward.
+  // PUSH / SPRING_K is how far a particle ends up from its letterform at the
+  // very centre of the cursor: enough that the letters break into dust there
+  // and the punched plate shows through, rather than the dust simply settling
+  // back over the hole it came from.
+  const SPRING_K = 34;
+  const DAMPING = 0.86;
+  const SCATTER_R = 118;
+  const PUSH = 2600;
+  const MAX_OFFSET = SCATTER_R * 2.4;
+
+  function step(dt) {
+    const damp = Math.pow(DAMPING, dt * 60);
+    for (const f of fields) {
       for (let i = 0; i < f.hx.length; i++) {
-        // Drift on a slow current + spring home.
-        const dx = Math.sin(t * 0.5 + f.seed[i]) * 3;
-        const dy = Math.cos(t * 0.4 + f.seed[i] * 1.3) * 3;
-        let ax = (f.hx[i] + dx - L.x[i]) * 2.2;
-        let ay = (f.hy[i] + dy - L.y[i]) * 2.2;
+        let ax = -SPRING_K * f.vx[i];
+        let ay = -SPRING_K * f.vy[i];
 
         if (pointer) {
-          const ddx = L.x[i] - pointer.x;
-          const ddy = L.y[i] - pointer.y;
+          const wx = f.x + f.hx[i] + f.vx[i];
+          const wy = f.y + f.hy[i] + f.vy[i];
+          const ddx = wx - pointer.x;
+          const ddy = wy - pointer.y;
           const d2 = ddx * ddx + ddy * ddy;
-          const R2 = 110 * 110;
-          if (d2 < R2 && d2 > 1) {
+          if (d2 < SCATTER_R * SCATTER_R && d2 > 1) {
             const d = Math.sqrt(d2);
-            const push = ((110 - d) / 110) * 900;
-            ax += (ddx / d) * push;
-            ay += (ddy / d) * push;
+            const force = ((SCATTER_R - d) / SCATTER_R) * PUSH;
+            ax += (ddx / d) * force;
+            ay += (ddy / d) * force;
           }
         }
 
-        L.vx ??= new Float32Array(f.hx.length);
-        L.vy ??= new Float32Array(f.hx.length);
-        L.vx[i] = (L.vx[i] + ax * dt) * 0.92;
-        L.vy[i] = (L.vy[i] + ay * dt) * 0.92;
-        L.x[i] += L.vx[i] * dt * 4;
-        L.y[i] += L.vy[i] * dt * 4;
+        let vx = (f.vx[i] + ax * dt) * damp;
+        let vy = (f.vy[i] + ay * dt) * damp;
+
+        // A particle that has flown absurdly far is brought back rather than
+        // left to wander the whole canvas.
+        const offset = Math.hypot(vx, vy);
+        if (offset > MAX_OFFSET) {
+          const k = MAX_OFFSET / offset;
+          vx *= k;
+          vy *= k;
+        }
+        if (Math.abs(vx) < 0.02 && Math.abs(vy) < 0.02) {
+          vx = 0;
+          vy = 0;
+        }
+
+        f.vx[i] = vx;
+        f.vy[i] = vy;
       }
-    });
+    }
   }
 
   /* ---------------------------------------------------------- interaction */
 
-  const toLocal = (event) => {
-    const rect = canvas.getBoundingClientRect();
-    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+  const bandAt = (pt) => {
+    let best = -1;
+    for (let i = 0; i < fields.length; i++) {
+      const b = fields[i].box;
+      if (b && pt.x >= b.x0 && pt.x <= b.x1 && pt.y >= b.y0 && pt.y <= b.y1) best = i;
+    }
+    return best;
   };
 
-  function bandAt(pt) {
-    for (let b = 0; b < fields.length; b++) {
-      const box = fields[b].box;
-      if (box && pt.x >= box.x0 && pt.x <= box.x1 && pt.y >= box.y0 && pt.y <= box.y1) return b;
-    }
-    return -1;
-  }
+  bus.on('pointer', (detail) => {
+    if (!stage) return;
+    const at = detail.event ? { x: detail.x, y: detail.y } : null;
+    const hit = at ? bandAt(at) : -1;
+    hovered = hit >= 0 ? fields[hit].index : -1;
+    canvas.style.cursor = hit >= 0 ? 'pointer' : '';
+    // A still field — motion reduced — keeps its letters crisp. Dust is only
+    // ever shed where the scene is running and can settle it again.
+    pointer = stage.still ? null : at;
+    if (stage.still) paint(stage);
+  });
 
-  canvas.addEventListener('pointermove', (event) => {
-    pointer = toLocal(event);
-    const hit = bandAt(pointer);
-    if (hit !== hovered) {
-      hovered = hit;
-      canvas.style.cursor = hit >= 0 ? 'pointer' : '';
-      if (reduce) paint();
-    }
-  });
-  canvas.addEventListener('pointerleave', () => {
-    pointer = null;
-    hovered = -1;
-    if (reduce) paint();
-  });
   canvas.addEventListener('click', (event) => {
-    const hit = bandAt(toLocal(event));
-    if (hit >= 0 && fields[hit].essay?.url) {
-      window.open(fields[hit].essay.url, '_blank', 'noopener');
-    }
+    const pt = { x: event.clientX, y: event.clientY };
+    const hit = bandAt(pt);
+    if (hit < 0) return;
+    const url = fields[hit].essay?.url;
+    if (url) window.open(url, '_blank', 'noopener');
   });
+
+  // Focusing a real link in the shelf lights its title.
+  bus.on(SCENE.hover, (detail) => {
+    const name = detail?.name || '';
+    if (!name.startsWith('essay:')) return;
+    const index = Number(name.split(':')[1]);
+    focused = Number.isFinite(index) ? index : -1;
+    if (shelf && focused >= 0) {
+      const el = shelf.querySelector(`[data-sends="essay:${index}"]`);
+      if (el instanceof HTMLElement && document.activeElement !== el) el.scrollIntoView({ block: 'nearest' });
+    }
+    if (stage?.still) paint(stage);
+  });
+
+  // The titles hand the page over over exactly the distance that was reserved
+  // for them, so the essay list is never read through a title.
+  function updateLayer(s) {
+    const fadeEnd = Math.max(reserved * 0.8, s.h * 0.32);
+    layer = 1 - Math.min(1, Math.max(0, s.scrollY / fadeEnd));
+  }
 
   /* --------------------------------------------------------------- frame */
 
-  // The display face must be ready before sampling, or the particles form
-  // fallback letterforms. Build now for paint, rebuild when fonts land.
-  fit();
-  syncLive();
+  function frame(dt, _t, s) {
+    if (!s.still) step(dt);
+    updateLayer(s);
+    paint(s);
+  }
+
+  stage = createStage({
+    canvas,
+    name: 'titles',
+    onResize: (s) => {
+      W = s.w;
+      H = s.h;
+      build(s);
+    },
+    onFrame: frame,
+  });
+  if (!stage) return;
+
+  // The display face must be ready before sampling, or the plates carry
+  // fallback letterforms. Rebuild when the fonts land.
   if (document.fonts?.ready) {
     document.fonts.ready.then(() => {
-      fit();
-      syncLive();
-      paint();
+      build(stage);
+      paint(stage);
     });
   }
-  window.addEventListener('resize', () => {
-    fit();
-    syncLive();
-  }, { passive: true });
-  new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-  }).observe(canvas);
-
-  if (reduce) {
-    paint();
-    return;
-  }
-
-  let last = performance.now();
-  let frames = 0;
-  const loop = (now) => {
-    requestAnimationFrame(loop);
-    if (!visible || document.hidden || !built) return;
-    const dt = Math.min((now - last) / 1000, 1 / 20);
-    last = now;
-    step(dt, now / 1000);
-    paint();
-    canvas.dataset.frames = String(++frames);
-  };
-  requestAnimationFrame(loop);
+  if (stage.still) paint(stage);
 }

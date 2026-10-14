@@ -154,51 +154,43 @@
   transition: opacity var(--dur) var(--ease);
 }
 
-/* --- HERO ------------------------------------------------------------------ */
+/* --- HERO (home, full-page field) ------------------------------------------ */
+
+.stage__scrim--field {
+  background:
+    radial-gradient(120% 90% at 12% 22%, rgb(8 8 10 / 0.72), rgb(8 8 10 / 0) 62%),
+    linear-gradient(180deg, rgb(10 10 11 / 0.5), rgb(10 10 11 / 0.1) 40%, rgb(10 10 11 / 0.62));
+}
 
 .hero {
   position: relative;
-  overflow: clip;
-  border-bottom: 1px solid var(--line-soft);
+  padding-block: clamp(3.5rem, 9vw, 7rem) clamp(2.5rem, 6vw, 4.5rem);
 }
 
-.hero__canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.hero__canvas canvas {
-  width: 100%;
-  height: 100%;
-}
-
-.hero__veil {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, rgb(10 10 11 / 0.55), rgb(10 10 11 / 0.15) 40%, rgb(10 10 11 / 0.88)),
-    radial-gradient(700px 380px at 50% 110%, rgb(200 200 210 / 0.12), transparent 70%);
-}
-
-.hero__inner {
-  position: relative;
-  padding-block: clamp(4rem, 10vw, 7.5rem) clamp(3rem, 7vw, 5rem);
+.hero--me {
   display: grid;
-  gap: var(--space-3);
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: center;
 }
 
-.hero--me .hero__inner {
-  grid-template-columns: minmax(0, 1fr);
+.hero__copy {
+  display: grid;
+  gap: clamp(1.1rem, 2.4vw, 1.9rem);
+  align-content: start;
+}
+
+.hero__copy .display {
+  margin-block: 0.15em 0.1em;
+}
+
+.hero__copy .lede {
+  max-width: 46ch;
 }
 
 @media (min-width: 900px) {
-  .hero--me .hero__inner {
-    grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 22rem);
-    align-items: center;
-    gap: var(--space-5);
+  .hero--me {
+    grid-template-columns: minmax(0, 1.3fr) minmax(16rem, 21rem);
+    gap: var(--space-6);
   }
 }
 
@@ -206,7 +198,8 @@
   font-size: var(--t-micro);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-2);
+  margin-top: 0.35rem;
 }
 
 /* --- PORTRAIT -------------------------------------------------------------- */
@@ -525,114 +518,71 @@
   color: var(--ink);
 }
 
-/* --- WAVE LAB ------------------------------------------------------------------- */
+/* --- WAVE TANK (physics, full-page stage) --------------------------------- */
 
-.lab {
-  background: var(--card);
-  border: 1px solid var(--line-soft);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
+/* A light scrim only where reading copy sits: the water keeps its contrast
+   in the open, the text keeps its contrast where it matters. */
+.stage__scrim--wave {
+  background: linear-gradient(
+    180deg,
+    rgb(10 10 11 / 0.6),
+    rgb(10 10 11 / 0.12) 30%,
+    rgb(10 10 11 / 0.3) 78%,
+    rgb(10 10 11 / 0.55)
+  );
 }
 
-.lab__stage {
-  position: relative;
-  touch-action: none;
+.stage[data-drag='true'] .stage__canvas {
+  cursor: grab;
 }
 
-.lab__stage canvas {
-  width: 100%;
-  height: clamp(300px, 46vw, 460px);
-  cursor: crosshair;
-}
-
-.lab__bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+.hud label {
+  display: inline-flex;
   align-items: center;
-  padding: 1rem var(--space-2);
-  border-top: 1px solid var(--line-soft);
+  gap: 0.5rem;
   font-size: var(--t-small);
   color: var(--ink-2);
 }
 
-.lab__bar label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.lab__bar input[type='range'] {
+.hud input[type='range'] {
   accent-color: var(--gold);
   min-height: 32px;
 }
 
-.lab__hint {
-  font-size: var(--t-small);
-  color: var(--ink-3);
+/* Clearly marked placeholder copy the owner can replace. */
+[data-placeholder] {
+  border-left: 2px solid var(--line);
+  padding-left: var(--space-2);
+  color: var(--ink-2);
 }
 
-/* --- ORBIT (tech hero) -------------------------------------------------------------- */
+/* --- ORBIT (tech, full-page stage) ------------------------------------------- */
 
-.orbit {
-  position: relative;
-  overflow: clip;
-  border-bottom: 1px solid var(--line-soft);
-  min-height: calc(100svh - 4.25rem);
-  display: flex;
-  flex-direction: column;
-}
-
-.orbit__canvas {
-  position: absolute;
-  inset: 0;
-}
-
-.orbit__canvas canvas {
-  width: 100%;
-  height: 100%;
-  touch-action: pan-y;
-}
-
-.orbit__veil {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+.stage__scrim--orbit {
   background: linear-gradient(
     180deg,
-    rgb(10 10 11 / 0.72),
-    rgb(10 10 11 / 0.1) 34%,
-    rgb(10 10 11 / 0.2) 62%,
-    rgb(10 10 11 / 0.9)
+    rgb(10 10 11 / 0.78),
+    rgb(10 10 11 / 0.2) 30%,
+    rgb(10 10 11 / 0.08) 60%,
+    rgb(10 10 11 / 0.45)
   );
 }
 
-.orbit__inner {
-  position: relative;
-  flex: 1;
-  display: grid;
-  gap: var(--space-3);
-  padding-block: var(--space-5) var(--space-2);
-  align-content: start;
-}
-
-@media (min-width: 900px) {
-  .orbit__inner {
-    grid-template-columns: minmax(0, 1fr) minmax(17rem, 22rem);
-    align-items: start;
-  }
-}
-
-.orbit__copy {
-  display: grid;
-  gap: var(--space-2);
-  align-content: start;
-  max-width: 40rem;
+/* The detail card and the dive bar are chrome on top of the scene. */
+/* The orbit panel and dive bar sit beside the content, not inside the stage,
+   so they catch their own events and paint above the page. */
+.orbit__panel,
+.orbit__bar {
+  pointer-events: auto;
 }
 
 .orbit__panel {
-  background: rgb(18 16 13 / 0.88);
+  position: fixed;
+  z-index: 4;
+  top: 5.25rem;
+  right: var(--gutter);
+  width: min(22rem, calc(100vw - var(--gutter) * 2));
+  background: rgb(10 10 11 / 0.92);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--line);
@@ -649,133 +599,259 @@
 }
 
 .orbit__bar {
-  position: relative;
+  position: fixed;
+  z-index: 4;
+  left: 50%;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 0.6rem;
-  padding-bottom: var(--space-2);
+  padding: 0.7rem 1rem;
+  max-width: calc(100vw - 2rem);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgb(10 10 11 / 0.84);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@media (max-width: 620px) {
+  .orbit__bar {
+    left: 0.75rem;
+    right: 0.75rem;
+    transform: none;
+    border-radius: var(--radius);
+    padding: 0.55rem 0.7rem;
+  }
+
+  .orbit__bar .to-top {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+  }
 }
 
 .orbit__hint {
-  margin-left: auto;
   font-size: var(--t-micro);
   letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+/* --- REPO HUD (tech) --------------------------------------------------------- */
+
+.hud--repos {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  border-radius: var(--radius);
+  max-height: min(62vh, 32rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.repo-hud__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.repo-hud__jump {
+  font-size: var(--t-micro);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  /* A comfortable target: WCAG 2.5.8 asks for 24px in at least one axis. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+@media (max-width: 620px) {
+  /* On a phone the panel is a short list, not a curtain — and it sits above
+     the dive bar rather than on top of it. */
+  .hud--repos {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 7.5rem;
+    max-height: 34vh;
+  }
+
+}
+
+.repo-hud__list {
+  list-style: none;
+  display: grid;
+  gap: 0.1rem;
+}
+
+@media (max-width: 620px) {
+  /* A second copy of the record below, serving a hover that touch does not
+     have: on a phone the list would only cover the page. The pill keeps its
+     jump link to the full record. */
+  .repo-hud__list {
+    display: none;
+  }
+}
+
+.repo-hud__list a {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  /* Comfortably past the 24px minimum target size. */
+  min-height: 30px;
+  padding: 0.28rem 0.4rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: var(--t-small);
+  color: var(--ink-2);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.repo-hud__list a:hover,
+.repo-hud__list a:focus-visible {
+  background: rgb(200 200 210 / 0.1);
+  color: #fff;
+}
+
+.repo-hud__dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  flex: none;
+  box-shadow: 0 0 8px rgb(240 216 120 / 0.5);
+}
+
+.repo-hud__lang {
+  margin-left: auto;
+  font-size: var(--t-micro);
+  color: var(--ink-3);
+}
+
+/* --- BALANCE (debate, full-page stage) ------------------------------------ */
+
+/* Dark where the copy is, and again under the pans, so the balance reads
+   against a calm field in the middle band. */
+.stage__scrim--scales {
+  background: linear-gradient(
+    180deg,
+    rgb(10 10 11 / 0.88),
+    rgb(10 10 11 / 0.6) 24%,
+    rgb(10 10 11 / 0.1) 46%,
+    rgb(10 10 11 / 0.22) 80%,
+    rgb(10 10 11 / 0.5)
+  );
+}
+
+/* Room for the balance. The scene measures it and writes the value, so the
+   results start below the pans instead of behind them. */
+[data-balance-next] {
+  margin-top: var(--balance-stage, 0px);
+}
+
+/* The record's cards are objects you can pick up. */
+.card--weigh {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.card--weigh:active {
+  cursor: grabbing;
+}
+
+.card--weigh:focus-visible {
+  outline: 2px solid var(--silver-bright);
+  outline-offset: 3px;
+}
+
+.card__weigh {
+  font-size: var(--t-micro);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-3);
 }
 
-/* --- ARENA (debate hero) -------------------------------------------------------------- */
-
-.arena {
-  position: relative;
-  overflow: clip;
-  border-bottom: 1px solid var(--line-soft);
-}
-
-/* The balance fills the viewport: the record needs no scroll to be weighed. */
-.arena--full {
-  min-height: calc(100svh - 4.25rem);
-  display: flex;
-  flex-direction: column;
-}
-
-.arena--full .arena__inner {
-  flex: 1;
-  align-content: end;
-  padding-bottom: var(--space-4);
-}
-
-.arena__canvas {
-  position: absolute;
-  inset: 0;
-}
-
-.arena__canvas canvas {
-  width: 100%;
-  height: 100%;
-  touch-action: pan-y;
-  cursor: crosshair;
-}
-
-.arena__veil {
-  position: absolute;
-  inset: 0;
+/* The chip that rides the pointer while a result is being weighed. */
+.weigh-chip {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 40;
   pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgb(10 10 11 / 0.78),
-    rgb(10 10 11 / 0.25) 40%,
-    rgb(10 10 11 / 0.25) 60%,
-    rgb(10 10 11 / 0.88)
-  );
-}
-
-.arena__inner {
-  position: relative;
-  display: grid;
-  gap: var(--space-2);
-  padding-block: var(--space-5) var(--space-4);
-  max-width: 44rem;
-}
-
-.arena__verdict {
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgb(10 10 11 / 0.92);
+  color: var(--ink);
   font-size: var(--t-small);
   font-weight: 650;
-  color: var(--gold-bright);
-  letter-spacing: 0.02em;
+  max-width: 22rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: var(--shadow);
 }
 
-/* --- INKWELL (writing hero) -------------------------------------------------------------- */
-
-.inkwell {
-  position: relative;
-  overflow: clip;
-  border-bottom: 1px solid var(--line-soft);
+body.is-weighing {
+  cursor: grabbing;
 }
 
-/* The titles fill the viewport: each essay gets its own band of sky. */
-.inkwell--full {
-  min-height: calc(100svh - 4.25rem);
-  display: flex;
-  flex-direction: column;
-}
+/* --- TITLES (writing, full-page stage) ------------------------------------ */
 
-.inkwell--full .inkwell__inner {
-  flex: 1;
-  align-content: start;
-}
-
-.inkwell__canvas {
-  position: absolute;
-  inset: 0;
-}
-
-.inkwell__canvas canvas {
-  width: 100%;
-  height: 100%;
-  touch-action: pan-y;
-  cursor: crosshair;
-}
-
-.inkwell__veil {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+.stage__scrim--titles {
   background: linear-gradient(
     180deg,
-    rgb(10 10 11 / 0.66),
-    rgb(10 10 11 / 0.18) 45%,
-    rgb(10 10 11 / 0.72)
+    rgb(10 10 11 / 0.72),
+    rgb(10 10 11 / 0.24) 26%,
+    rgb(10 10 11 / 0.16) 60%,
+    rgb(10 10 11 / 0.66)
   );
 }
 
-.inkwell__inner {
-  position: relative;
+/* Room for the title bands. The scene measures what it needs and writes the
+   value; the essay list then starts below the art instead of on top of it. */
+[data-titles-next] {
+  margin-top: var(--title-stage, 0px);
+}
+
+/* The shelf: the scene's real links, off screen until a keyboard needs them. */
+.link-shelf {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
   display: grid;
-  gap: var(--space-2);
-  padding-block: var(--space-5) var(--space-4);
-  max-width: 44rem;
+  gap: 0.4rem;
+}
+
+.link-shelf__head {
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.link-shelf:focus-within {
+  position: fixed;
+  z-index: 6;
+  left: var(--gutter);
+  bottom: 5.5rem;
+  width: min(28rem, calc(100vw - var(--gutter) * 2));
+  height: auto;
+  overflow: visible;
+  clip-path: none;
+  padding: var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgb(10 10 11 / 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow);
+  pointer-events: auto;
 }
 
 /* --- OPENER (inner pages) ---------------------------------------------------------- */

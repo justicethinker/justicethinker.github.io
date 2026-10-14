@@ -1,0 +1,225 @@
+/* ==========================================================================
+   STAGE — the shared full-page animation layer
+   Every page's animation is a fixed canvas covering the viewport; the content
+   sits above it and passes pointer events through wherever there is no
+   control, so the scene keeps hover and drag across the whole page.
+   ========================================================================== */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.stage__canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* The layer passes events through; the canvas is what catches them. */
+  pointer-events: auto;
+  /* Pages that want drags on the scene set data-drag; the rest let the page
+     scroll normally underneath a touch. */
+  touch-action: pan-y;
+}
+
+.stage[data-drag="true"] .stage__canvas {
+  touch-action: none;
+}
+
+/* The veil keeps text legible over a moving scene. It never eats an event. */
+.stage__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------- content */
+
+/* Both live above the fixed canvas; the canvas is positioned, so static
+   content would otherwise paint underneath it. */
+main,
+.footer {
+  position: relative;
+  z-index: 1;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Interactive things opt back in. Everything else lets the scene have the
+   event, which is the whole point of a full-page stage. */
+.page a[href],
+.page button,
+.page input,
+.page label,
+.page select,
+.page textarea,
+.page summary,
+.page [data-tilt],
+.page .card,
+.page .hud,
+.page [data-touch],
+.page [data-selectable] {
+  pointer-events: auto;
+}
+
+/* Long-form reading keeps text selection; a reader following a paragraph is
+   not trying to disturb the scene. */
+.page [data-selectable] {
+  cursor: auto;
+}
+
+/* -------------------------------------------------------------- floating
+   Controls that used to live in a bar under the art. */
+
+.hud {
+  position: fixed;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgb(10 10 11 / 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow);
+}
+
+.hud--bottom {
+  left: 50%;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  max-width: calc(100vw - 2rem);
+  justify-content: center;
+}
+
+.hud--corner {
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* A stacked panel that keeps out of the way of the art underneath. */
+.hud--aside {
+  top: 5.25rem;
+  right: var(--gutter);
+  left: auto;
+  bottom: auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  border-radius: var(--radius);
+}
+
+.hud--aside .hud__hint {
+  max-width: 17rem;
+  text-align: right;
+  line-height: 1.4;
+}
+
+@media (max-width: 860px) {
+  .hud--aside {
+    top: auto;
+    right: 0.75rem;
+    left: 0.75rem;
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .hud--aside .hud__hint {
+    text-align: left;
+    max-width: none;
+  }
+}
+
+.hud__hint {
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+@media (max-width: 620px) {
+  .hud {
+    gap: 0.4rem;
+    padding: 0.55rem 0.7rem;
+  }
+
+  /* A phone panel must not become the page: slider on its own row, then the
+     controls, then one line of status. */
+  .hud--bottom {
+    left: 0.75rem;
+    right: 0.75rem;
+    transform: none;
+    border-radius: var(--radius);
+  }
+
+  .hud label {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .hud input[type='range'] {
+    flex: 1;
+  }
+
+  .hud .to-top {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+  }
+
+  .hud__hint {
+    width: 100%;
+    font-size: 0.68rem;
+    line-height: 1.35;
+  }
+}
+
+/* Controls that live inside the stage wrapper still need their events. */
+.stage .hud {
+  pointer-events: auto;
+}
+
+/* A fixed scene control must not sit on the last lines of the page: the foot
+   of the document carries enough clearance to scroll clear of the chrome. */
+
+.footer {
+  padding-bottom: 4.5rem;
+}
+
+@media (max-width: 620px) {
+  .footer {
+    padding-bottom: 11rem;
+  }
+}
+
+/* --------------------------------------------- readable text over a scene
+   Text legibility wins over the effect: every block that carries reading
+   copy gets a soft plate so the art never washes it out. */
+
+.page .plate {
+  position: relative;
+}
+
+.page .plate::before {
+  content: '';
+  position: absolute;
+  inset: -1.25rem -1.5rem;
+  border-radius: calc(var(--radius) + 6px);
+  background: radial-gradient(
+    120% 130% at 20% 20%,
+    rgb(8 8 10 / 0.82) 0%,
+    rgb(8 8 10 / 0.62) 55%,
+    rgb(8 8 10 / 0) 100%
+  );
+  pointer-events: none;
+  z-index: -1;
+}

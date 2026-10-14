@@ -80,6 +80,9 @@ const ogImage = new URL('/og.jpg', Astro.site).href;
 
     <script>
       import '../scripts/motion.js';
+      // The declarative content ↔ scene channel: [data-sends] blocks report
+      // their hover, focus and press to the animation behind the page.
+      import '../scripts/content-bridge.js';
     </script>
   </body>
 </html>

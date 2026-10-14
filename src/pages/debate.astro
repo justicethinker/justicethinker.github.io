@@ -7,99 +7,113 @@ import { debateResults, talks, debateRules } from '../data/site';
   title="Debate"
   description="Competitive debate record, public talks, and the four rules every argument is held to."
 >
-  <section class="arena arena--full" data-scale-stage aria-label="The debate record weighed on a gold balance">
-    <div class="arena__canvas">
-      <canvas data-scale-canvas aria-hidden="true"></canvas>
-    </div>
-    <div class="arena__veil" aria-hidden="true"></div>
-
-    <div class="shell arena__inner">
-      <p class="kicker" data-reveal>Debate &amp; public speaking</p>
-      <h1 class="display display--md" data-reveal>
-        Every title has <span class="gold">weight.</span>
-      </h1>
-      <p class="lede" data-reveal>
-        Four years of finals hang on these pans. Add a win to either side and watch the
-        beam answer — or lean on it yourself.
-      </p>
-      <div class="actions" data-reveal>
-        <button class="btn btn--gold" type="button" data-scale-add-for>Weigh a win for</button>
-        <button class="btn btn--ghost" type="button" data-scale-add-against>Weigh a win against</button>
-        <button class="to-top" type="button" data-scale-reset>Reset</button>
-      </div>
-      <p class="arena__verdict" data-scale-readout role="status" data-reveal></p>
-    </div>
+  <div class="stage" data-scale-stage>
+    <canvas class="stage__canvas" data-scale-canvas aria-hidden="true"></canvas>
+    <div class="stage__scrim stage__scrim--scales" aria-hidden="true"></div>
 
     <script
       type="application/json"
       data-scale-data
       set:html={JSON.stringify(debateResults.map((r) => ({ placing: r.placing, event: r.event })))}
     />
-  </section>
-
-  <div class="shell">
-
-    <section class="section" aria-label="Results">
-      <div class="section__head" data-reveal>
-        <h2 class="title">Results</h2>
-        <p class="note">Judged by people who were trying to win.</p>
-      </div>
-
-      <div class="cards" data-reveal-group>
-        {
-          debateResults.map((result) => (
-            <article class="card" data-tilt data-reveal>
-              <span class="card__meta">
-                {result.when} · {result.placing} · {result.format}
-              </span>
-              <h3 class="card__name">{result.event}</h3>
-              <p class="card__body">{result.body}</p>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    <section class="section" aria-label="Talks">
-      <div class="section__head" data-reveal>
-        <h2 class="title">Talks</h2>
-        <p class="note">The same method, pointed at a room instead of an opponent.</p>
-      </div>
-
-      <div class="cards" data-reveal-group>
-        {
-          talks.map((talk) => (
-            <article class="card" data-tilt data-reveal>
-              <span class="card__meta">
-                {talk.venue} · {talk.meta}
-              </span>
-              <h3 class="card__name">{talk.title}</h3>
-              <p class="card__body">{talk.body}</p>
-            </article>
-          ))
-        }
-      </div>
-    </section>
-
-    <section class="section" aria-label="The four rules">
-      <div class="section__head" data-reveal>
-        <h2 class="title">Four rules</h2>
-        <p class="note">Non-negotiable. Applied to papers and code reviews as much as to debates.</p>
-      </div>
-
-      <div class="cards cards--two" data-reveal-group>
-        {
-          debateRules.map((rule, i) => (
-            <article class="card" data-tilt data-reveal>
-              <span class="gate__index">0{i + 1}</span>
-              <h3 class="card__name">{rule.name}</h3>
-              <p class="card__body">{rule.body}</p>
-            </article>
-          ))
-        }
-      </div>
-    </section>
   </div>
+
+  <div class="page">
+    <div class="shell">
+      <section class="opener plate" aria-label="Introduction">
+        <p class="kicker">Debate &amp; public speaking</p>
+        <h1 class="display display--md">
+          Every title has <span class="gold">weight.</span>
+        </h1>
+        <p class="lede" data-selectable>
+          Four years of finals hang on these pans. Drag a result onto a side — or press
+          ← / → on one — and the beam answers. The heavier pan goes down.
+        </p>
+      </section>
+
+      <section class="section" data-balance-next aria-label="Results">
+        <div class="section__head plate">
+          <h2 class="title">Results</h2>
+          <p class="note">Judged by people who were trying to win.</p>
+        </div>
+
+        <p class="sr-only" id="weigh-hint">
+          Press the left arrow key to weigh this result for the proposition, or the right
+          arrow key to weigh it against.
+        </p>
+
+        <div class="cards" data-reveal-group>
+          {
+            debateResults.map((result, i) => (
+              <article
+                class="card card--weigh"
+                role="button"
+                tabindex="0"
+                aria-describedby="weigh-hint"
+                aria-label={`${result.event} — drag onto a pan, or press the left or right arrow to weigh it`}
+                data-weigh-index={i}
+                data-reveal
+              >
+                <span class="card__meta">
+                  {result.when} · {result.placing} · {result.format}
+                </span>
+                <h3 class="card__name">{result.event}</h3>
+                <p class="card__body">{result.body}</p>
+                <span class="card__weigh">Drag to a pan · ← for · → against</span>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="section" aria-label="Talks">
+        <div class="section__head">
+          <h2 class="title">Talks</h2>
+          <p class="note">The same method, pointed at a room instead of an opponent.</p>
+        </div>
+
+        <div class="cards" data-reveal-group>
+          {
+            talks.map((talk) => (
+              <article class="card" data-tilt data-reveal>
+                <span class="card__meta">
+                  {talk.venue} · {talk.meta}
+                </span>
+                <h3 class="card__name">{talk.title}</h3>
+                <p class="card__body">{talk.body}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="section" aria-label="The four rules">
+        <div class="section__head">
+          <h2 class="title">Four rules</h2>
+          <p class="note">Non-negotiable. Applied to papers and code reviews as much as to debates.</p>
+        </div>
+
+        <div class="cards cards--two" data-reveal-group>
+          {
+            debateRules.map((rule, i) => (
+              <article class="card" data-tilt data-reveal>
+                <span class="gate__index">0{i + 1}</span>
+                <h3 class="card__name">{rule.name}</h3>
+                <p class="card__body">{rule.body}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <aside class="hud hud--aside" aria-label="Balance controls">
+    <button class="to-top" type="button" data-scale-add-for>Weigh a win for</button>
+    <button class="to-top" type="button" data-scale-add-against>Weigh a win against</button>
+    <button class="to-top" type="button" data-scale-reset>Reset</button>
+    <p class="hud__hint" data-scale-readout role="status"></p>
+  </aside>
 
   <script>
     import '../scripts/scales.js';
