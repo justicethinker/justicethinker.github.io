@@ -52,35 +52,15 @@ import { identity, techFeatured, techMore } from '../data/site';
     <div class="shell orbit__bar">
       <button class="to-top" type="button" data-orbit-prev>← Prev world</button>
       <button class="to-top" type="button" data-orbit-next>Next world →</button>
-      <span class="orbit__hint">Drag to spin · click a world to land</span>
+      <button class="to-top" type="button" data-orbit-zoom-in aria-label="Zoom in">+</button>
+      <button class="to-top" type="button" data-orbit-zoom-out aria-label="Zoom out">−</button>
+      <span class="orbit__hint">Scroll to dive · drag to spin · click a world to land</span>
     </div>
 
     <script type="application/json" data-orbit-data set:html={JSON.stringify(techFeatured)} />
   </section>
 
   <div class="shell">
-
-    <section class="section" aria-label="Featured builds">
-      <div class="section__head" data-reveal>
-        <h2 class="title">Featured builds</h2>
-        <p class="note">The ones I'd walk you through first.</p>
-      </div>
-
-      <div class="cards cards--two" data-reveal-group>
-        {
-          techFeatured.map((repo) => (
-            <article class="card" data-tilt data-reveal>
-              <span class="card__meta">{repo.language}</span>
-              <h3 class="card__name">{repo.name}</h3>
-              <p class="card__body">{repo.body}</p>
-              <a class="card__link" href={repo.url} target="_blank" rel="noopener noreferrer">
-                Open on GitHub →
-              </a>
-            </article>
-          ))
-        }
-      </div>
-    </section>
 
     <section class="section" aria-label="The rest of the record">
       <div class="section__head" data-reveal>

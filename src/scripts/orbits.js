@@ -51,6 +51,10 @@ function boot(stage) {
 
   let spin = 0; // extra angle from dragging, decays to zero
   let spinVel = 0;
+  let zoom = 1; // scroll dives toward the sun, down to 0.6 and up to 2.4
+  let zoomTarget = 1;
+  const ZMIN = 0.6;
+  const ZMAX = 2.4;
   let selected = -1;
   let hovered = -1;
   let visible = true;
@@ -75,7 +79,7 @@ function boot(stage) {
     paint(0);
   }
 
-  const R = () => Math.min(W * 0.46, H * 0.44);
+  const R = () => Math.min(W * 0.46, H * 0.44) * zoom;
   const cx = () => W / 2;
   const cy = () => H * 0.52;
 
@@ -119,6 +123,7 @@ function boot(stage) {
     for (const { w, i, p } of placed.filter((o) => o.p.depth >= 0)) drawWorld(w, i, p);
 
     canvas.dataset.system = 'live';
+    canvas.dataset.zoom = zoom.toFixed(3);
   }
 
   function drawSun() {
@@ -281,6 +286,37 @@ function boot(stage) {
     }
   });
 
+  // Scroll dives. Fully zoomed out and still scrolling down hands the page
+  // back, so the wheel is never trapped.
+  canvas.addEventListener(
+    'wheel',
+    (event) => {
+      if (zoomTarget <= ZMIN && event.deltaY > 0) return;
+      event.preventDefault();
+      zoomTarget = Math.max(ZMIN, Math.min(ZMAX, zoomTarget * Math.exp(-event.deltaY * 0.0012)));
+      if (reduce) {
+        zoom = zoomTarget;
+        paint();
+      }
+    },
+    { passive: false },
+  );
+
+  stage.querySelector('[data-orbit-zoom-in]')?.addEventListener('click', () => {
+    zoomTarget = Math.min(ZMAX, zoomTarget * 1.25);
+    if (reduce) {
+      zoom = zoomTarget;
+      paint();
+    }
+  });
+  stage.querySelector('[data-orbit-zoom-out]')?.addEventListener('click', () => {
+    zoomTarget = Math.max(ZMIN, zoomTarget / 1.25);
+    if (reduce) {
+      zoom = zoomTarget;
+      paint();
+    }
+  });
+
   const endPointer = (event) => {
     if (!dragging) return;
     dragging = false;
@@ -323,6 +359,7 @@ function boot(stage) {
       if (Math.abs(spinVel) < 0.0004) spinVel = 0;
     }
     for (const w of worlds) w.angle += speedOf(w) * dt;
+    zoom += (zoomTarget - zoom) * Math.min(1, dt * 6);
     paint();
     canvas.dataset.frames = String(++frames);
   };
