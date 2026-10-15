@@ -364,8 +364,8 @@ function boot(wrapper) {
     if (readout) {
       readout.textContent =
         sources.length === 1
-          ? 'One source: clean rings, nothing to argue with.'
-          : `${sources.length} sources: drag one and watch the pattern renegotiate.`;
+          ? 'One source.'
+          : `${sources.length} sources. Drag one to move it.`;
     }
     if (addBtn) addBtn.disabled = sources.length >= 3;
   }

@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 
 // Static output — deployed to GitHub Pages via the workflow in .github/workflows/deploy.yml
 export default defineConfig({
-  site: 'https://justicethinker.github.io',
+  site: 'https://justicethinker.com',
   base: '/',
   output: 'static',
   build: {

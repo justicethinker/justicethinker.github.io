@@ -7,7 +7,7 @@ const tints = ['#f0d878', '#d4af37', '#e8c96a', '#c9a227', '#f6e58d', '#b08d2a']
 
 <Layout
   title="Tech"
-  description="Software by Justice Thinker — featured builds and the full public repo record on GitHub."
+  description="Projects by Justice Thinker, with links to the code on GitHub."
 >
   <div class="stage" data-orbit-stage>
     <canvas class="stage__canvas" data-orbit-canvas aria-hidden="true"></canvas>
@@ -39,11 +39,11 @@ const tints = ['#f0d878', '#d4af37', '#e8c96a', '#c9a227', '#f6e58d', '#b08d2a']
   </aside>
 
   <div class="orbit__bar" data-orbit-avoid>
-    <button class="to-top" type="button" data-orbit-prev>← Prev world</button>
-    <button class="to-top" type="button" data-orbit-next>Next world →</button>
-    <button class="to-top" type="button" data-orbit-zoom-in aria-label="Dive toward the sun">+</button>
-    <button class="to-top" type="button" data-orbit-zoom-out aria-label="Dive away from the sun">−</button>
-    <span class="orbit__hint">Scroll to dive · drag to spin · click a world to land</span>
+    <button class="to-top" type="button" data-orbit-prev>← Prev</button>
+    <button class="to-top" type="button" data-orbit-next>Next →</button>
+    <button class="to-top" type="button" data-orbit-zoom-in aria-label="Zoom in">+</button>
+    <button class="to-top" type="button" data-orbit-zoom-out aria-label="Zoom out">−</button>
+    <span class="orbit__hint">Scroll to zoom · drag to spin · click a project to read about it</span>
   </div>
 
   <div class="page">
@@ -51,11 +51,11 @@ const tints = ['#f0d878', '#d4af37', '#e8c96a', '#c9a227', '#f6e58d', '#b08d2a']
       <section class="opener plate" aria-label="Introduction" data-orbit-intro>
         <p class="kicker">Tech</p>
         <h1 class="display display--md">
-          Six worlds around <span class="gold">one sun.</span>
+          Projects.
         </h1>
         <p class="lede" data-selectable>
-          {identity.githubHandle} — every featured build in orbit. Click a world to read
-          what it is and where the code lives.
+          {identity.githubHandle} — {techFeatured.length} featured projects. Click one
+          to read what it is, with a link to the code.
         </p>
         <div class="actions">
           <a class="btn btn--gold" href={identity.github} target="_blank" rel="noopener noreferrer">
@@ -64,10 +64,10 @@ const tints = ['#f0d878', '#d4af37', '#e8c96a', '#c9a227', '#f6e58d', '#b08d2a']
         </div>
       </section>
 
-      <section class="section" aria-label="The rest of the record" id="record">
+      <section class="section" aria-label="More repos" id="record">
         <div class="section__head plate" data-orbit-avoid>
-          <h2 class="title">More of the record</h2>
-          <p class="note">Learning work, experiments and tools — in the open the whole way.</p>
+          <h2 class="title">More repos</h2>
+          <p class="note">Learning work, experiments and tools.</p>
         </div>
 
         <ul class="index" data-reveal-group>
@@ -90,7 +90,7 @@ const tints = ['#f0d878', '#d4af37', '#e8c96a', '#c9a227', '#f6e58d', '#b08d2a']
 
   <aside class="hud hud--corner hud--repos" aria-label="Repositories">
     <div class="repo-hud__head">
-      <span class="micro">In orbit</span>
+      <span class="micro">Featured</span>
       <a class="repo-hud__jump link" href="#record">See all {techMore.length} more ↓</a>
     </div>
 

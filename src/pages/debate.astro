@@ -5,7 +5,7 @@ import { debateResults, talks, debateRules } from '../data/site';
 
 <Layout
   title="Debate"
-  description="Competitive debate record, public talks, and the four rules every argument is held to."
+  description="Debate results, talks, and rules."
 >
   <div class="stage" data-scale-stage>
     <canvas class="stage__canvas" data-scale-canvas aria-hidden="true"></canvas>
@@ -23,23 +23,23 @@ import { debateResults, talks, debateRules } from '../data/site';
       <section class="opener plate" aria-label="Introduction">
         <p class="kicker">Debate &amp; public speaking</p>
         <h1 class="display display--md">
-          Every title has <span class="gold">weight.</span>
+          Debate <span class="gold">results.</span>
         </h1>
         <p class="lede" data-selectable>
-          Four years of finals hang on these pans. Drag a result onto a side — or press
-          ← / → on one — and the beam answers. The heavier pan goes down.
+          Drag a result onto a side of the scale, or focus one and press ← or →.
+          The heavier side goes down.
         </p>
       </section>
 
       <section class="section" data-balance-next aria-label="Results">
         <div class="section__head plate">
           <h2 class="title">Results</h2>
-          <p class="note">Judged by people who were trying to win.</p>
+          <p class="note">Results from competitions.</p>
         </div>
 
         <p class="sr-only" id="weigh-hint">
-          Press the left arrow key to weigh this result for the proposition, or the right
-          arrow key to weigh it against.
+          Press the left arrow key to put this result on the left side of the scale,
+          or the right arrow key to put it on the right side.
         </p>
 
         <div class="cards" data-reveal-group>
@@ -50,7 +50,7 @@ import { debateResults, talks, debateRules } from '../data/site';
                 role="button"
                 tabindex="0"
                 aria-describedby="weigh-hint"
-                aria-label={`${result.event} — drag onto a pan, or press the left or right arrow to weigh it`}
+                aria-label={`${result.event} — drag onto a side, or press the left or right arrow to place it`}
                 data-weigh-index={i}
                 data-reveal
               >
@@ -59,7 +59,7 @@ import { debateResults, talks, debateRules } from '../data/site';
                 </span>
                 <h3 class="card__name">{result.event}</h3>
                 <p class="card__body">{result.body}</p>
-                <span class="card__weigh">Drag to a pan · ← for · → against</span>
+                <span class="card__weigh">Drag onto a side · ← left · → right</span>
               </article>
             ))
           }
@@ -69,7 +69,7 @@ import { debateResults, talks, debateRules } from '../data/site';
       <section class="section" aria-label="Talks">
         <div class="section__head">
           <h2 class="title">Talks</h2>
-          <p class="note">The same method, pointed at a room instead of an opponent.</p>
+          <p class="note">Talks I've given.</p>
         </div>
 
         <div class="cards" data-reveal-group>
@@ -90,7 +90,7 @@ import { debateResults, talks, debateRules } from '../data/site';
       <section class="section" aria-label="The four rules">
         <div class="section__head">
           <h2 class="title">Four rules</h2>
-          <p class="note">Non-negotiable. Applied to papers and code reviews as much as to debates.</p>
+          <p class="note">I use these for papers and code reviews too.</p>
         </div>
 
         <div class="cards cards--two" data-reveal-group>

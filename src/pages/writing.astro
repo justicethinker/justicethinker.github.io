@@ -5,7 +5,7 @@ import { identity, essays } from '../data/site';
 
 <Layout
   title="Writing"
-  description="Essays by Justice Thinker on Substack — thought in progress."
+  description="Essays by Justice Thinker, published on Substack."
 >
   <div class="stage" data-titles-stage>
     <canvas class="stage__canvas" data-titles-canvas aria-hidden="true"></canvas>
@@ -23,11 +23,10 @@ import { identity, essays } from '../data/site';
       <section class="opener plate" aria-label="Introduction" data-titles-content>
         <p class="kicker">Writing</p>
         <h1 class="display display--md">
-          Thought <span class="gold">in progress.</span>
+          Essays.
         </h1>
         <p class="lede" data-selectable>
-          Essays published on Substack at {identity.substackHandle}. Brush a title to
-          scatter it — click one to read it.
+          Essays on Substack. Hover a title to scatter it. Click one to read it.
         </p>
         <div class="actions">
           <a class="btn btn--gold" href={identity.substack} target="_blank" rel="noopener noreferrer">
@@ -61,8 +60,8 @@ import { identity, essays } from '../data/site';
 
       <section class="section" aria-label="Subscribe">
         <div class="section__head" data-reveal>
-          <h2 class="title">Follow along</h2>
-          <p class="note">Subscribing is free. The thinking is the point.</p>
+          <h2 class="title">Subscribe</h2>
+          <p class="note">Subscribing is free.</p>
         </div>
         <div class="actions" data-reveal>
           <a class="btn btn--ghost" href={`${identity.substack}/archive`} target="_blank" rel="noopener noreferrer">

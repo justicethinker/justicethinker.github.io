@@ -226,10 +226,10 @@ function boot(stageEl) {
     if (readout) {
       const verdict =
         f === a
-          ? 'Balanced — the record weighs the same either way.'
+          ? `Even: ${f} each side.`
           : f > a
-            ? `Proposition side carries ${f} to ${a}.`
-            : `Opposition side carries ${a} to ${f}.`;
+            ? `Proposition ${f}, Opposition ${a}.`
+            : `Proposition ${f}, Opposition ${a}.`;
       if (readout.textContent !== verdict) readout.textContent = verdict;
     }
     canvas.dataset.scaleFor = String(f);

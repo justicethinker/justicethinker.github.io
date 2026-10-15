@@ -8,9 +8,7 @@ export const identity = {
   name: 'Justice Thinker',
   legalName: 'Emmanuel Isaac',
   role: 'AI & Software Developer',
-  tagline: 'Thought in progress.',
-  statement:
-    'I build software, study physics, and argue competitively. This site holds all four registers in one place.',
+  statement: 'I build software, study physics, and argue competitively.',
   email: 'justicethinker@justicethinker.com',
   github: 'https://github.com/justicethinker',
   githubHandle: 'github.com/justicethinker',
@@ -35,7 +33,7 @@ export const navPrimary: NavItem[] = [
 
 /** Everything, for the menu and the footer. */
 export const navAll: NavItem[] = [
-  { href: '/', label: 'Me' },
+  { href: '/', label: 'Home' },
   { href: '/tech', label: 'Tech' },
   { href: '/debate', label: 'Debate' },
   { href: '/writing', label: 'Writing' },
@@ -255,7 +253,7 @@ export const talks = [
 export const debateRules = [
   {
     name: 'Precision',
-    body: 'Every word carries weight. Say it short, say it once.',
+    body: 'Say it short, say it once.',
   },
   {
     name: 'Evidence',
@@ -267,7 +265,7 @@ export const debateRules = [
   },
   {
     name: 'Impact',
-    body: 'Arranged to change a position, not to fill an hour.',
+    body: 'Meant to change a position.',
   },
 ];
 
@@ -315,11 +313,11 @@ export const physicsInterests = [
   },
   {
     name: 'Wave dynamics',
-    body: 'Propagation, interference and resonance — the patterns on this page are computed, not drawn.',
+    body: 'Propagation, interference and resonance. The patterns on this page are computed.',
   },
   {
     name: 'Computational physics',
-    body: 'Numerical models in Python: simulate first, argue with data second.',
+    body: 'Numerical models in Python. I model first, then argue from the data.',
   },
   {
     name: 'Instrumentation',

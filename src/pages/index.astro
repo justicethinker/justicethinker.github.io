@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Portrait from '../components/Portrait.astro';
-import { identity, techFeatured, techMore, essays, debateResults } from '../data/site';
+import { identity, techFeatured, techMore, essays } from '../data/site';
 ---
 
 <Layout title={identity.name} description={identity.statement} hero3d>
@@ -19,8 +19,7 @@ import { identity, techFeatured, techMore, essays, debateResults } from '../data
             Justice <span class="gold">Thinker</span>
           </h1>
           <p class="lede" data-selectable>
-            {identity.statement} Software pays the bills, physics feeds the curiosity, and
-            debate is where ideas get tested.
+            {identity.statement}
           </p>
           <div class="actions">
             <a class="btn btn--gold" href="/tech">See the work</a>
@@ -28,16 +27,15 @@ import { identity, techFeatured, techMore, essays, debateResults } from '../data
               Read the essays
             </a>
           </div>
-          <p class="hero__hint">Hover or drag · the field answers, then settles</p>
+          <p class="hero__hint">Hover or drag to move the particles</p>
         </div>
 
         <Portrait />
       </section>
 
-      <section class="section" aria-label="The four registers">
+      <section class="section" aria-label="The four sections">
         <div class="section__head">
-          <h2 class="title">One person, four registers</h2>
-          <p class="note">Each page below is the real record, not a brochure.</p>
+          <h2 class="title">Four sections</h2>
         </div>
 
         <div class="cards cards--two" data-reveal-group>
@@ -45,8 +43,8 @@ import { identity, techFeatured, techMore, essays, debateResults } from '../data
             <span class="gate__index">01</span>
             <h3 class="card__name">Tech</h3>
             <p class="card__body">
-              {techFeatured.length} featured builds in orbit and {techMore.length} more
-              public repos — the whole open record, every entry linked to its code.
+              {techFeatured.length} featured projects and {techMore.length} more repos —
+              each one linked to its code.
             </p>
             <a class="card__link" href="/tech">Browse the repos →</a>
           </article>
@@ -55,18 +53,16 @@ import { identity, techFeatured, techMore, essays, debateResults } from '../data
             <span class="gate__index">02</span>
             <h3 class="card__name">Debate &amp; speaking</h3>
             <p class="card__body">
-              {debateResults[0].placing} at the {debateResults[0].event}, a season title, an
-              international final — plus the talks and the four rules behind them.
+              My debate results, talks, and the rules I argue by.
             </p>
-            <a class="card__link" href="/debate">See the record →</a>
+            <a class="card__link" href="/debate">Debate results →</a>
           </article>
 
           <article class="card" data-tilt data-sends="register:writing" data-reveal>
             <span class="gate__index">03</span>
             <h3 class="card__name">Writing</h3>
             <p class="card__body">
-              “{essays[0].title}” and the rest of the essays, published on Substack as
-              “{identity.tagline}”
+              Essays on Substack. Latest: “{essays[0].title}”.
             </p>
             <a class="card__link" href="/writing">Read the essays →</a>
           </article>
@@ -75,8 +71,7 @@ import { identity, techFeatured, techMore, essays, debateResults } from '../data
             <span class="gate__index">04</span>
             <h3 class="card__name">Physics</h3>
             <p class="card__body">
-              The boundary where quantum behaviour gives way to classical, and a tank of
-              waves you can disturb yourself — the working, not the abstract.
+              What I studied and work on, plus a wave tank you can play with.
             </p>
             <a class="card__link" href="/physics">See the tank →</a>
           </article>
@@ -86,7 +81,6 @@ import { identity, techFeatured, techMore, essays, debateResults } from '../data
       <section class="section" aria-label="Contact">
         <div class="section__head">
           <h2 class="title">Write to me</h2>
-          <p class="note">A problem first, an introduction second. That order works best.</p>
         </div>
         <div class="actions">
           <a class="btn btn--gold" href={`mailto:${identity.email}`}>{identity.email}</a>
