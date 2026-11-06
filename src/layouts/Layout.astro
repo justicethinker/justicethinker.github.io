@@ -18,7 +18,7 @@ const person = {
   '@type': 'Person',
   '@id': 'https://justicethinker.com/#person',
   name: identity.name,
-  alternateName: ['Justice Thinker', 'Emmanuel Ikechukwu', identity.handle],
+  alternateName: ['Justice Thinker', 'Emmanuel Ikechukwu', 'Ikechukwu Emmanuel', 'Emmanuel Isaac', identity.handle],
   jobTitle: identity.jobTitle,
   url: 'https://justicethinker.com/',
   image: 'https://justicethinker.com/portrait.jpg',
@@ -31,6 +31,12 @@ const person = {
   },
   founder: { '@type': 'Organization', name: 'Atelity', url: 'https://atelity.com' },
   knowsAbout: ['Full-stack development', 'Artificial intelligence', 'Machine learning', 'Python', 'TypeScript', 'Physics', 'Competitive debate'],
+  award: [
+    'Champion, ANUDC Novice Championship 2024',
+    'First Runner-up, All Nigerian Universities Debating Championship 2025',
+    '4th Best Speaker, All Nigerian Universities Debating Championship 2025',
+    '2nd Best Judge, NAUDC 2025',
+  ],
   sameAs: [identity.github, identity.linkedin, identity.substack],
 };
 const graph = home
