@@ -23,6 +23,7 @@ import { identity, techFeatured, techMore, essays } from '../data/site';
           </p>
           <div class="actions">
             <a class="btn btn--gold" href="/tech">See the work</a>
+            <a class="btn btn--ghost" href="https://atelity.com" target="_blank" rel="noopener noreferrer">Atelity</a>
             <a class="btn btn--ghost" href={identity.substack} target="_blank" rel="noopener noreferrer">
               Read the essays
             </a>
@@ -35,7 +36,7 @@ import { identity, techFeatured, techMore, essays } from '../data/site';
 
       <section class="section" aria-label="The four sections">
         <div class="section__head">
-          <h2 class="title">Four sections</h2>
+          <h2 class="title">What's here</h2>
         </div>
 
         <div class="cards cards--two" data-reveal-group>
@@ -43,8 +44,8 @@ import { identity, techFeatured, techMore, essays } from '../data/site';
             <span class="gate__index">01</span>
             <h3 class="card__name">Tech</h3>
             <p class="card__body">
-              {techFeatured.length} featured projects and {techMore.length} more repos —
-              each one linked to its code.
+              {techFeatured.length} featured builds and {techMore.length} more repos: AI agents,
+              offline-first apps, bots and backends. Every one links to its code.
             </p>
             <a class="card__link" href="/tech">Browse the repos →</a>
           </article>
@@ -53,7 +54,7 @@ import { identity, techFeatured, techMore, essays } from '../data/site';
             <span class="gate__index">02</span>
             <h3 class="card__name">Debate &amp; speaking</h3>
             <p class="card__body">
-              My debate record and the rules I argue by.
+              Where I judge, compete and coach, and the four rules I bring to every argument.
             </p>
             <a class="card__link" href="/debate">Debate record →</a>
           </article>
@@ -62,7 +63,7 @@ import { identity, techFeatured, techMore, essays } from '../data/site';
             <span class="gate__index">03</span>
             <h3 class="card__name">Writing</h3>
             <p class="card__body">
-              Essays on Substack. Latest: “{essays[0].title}”.
+              Essays on how we think, judge and argue. Latest: “{essays[0].title}”.
             </p>
             <a class="card__link" href="/writing">Read the essays →</a>
           </article>
@@ -71,7 +72,7 @@ import { identity, techFeatured, techMore, essays } from '../data/site';
             <span class="gate__index">04</span>
             <h3 class="card__name">Physics</h3>
             <p class="card__body">
-              What I studied and work on, plus a wave tank you can play with.
+              What I studied, my thesis on wireless energy transmission, and a wave tank you can play with.
             </p>
             <a class="card__link" href="/physics">See the tank →</a>
           </article>
@@ -81,6 +82,7 @@ import { identity, techFeatured, techMore, essays } from '../data/site';
       <section class="section" aria-label="Contact">
         <div class="section__head">
           <h2 class="title">Write to me</h2>
+          <p class="note">Open to remote and contract roles in full-stack and AI engineering.</p>
         </div>
         <div class="actions">
           <a class="btn btn--gold" href={`mailto:${identity.email}`}>{identity.email}</a>

@@ -7,8 +7,8 @@
 export const identity = {
   name: 'Justice Thinker',
   legalName: 'Emmanuel Isaac',
-  role: 'AI & Software Developer',
-  statement: 'I build software, study physics, and argue competitively.',
+  role: 'Full-stack & AI engineer · Enugu, Nigeria',
+  statement: "I build AI products and full-stack apps, trained as a physicist, and argue for sport. Right now I'm building Atelity, a memory for the relationships your work depends on.",
   email: 'justicethinker@justicethinker.com',
   github: 'https://github.com/justicethinker',
   githubHandle: 'github.com/justicethinker',
@@ -119,7 +119,7 @@ export const techMore: Repo[] = [
     name: 'notetoself_app',
     url: 'https://github.com/justicethinker/notetoself_app',
     language: 'Dart · Flutter',
-    body: 'Keeps audio recordings from getting lost; helps with memory.',
+    body: 'Built after I lost every recording on my phone: keeps audio safe and helps you remember what was in it.',
   },
   {
     name: 'First_ML_Projects',
@@ -301,6 +301,10 @@ export const essays: Essay[] = [
 
 export const physicsInterests = [
   {
+    name: 'Electromagnetism',
+    body: 'Fields, induction and resonance: the physics that makes wireless power work.',
+  },
+  {
     name: 'Quantum mechanics',
     body: 'How small systems behave, and what that means for computing with them.',
   },
@@ -310,11 +314,7 @@ export const physicsInterests = [
   },
   {
     name: 'Computational physics',
-    body: 'Numerical models in Python. I model first, then argue from the data.',
-  },
-  {
-    name: 'Instrumentation',
-    body: 'Building the measuring apparatus when nothing affordable resolves the effect.',
+    body: 'Numerical models in Python. Model first, then argue from the data.',
   },
 ];
 
