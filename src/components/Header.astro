@@ -1,0 +1,27 @@
+---
+import { navPrimary } from '../data/site';
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const current = (href: string) => (path === (href.replace(/\/+$/, '') || '/') ? 'page' : undefined);
+---
+<header class="top">
+  <div class="wrap top__inner">
+    <a class="mark" href="/" aria-label="Justice Thinker, home">
+      <svg class="mark__dot" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <circle cx="12" cy="12" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55" />
+        <circle cx="12" cy="12" r="2.2" fill="#b23d0c" />
+      </svg>
+      Justice Thinker
+    </a>
+    <nav class="nav" aria-label="Primary">
+      {navPrimary.map((n) => <a href={n.href} aria-current={current(n.href)}>{n.label}</a>)}
+      <a class="btn btn--solid btn--small" href="/#contact">Hire me</a>
+    </nav>
+  </div>
+  <nav class="mobile-nav" aria-label="Sections">
+    <ul class="wrap">
+      <li><a href="/" aria-current={current('/')}>Home</a></li>
+      {navPrimary.map((n) => <li><a href={n.href} aria-current={current(n.href)}>{n.label}</a></li>)}
+    </ul>
+  </nav>
+</header>

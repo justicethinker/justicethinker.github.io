@@ -1,0 +1,87 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Contact from '../components/Contact.astro';
+import WorkCard from '../components/WorkCard.astro';
+import { atelity, availability, stack, techFeatured, techMore, identity } from '../data/site';
+---
+<Layout
+  title="Work & Projects — Ikechukwu Emmanuel Isaac (Justice Thinker), Full-Stack & AI Engineer, Nigeria"
+  description="Projects by Ikechukwu Emmanuel Isaac (Justice Thinker), a Full-Stack & AI Engineer in Nigeria: Atelity, offline-first apps, real-time feeds, AI agents and MCP tools."
+>
+  <header class="page-head">
+    <div class="wrap">
+      <p class="label label--ember">Work</p>
+      <h1>I build products end to end.</h1>
+      <p>Python and TypeScript, from the database to the model to the screen. {availability}</p>
+    </div>
+  </header>
+
+  <section class="section" aria-labelledby="now-title">
+    <div class="wrap split light">
+      <div>
+        <p class="label label--ember">Now building</p>
+        <h2 id="now-title" style="font-size:clamp(2rem,4.6vw,3.25rem);margin-top:1rem">Atelity</h2>
+      </div>
+      <div class="prose">
+        <p class="big-quote">{atelity.line}</p>
+        <p>{atelity.who} You record a 30-second voice note after meeting someone. Atelity remembers the details, reminds you when it matters and drafts the follow-up.</p>
+        <p>{atelity.origin}</p>
+        <dl class="facts" style="margin-top:0.5rem">
+          {atelity.status.map((s) => <div><dt>{s.k}</dt><dd>{s.v}</dd></div>)}
+        </dl>
+        <p><a href={atelity.url}>atelity.com</a> · <a href={atelity.x}>{atelity.xHandle}</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="stack-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label label--ember">Stack</p>
+        <h2 id="stack-title">What I work with.</h2>
+      </div>
+      <div class="stack">
+        {stack.map((g) => (
+          <div>
+            <h3>{g.group}</h3>
+            <ul>{g.items.map((i) => <li><span class="chip">{i}</span></li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="featured-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label label--ember">Featured</p>
+        <h2 id="featured-title">Projects with the most behind them.</h2>
+      </div>
+      <div class="cards cards--3">
+        {techFeatured.map((r, i) => <WorkCard repo={r} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="more-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label label--ember">The rest</p>
+        <h2 id="more-title">Experiments, learning and smaller builds.</h2>
+        <p>Everything here is a public repository. Some are finished, some are notes from learning in the open.</p>
+      </div>
+      <ul class="list">
+        {techMore.map((r) => (
+          <li>
+            <a href={r.url}>{r.name}</a>
+            <p>{r.body}</p>
+            <span class="label">{r.language}</span>
+          </li>
+        ))}
+      </ul>
+      <a class="more-link" href={identity.github}>Everything on GitHub <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
+  <Contact />
+</Layout>

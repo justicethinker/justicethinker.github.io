@@ -1,100 +1,61 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Contact from '../components/Contact.astro';
 import { debateResults, debateRules } from '../data/site';
 ---
-
 <Layout
-  title="Debate"
-  description="Justice Thinker's debate record: judging, competing and coaching across Nigeria and West Africa."
+  title="Debate — Ikechukwu Emmanuel Isaac (Justice Thinker), Debater, Judge & Coach, Nigeria"
+  description="The debating record of Ikechukwu Emmanuel Isaac (Justice Thinker), a Full-Stack & AI Engineer in Nigeria: Débatteur d'Or nominee, university debate judge and coach."
 >
-  <div class="stage" data-scale-stage>
-    <canvas class="stage__canvas" data-scale-canvas aria-hidden="true"></canvas>
-    <div class="stage__scrim stage__scrim--scales" aria-hidden="true"></div>
-
-    <script
-      type="application/json"
-      data-scale-data
-      set:html={JSON.stringify(debateResults.map((r) => ({ placing: r.placing, event: r.event })))}
-    />
-  </div>
-
-  <div class="page">
-    <div class="shell">
-      <section class="opener plate" aria-label="Introduction">
-        <p class="kicker">Debate</p>
-        <h1 class="display display--md">
-          Debate <span class="gold">record.</span>
-        </h1>
-        <p class="lede" data-selectable>
-          I judge, compete and coach in university debating across Nigeria and West
-          Africa. Drag an entry onto a side of the scale to weigh it.
-        </p>
-      </section>
-
-      <section class="section" data-balance-next aria-label="Results">
-        <div class="section__head plate">
-          <h2 class="title">Record</h2>
-          <p class="note">Judging, competing and awards.</p>
-        </div>
-
-        <p class="sr-only" id="weigh-hint">
-          Press the left arrow key to put this result on the left side of the scale,
-          or the right arrow key to put it on the right side.
-        </p>
-
-        <div class="cards" data-reveal-group>
-          {
-            debateResults.map((result, i) => (
-              <article
-                class="card card--weigh"
-                role="button"
-                tabindex="0"
-                aria-describedby="weigh-hint"
-                aria-label={`${result.event} — drag onto a side, or press the left or right arrow to place it`}
-                data-weigh-index={i}
-                data-reveal
-              >
-                <span class="card__meta">
-                  {result.when} · {result.placing} · {result.format}
-                </span>
-                <h3 class="card__name">{result.event}</h3>
-                <p class="card__body">{result.body}</p>
-                <span class="card__weigh">Drag onto a side · ← left · → right</span>
-              </article>
-            ))
-          }
-        </div>
-      </section>
-
-      <section class="section" aria-label="The four rules">
-        <div class="section__head">
-          <h2 class="title">Four rules</h2>
-          <p class="note">I use these for papers and code reviews too.</p>
-        </div>
-
-        <div class="cards cards--two" data-reveal-group>
-          {
-            debateRules.map((rule, i) => (
-              <article class="card" data-tilt data-reveal>
-                <span class="gate__index">0{i + 1}</span>
-                <h3 class="card__name">{rule.name}</h3>
-                <p class="card__body">{rule.body}</p>
-              </article>
-            ))
-          }
-        </div>
-      </section>
+  <header class="page-head">
+    <div class="wrap">
+      <p class="label label--ember">Debate</p>
+      <h1>I argue for sport, and judge and coach others.</h1>
+      <p>I compete, adjudicate and coach in Nigerian and West African university debating. It's where I learned to say a thing once and make it hold.</p>
     </div>
-  </div>
+  </header>
 
-  <aside class="hud hud--aside" aria-label="Balance controls">
-    <button class="to-top" type="button" data-scale-add-for>Weigh a win for</button>
-    <button class="to-top" type="button" data-scale-add-against>Weigh a win against</button>
-    <button class="to-top" type="button" data-scale-reset>Reset</button>
-    <p class="hud__hint" data-scale-readout role="status"></p>
-  </aside>
+  <section class="section" aria-labelledby="rules-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label label--ember">How I argue</p>
+        <h2 id="rules-title">Four rules.</h2>
+        <p>The standard I hold an argument to, whether I am making it or judging it.</p>
+      </div>
+      <ol class="rules">
+        {debateRules.map((r, i) => (
+          <li>
+            <span class="label label--ember">Rule {String(i + 1).padStart(2, '0')}</span>
+            <h3>{r.name}</h3>
+            <p>{r.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
 
-  <script>
-    import '../scripts/scales.js';
-  </script>
+  <section class="section" aria-labelledby="record-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label label--ember">Record</p>
+        <h2 id="record-title">Where I've debated, judged and organised.</h2>
+      </div>
+      <ul class="record">
+        {debateResults.map((r) => (
+          <li>
+            <span class="label">{r.when}</span>
+            <div><h3>{r.event}</h3><p>{r.body}</p></div>
+            <span class="placing">{r.placing}</span>
+          </li>
+        ))}
+        <li>
+          <span class="label">Ongoing</span>
+          <div><h3>Coaching</h3><p>About 50 students coached.</p></div>
+          <span class="placing">Coach</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <Contact />
 </Layout>

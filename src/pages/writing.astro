@@ -1,101 +1,38 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { identity, essays } from '../data/site';
+import Contact from '../components/Contact.astro';
+import { essays, identity } from '../data/site';
 ---
-
 <Layout
-  title="Writing"
-  description="Essays by Justice Thinker, published on Substack."
+  title="Writing — Essays by Ikechukwu Emmanuel Isaac (Justice Thinker), Nigeria"
+  description="Essays by Ikechukwu Emmanuel Isaac (Justice Thinker), a Full-Stack & AI Engineer in Nigeria, on judgment, argument and choosing who you become. Published on Substack."
 >
-  <div class="stage" data-titles-stage>
-    <canvas class="stage__canvas" data-titles-canvas aria-hidden="true"></canvas>
-    <div class="stage__scrim stage__scrim--titles" aria-hidden="true"></div>
-
-    <script
-      type="application/json"
-      data-titles-data
-      set:html={JSON.stringify(essays.map((e) => ({ title: e.title, url: e.url })))}
-    />
-  </div>
-
-  <div class="page">
-    <div class="shell">
-      <section class="opener plate" aria-label="Introduction" data-titles-content>
-        <p class="kicker">Writing</p>
-        <h1 class="display display--md">
-          Essays.
-        </h1>
-        <p class="lede" data-selectable>
-          I write about how people think, judge and argue, and what it costs to get it wrong. Hover a title to scatter it; click one to read it.
-        </p>
-        <div class="actions">
-          <a class="btn btn--gold" href={identity.substack} target="_blank" rel="noopener noreferrer">
-            Open the Substack
-          </a>
-        </div>
-      </section>
-
-      <section class="section" data-titles-next aria-label="Essays">
-        <div data-reveal-group>
-          {
-            essays.map((essay) => (
-              <a
-                class="essay"
-                href={essay.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-reveal
-              >
-                <span class="card__meta">
-                  <time datetime={essay.iso}>{essay.date}</time> · Substack
-                </span>
-                <h2 class="essay__title">{essay.title}</h2>
-                <p class="essay__body">{essay.body}</p>
-                <span class="essay__go">Read the essay →</span>
-              </a>
-            ))
-          }
-        </div>
-      </section>
-
-      <section class="section" aria-label="Subscribe">
-        <div class="section__head" data-reveal>
-          <h2 class="title">Subscribe</h2>
-          <p class="note">New essays go straight to your inbox. It's free.</p>
-        </div>
-        <div class="actions" data-reveal>
-          <a class="btn btn--ghost" href={`${identity.substack}/archive`} target="_blank" rel="noopener noreferrer">
-            Browse the archive
-          </a>
-        </div>
-      </section>
+  <header class="page-head">
+    <div class="wrap">
+      <p class="label label--ember">Writing</p>
+      <h1>Essays on thinking clearly.</h1>
+      <p>I write about judgment, argument and choosing who you become. Everything is on Substack, newest first.</p>
     </div>
+  </header>
 
-    {/*
-      The scene's titles are drawn on a canvas, which is invisible to assistive
-      technology and to crawlers. These are the real links: off screen until a
-      keyboard reaches them, then they appear as a panel, and focusing one
-      lights its title in the scene.
-    */}
-    <nav class="link-shelf" data-title-links aria-label="Essays">
-      <p class="link-shelf__head">Essays</p>
-      {
-        essays.map((essay, i) => (
-          <a
-            class="link"
-            href={essay.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-sends={`essay:${i}`}
-          >
-            {essay.title}
-          </a>
-        ))
-      }
-    </nav>
-  </div>
+  <section class="section" aria-label="Essays">
+    <div class="wrap">
+      <ul class="essays">
+        {essays.map((e) => (
+          <li>
+            <a href={e.url}>
+              <time class="label" datetime={e.iso}>{e.date}</time>
+              <div><h2 style="font-size:clamp(1.5rem,3vw,2.1rem)">{e.title}</h2><p>{e.body}</p></div>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="hero__actions" style="margin-top:2.5rem">
+        <a class="btn btn--solid" href={identity.substack}>Subscribe on Substack <span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
 
-  <script>
-    import '../scripts/titles.js';
-  </script>
+  <Contact />
 </Layout>

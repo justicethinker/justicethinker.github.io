@@ -1,88 +1,85 @@
 ---
-import '../styles/global.css';
-import Nav from '../components/Nav.astro';
+import '../styles/site.css';
+import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { identity } from '../data/site';
 
 export interface Props {
   title: string;
-  description?: string;
-  hero3d?: boolean;
+  description: string;
+  home?: boolean;
 }
+const { title, description, home = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, 'https://justicethinker.com').href;
+const ogImage = 'https://justicethinker.com/og.jpg';
 
-const { title, description = identity.statement, hero3d = false } = Astro.props;
-
-const fullTitle =
-  title === identity.name ? `${identity.name} — ${identity.role}` : `${title} — ${identity.name}`;
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const ogImage = new URL('/og.jpg', Astro.site).href;
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://justicethinker.com/#person',
+  name: identity.name,
+  alternateName: ['Justice Thinker', 'Emmanuel Ikechukwu', identity.handle],
+  jobTitle: identity.jobTitle,
+  url: 'https://justicethinker.com/',
+  image: 'https://justicethinker.com/portrait.jpg',
+  email: `mailto:${identity.email}`,
+  address: { '@type': 'PostalAddress', addressLocality: 'Enugu', addressCountry: 'NG' },
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Federal University of Technology Owerri',
+    alternateName: 'FUTO',
+  },
+  founder: { '@type': 'Organization', name: 'Atelity', url: 'https://atelity.com' },
+  knowsAbout: ['Full-stack development', 'Artificial intelligence', 'Machine learning', 'Python', 'TypeScript', 'Physics', 'Competitive debate'],
+  sameAs: [identity.github, identity.linkedin, identity.substack],
+};
+const graph = home
+  ? [person, { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Justice Thinker', url: 'https://justicethinker.com/', author: { '@id': 'https://justicethinker.com/#person' } }]
+  : [person];
 ---
-
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>{fullTitle}</title>
+    <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <meta name="author" content={identity.name} />
+    <meta name="theme-color" content="#f4efe6" />
+    <meta name="color-scheme" content="light" />
 
-    <meta name="theme-color" content="#0a0a0b" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="author" content={identity.legalName} />
-
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={fullTitle} />
+    <meta property="og:type" content={home ? 'profile' : 'website'} />
+    <meta property="og:site_name" content="Justice Thinker" />
+    <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Justice Thinker — Ikechukwu Emmanuel Isaac" />
+    <meta property="og:locale" content="en_NG" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-
-    <link
-      rel="preload"
-      href="/fonts/instrument-serif-400-normal.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-
-    {hero3d && (
-      <script
-        type="importmap"
-        set:html={JSON.stringify({
-          imports: {
-            three: 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js',
-          },
-        })}
-      />
-    )}
-
-    <script is:inline>
-      // Reveals are armed only when scripting is available, so no content is
-      // ever hidden from a reader whose browser never runs the script.
-      document.documentElement.classList.add('js');
-    </script>
+    <link rel="sitemap" href="/sitemap.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Justice Thinker on Substack" href="https://justicethinker.substack.com/feed" />
+    <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/instrument-sans-var.woff2" as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json" set:html={JSON.stringify(graph.length === 1 ? graph[0] : graph)} />
   </head>
-
   <body>
     <a class="skip" href="#main">Skip to content</a>
-
-    <Nav />
-
+    <Header />
     <main id="main">
       <slot />
     </main>
-
     <Footer />
-
     <script>
-      import '../scripts/motion.js';
-      // The declarative content ↔ scene channel: [data-sends] blocks report
-      // their hover, focus and press to the animation behind the page.
-      import '../scripts/content-bridge.js';
+      import '../scripts/field.js';
     </script>
   </body>
 </html>

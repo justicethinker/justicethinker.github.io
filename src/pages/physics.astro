@@ -1,106 +1,54 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Contact from '../components/Contact.astro';
 import { physicsInterests, background } from '../data/site';
 ---
-
 <Layout
-  title="Physics"
-  description="Physics background and interests."
+  title="Physics — Ikechukwu Emmanuel Isaac (Justice Thinker), BSc Physics, FUTO, Nigeria"
+  description="Ikechukwu Emmanuel Isaac (Justice Thinker), Full-Stack & AI Engineer in Nigeria, holds a BSc in Physics from FUTO (2025) with a thesis on wireless energy transmission."
 >
-  <div class="stage" data-wave-stage data-drag="true">
-    <canvas
-      class="stage__canvas"
-      data-wave-canvas
-      aria-label="Interactive wave interference simulation with draggable emitters"
-    ></canvas>
-    <div class="stage__scrim stage__scrim--wave" aria-hidden="true"></div>
-  </div>
-
-  <div class="page">
-    <div class="shell">
-      <section class="opener plate" aria-label="Introduction">
-        <p class="kicker">Physics</p>
-        <h1 class="display display--md">
-          Physics.
-        </h1>
-        <p class="lede" data-selectable>
-          I studied physics at FUTO, with a thesis on wireless energy transmission.
-          Below is what I'm drawn to, and a wave tank you can play with.
-        </p>
-      </section>
-
-      <section class="section" aria-label="Thesis area" data-sends="boundary">
-        <div class="section__head plate" data-wave-obstacle>
-          <h2 class="title">Thesis</h2>
-        </div>
-
-        <div class="prose" data-selectable>
-          <p>
-            My final-year thesis was on wireless energy transmission: getting power from
-            a source to a device with no wire between them.
-          </p>
-          <p>
-            It is the same physics as the tank on this page. Fields spread, overlap and
-            fade with distance, and the real question is how much energy actually
-            arrives where you want it.
-          </p>
-        </div>
-      </section>
-
-      <section class="section" aria-label="Research interests" data-sends="interests">
-        <div class="section__head plate" data-wave-obstacle>
-          <h2 class="title">What I'm drawn to</h2>
-        </div>
-
-        <div class="cards cards--two">
-          {
-            physicsInterests.map((area) => (
-              <article class="card" data-tilt data-wave-obstacle data-sends={area.name}>
-                <h3 class="card__name">{area.name}</h3>
-                <p class="card__body">{area.body}</p>
-              </article>
-            ))
-          }
-        </div>
-      </section>
-
-      <section class="section" aria-label="Background" data-sends="background">
-        <div class="section__head plate" data-wave-obstacle>
-          <h2 class="title">Background</h2>
-        </div>
-
-        <div class="facts">
-          <div class="facts__row" data-wave-obstacle>
-            <span class="facts__key">Degree</span>
-            <p class="facts__value">
-              <strong>{background.degree}</strong> — {background.detail}
-            </p>
-          </div>
-          <div class="facts__row" data-wave-obstacle>
-            <span class="facts__key">Thesis</span>
-            <p class="facts__value">{background.thesis}</p>
-          </div>
-          <div class="facts__row" data-wave-obstacle>
-            <span class="facts__key">Coaching</span>
-            <p class="facts__value">{background.coaching}</p>
-          </div>
-        </div>
-      </section>
-
-      <aside class="hud hud--bottom" aria-label="Wave tank controls">
-        <label>
-          Frequency
-          <input type="range" data-wave-freq min="8" max="26" value="14" step="1" />
-        </label>
-        <button class="to-top" type="button" data-wave-add>Add a source</button>
-        <button class="to-top" type="button" data-wave-reset>Reset</button>
-        <button class="to-top" type="button" data-wave-pause aria-pressed="false">Pause</button>
-        <span class="hud__hint" data-wave-readout role="status"></span>
-      </aside>
+  <header class="page-head">
+    <div class="wrap">
+      <p class="label label--ember">Physics</p>
+      <h1>Model first. Then argue from the data.</h1>
+      <p>I trained as a physicist. It still shapes how I build software.</p>
     </div>
-  </div>
+  </header>
 
-  <script>
-    import '../scripts/wave.js';
-  </script>
+  <section class="section" aria-labelledby="degree-title">
+    <div class="wrap split light">
+      <div>
+        <p class="label label--ember">Degree</p>
+        <h2 id="degree-title" style="font-size:clamp(2rem,4.6vw,3.25rem);margin-top:1rem">{background.degree}</h2>
+      </div>
+      <div class="prose">
+        <dl class="facts">
+          <div><dt>School</dt><dd>Federal University of Technology Owerri (FUTO)</dd></div>
+          <div><dt>Year</dt><dd>2025</dd></div>
+          <div><dt>Thesis</dt><dd>Wireless energy transmission</dd></div>
+        </dl>
+        <p>The idea is old and still striking: a changing field in one place can do work somewhere else, with nothing in between. That thesis is why there's a field drawn behind my photo on the home page.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="interests-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label label--ember">Interests</p>
+        <h2 id="interests-title">The parts of physics I keep coming back to.</h2>
+      </div>
+      <ul class="rules">
+        {physicsInterests.map((p, i) => (
+          <li>
+            <span class="label label--ember">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{p.name}</h3>
+            <p>{p.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Contact />
 </Layout>

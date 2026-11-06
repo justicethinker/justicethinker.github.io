@@ -5,39 +5,64 @@
  */
 
 export const identity = {
-  name: 'Justice Thinker',
-  legalName: 'Emmanuel Isaac',
-  role: 'Full-stack & AI engineer · Enugu, Nigeria',
-  statement: "I build AI products and full-stack apps, trained as a physicist, and argue for sport. Right now I'm building Atelity, a memory for the relationships your work depends on.",
+  name: 'Ikechukwu Emmanuel Isaac',
+  alias: 'Justice Thinker',
+  handle: 'justicethinker',
+  jobTitle: 'Full-Stack & AI Engineer',
+  city: 'Enugu',
+  country: 'Nigeria',
+  role: 'Full-Stack & AI Engineer · Enugu, Nigeria',
+  statement:
+    'I build AI products and full-stack apps. I trained as a physicist and I argue for sport. Right now I am building Atelity.',
   email: 'justicethinker@justicethinker.com',
   github: 'https://github.com/justicethinker',
   githubHandle: 'github.com/justicethinker',
   linkedin: 'https://www.linkedin.com/in/justice-thinker/',
   substack: 'https://justicethinker.substack.com',
   substackHandle: 'justicethinker.substack.com',
-  site: 'justicethinker.github.io',
+  site: 'https://justicethinker.com',
 } as const;
+
+export const atelity = {
+  name: 'Atelity',
+  url: 'https://atelity.com',
+  x: 'https://x.com/Atelityhq',
+  xHandle: '@Atelityhq',
+  line: 'An AI memory for the relationships your work depends on.',
+  who: 'Built first for real estate agents and recruiters: people whose work runs on remembering people.',
+  steps: [
+    { title: 'Meet someone', body: 'A client, a candidate, a contact at an event.' },
+    { title: 'Record 30 seconds', body: 'Say what you learned in a short voice note.' },
+    { title: 'Atelity remembers', body: 'It keeps the details, reminds you when it matters, and drafts the follow-up.' },
+  ],
+  status: [
+    { k: 'Now', v: 'MVP in testing with real users' },
+    { k: 'Next', v: 'Public launch planned for December 2026' },
+    { k: 'Program', v: 'iDICE Startup Bridge Founders Lab, Cohort 2' },
+  ],
+  origin:
+    'It started when I lost every audio recording on my phone. I built notetoself_app so that could never happen again. Atelity grew out of that.',
+};
+
+export const availability = 'Open to remote and contract roles in full-stack, backend and AI engineering.';
+
+export const stack = [
+  { group: 'Languages', items: ['Python', 'TypeScript', 'Dart'] },
+  { group: 'Front end & mobile', items: ['React', 'React Native', 'Flutter'] },
+  { group: 'Back end & data', items: ['Node.js', 'Express', 'PostgreSQL', 'Supabase', 'AWS'] },
+  { group: 'AI', items: ['LLM apps', 'AI agents', 'MCP tools', 'Speech-to-text pipelines'] },
+];
 
 export type NavItem = {
   href: string;
   label: string;
 };
 
-/** Five sections. Nothing else. */
 export const navPrimary: NavItem[] = [
-  { href: '/tech', label: 'Tech' },
-  { href: '/debate', label: 'Debate' },
-  { href: '/writing', label: 'Writing' },
-  { href: '/physics', label: 'Physics' },
-];
-
-/** Everything, for the menu and the footer. */
-export const navAll: NavItem[] = [
-  { href: '/', label: 'Home' },
-  { href: '/tech', label: 'Tech' },
-  { href: '/debate', label: 'Debate' },
-  { href: '/writing', label: 'Writing' },
-  { href: '/physics', label: 'Physics' },
+  { href: '/work/', label: 'Work' },
+  { href: '/debate/', label: 'Debate' },
+  { href: '/physics/', label: 'Physics' },
+  { href: '/writing/', label: 'Writing' },
 ];
 
 /* ------------------------------------------------------------------ tech */
@@ -250,7 +275,7 @@ export const debateRules = [
   },
   {
     name: 'Evidence',
-    body: 'Claims have to survive scrutiny — sourced and reasoned, not asserted.',
+    body: 'Claims must survive scrutiny.',
   },
   {
     name: 'Empathy',
@@ -310,7 +335,7 @@ export const physicsInterests = [
   },
   {
     name: 'Wave dynamics',
-    body: 'Propagation, interference and resonance. The patterns on this page are computed.',
+    body: 'Propagation, interference and resonance. The field drawn on the home page is two interfering waves, computed live.',
   },
   {
     name: 'Computational physics',
@@ -322,5 +347,5 @@ export const background = {
   degree: 'BSc Physics',
   detail: 'Federal University of Technology Owerri (FUTO) · 2025',
   thesis: 'Thesis on wireless energy transmission.',
-  coaching: 'Debate coach and judge — 50 students coached.',
+  coaching: 'About 50 students coached.',
 };

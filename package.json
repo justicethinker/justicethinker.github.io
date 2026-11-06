@@ -1,18 +1,14 @@
 {
   "name": "justice-thinker",
   "type": "module",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "private": true,
-  "description": "Personal site of Justice Thinker (Emmanuel Isaac) — software, physics and debate.",
+  "description": "Personal site of Ikechukwu Emmanuel Isaac (Justice Thinker): full-stack & AI engineer, physicist, debater.",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "og": "node tools/gen-og.mjs",
-    "fonts": "node tools/fetch-fonts.mjs",
-    "check": "node tools/audit.mjs && node tools/check-interactions.mjs",
-    "probe": "node tools/probe-hero.mjs"
+    "preview": "astro preview"
   },
   "dependencies": {
     "astro": "^4.0.0"

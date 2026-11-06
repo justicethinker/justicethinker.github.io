@@ -1,99 +1,144 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Portrait from '../components/Portrait.astro';
-import { identity, techFeatured, techMore, essays } from '../data/site';
+import Contact from '../components/Contact.astro';
+import WorkCard from '../components/WorkCard.astro';
+import { identity, atelity, availability, techFeatured, essays } from '../data/site';
+
+const selected = ['offline-task-manager', 'GAT-Frontend', 'world-wire', 'Notion-Ghostwriter']
+  .map((n) => techFeatured.find((r) => r.name === n)!)
+  .filter(Boolean);
 ---
-
-<Layout title={identity.name} description={identity.statement} hero3d>
-  <div class="stage" data-hero-stage>
-    <canvas class="stage__canvas" data-hero-field aria-hidden="true"></canvas>
-    <div class="stage__scrim stage__scrim--field" aria-hidden="true"></div>
-  </div>
-
-  <div class="page">
-    <div class="shell">
-      <section class="hero hero--me plate" aria-label="Introduction">
-        <div class="hero__copy">
-          <p class="kicker">{identity.role}</p>
-          <h1 class="display">
-            Justice <span class="gold">Thinker</span>
-          </h1>
-          <p class="lede" data-selectable>
-            {identity.statement}
-          </p>
-          <div class="actions">
-            <a class="btn btn--gold" href="/tech">See the work</a>
-            <a class="btn btn--ghost" href="https://atelity.com" target="_blank" rel="noopener noreferrer">Atelity</a>
-            <a class="btn btn--ghost" href={identity.substack} target="_blank" rel="noopener noreferrer">
-              Read the essays
-            </a>
-          </div>
-          <p class="hero__hint">Hover or drag to move the particles</p>
+<Layout
+  home
+  title="Ikechukwu Emmanuel Isaac (Justice Thinker) — Full-Stack & AI Engineer, Nigeria"
+  description="Ikechukwu Emmanuel Isaac, known online as Justice Thinker, is a Full-Stack & AI Engineer in Enugu, Nigeria, and founder of Atelity. Open to remote and contract roles."
+>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero__grid">
+      <div>
+        <p class="label">Full-Stack &amp; AI Engineer · Enugu, Nigeria</p>
+        <h1 id="hero-title" style="margin-top:1.4rem">
+          <span class="line">Ikechukwu</span>
+          <span class="line">Emmanuel Isaac</span>
+          <span class="hero__alias">known online as Justice Thinker</span>
+        </h1>
+        <p class="hero__lead">
+          I build AI products and full-stack apps. I trained as a physicist and I argue for sport.
+          Right now I'm building <strong>Atelity</strong>, a memory for the people your work depends on.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--solid" href="#contact">Hire me <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn--line" href="#atelity">See Atelity</a>
         </div>
+        <p class="status"><span class="status__dot" aria-hidden="true"></span>{availability}</p>
+      </div>
 
-        <Portrait />
-      </section>
-
-      <section class="section" aria-label="The four sections">
-        <div class="section__head">
-          <h2 class="title">What's here</h2>
+      <figure class="figure">
+        <canvas class="figure__field" data-field aria-hidden="true"></canvas>
+        <div class="figure__photo">
+          <picture>
+            <source srcset="/portrait-small.webp" type="image/webp" />
+            <img src="/portrait-small.jpg" alt="Ikechukwu Emmanuel Isaac, smiling, in a dark sweater vest" width="640" height="853" loading="eager" fetchpriority="high" decoding="async" />
+          </picture>
         </div>
-
-        <div class="cards cards--two" data-reveal-group>
-          <article class="card" data-tilt data-sends="register:tech" data-reveal>
-            <span class="gate__index">01</span>
-            <h3 class="card__name">Tech</h3>
-            <p class="card__body">
-              {techFeatured.length} featured builds and {techMore.length} more repos: AI agents,
-              offline-first apps, bots and backends. Every one links to its code.
-            </p>
-            <a class="card__link" href="/tech">Browse the repos →</a>
-          </article>
-
-          <article class="card" data-tilt data-sends="register:debate" data-reveal>
-            <span class="gate__index">02</span>
-            <h3 class="card__name">Debate</h3>
-            <p class="card__body">
-              Where I judge, compete and coach, and the four rules I bring to every argument.
-            </p>
-            <a class="card__link" href="/debate">Debate record →</a>
-          </article>
-
-          <article class="card" data-tilt data-sends="register:writing" data-reveal>
-            <span class="gate__index">03</span>
-            <h3 class="card__name">Writing</h3>
-            <p class="card__body">
-              Essays on how we think, judge and argue. Latest: “{essays[0].title}”.
-            </p>
-            <a class="card__link" href="/writing">Read the essays →</a>
-          </article>
-
-          <article class="card" data-tilt data-sends="register:physics" data-reveal>
-            <span class="gate__index">04</span>
-            <h3 class="card__name">Physics</h3>
-            <p class="card__body">
-              What I studied, my thesis on wireless energy transmission, and a wave tank you can play with.
-            </p>
-            <a class="card__link" href="/physics">See the tank →</a>
-          </article>
-        </div>
-      </section>
-
-      <section class="section" aria-label="Contact">
-        <div class="section__head">
-          <h2 class="title">Write to me</h2>
-          <p class="note">Open to remote and contract roles in full-stack and AI engineering.</p>
-        </div>
-        <div class="actions">
-          <a class="btn btn--gold" href={`mailto:${identity.email}`}>{identity.email}</a>
-          <a class="btn btn--ghost" href={identity.github} target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a class="btn btn--ghost" href={identity.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </div>
-      </section>
+        <figcaption><span class="label">Fig. 1</span>Two waves interfering behind me. My physics thesis was on wireless energy transmission.</figcaption>
+      </figure>
     </div>
-  </div>
+  </section>
 
-  <script>
-    import '../scripts/hero.js';
-  </script>
+  <section class="section night" id="atelity" aria-labelledby="atelity-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label label--ember">Now building · Founder</p>
+        <h2 id="atelity-title">Atelity: an AI memory for the <em>relationships</em> your work depends on.</h2>
+        <p>{atelity.who}</p>
+      </div>
+      <ol class="steps">
+        {atelity.steps.map((s) => <li><h3>{s.title}</h3><p>{s.body}</p></li>)}
+      </ol>
+      <div class="atelity__foot">
+        <blockquote class="origin">
+          <p>{atelity.origin}</p>
+          <cite>Why I'm building it</cite>
+        </blockquote>
+        <div>
+          <dl class="facts">
+            {atelity.status.map((s) => <div><dt>{s.k}</dt><dd>{s.v}</dd></div>)}
+          </dl>
+          <div class="atelity__actions">
+            <a class="btn btn--solid" href={atelity.url}>Visit atelity.com <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn btn--line" href={atelity.x}>{atelity.xHandle}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label label--ember">Selected work</p>
+        <h2 id="work-title">Things I've shipped in the open.</h2>
+        <p>Apps that keep working offline, real-time feeds, trading dashboards and AI tools. Each one is public on GitHub.</p>
+      </div>
+      <div class="cards">
+        {selected.map((r, i) => <WorkCard repo={r} index={i} />)}
+      </div>
+      <a class="more-link" href="/work/">All projects and my stack <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="about-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label label--ember">About</p>
+        <h2 id="about-title">Engineer. Physicist. Debater.</h2>
+        <p>Three trainings, one habit: get to what's true, then make it useful.</p>
+      </div>
+      <div class="trio">
+        <article>
+          <p class="label">Build</p>
+          <h3>The <em>engineer</em></h3>
+          <p>I write Python and TypeScript across the stack: React and React Native up front, Node, PostgreSQL and Supabase behind, AWS underneath. Lately that means LLM apps, AI agents, MCP tools and speech-to-text pipelines. I'm active in the GDG and DevFest community in South-East Nigeria.</p>
+          <a href="/work/">See the work</a>
+        </article>
+        <article>
+          <p class="label">Model</p>
+          <h3>The <em>physicist</em></h3>
+          <p>I hold a BSc in Physics from the Federal University of Technology Owerri (FUTO), 2025. My thesis was on wireless energy transmission. Physics taught me to model a problem before I argue about it.</p>
+          <a href="/physics/">Read about the physics</a>
+        </article>
+        <article>
+          <p class="label">Argue</p>
+          <h3>The <em>debater</em></h3>
+          <p>I debate, judge and coach in Nigerian and West African university debating. I was nominated for the Nigerian Débatteur d'Or in 2025 and 2026, and I've coached about 50 students.</p>
+          <a href="/debate/">See the record</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="writing-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label label--ember">Writing</p>
+        <h2 id="writing-title">Essays on thinking clearly.</h2>
+        <p>I write on Substack about judgment, argument and the courage to change.</p>
+      </div>
+      <ul class="essays">
+        {essays.map((e) => (
+          <li>
+            <a href={e.url}>
+              <time class="label" datetime={e.iso}>{e.date}</time>
+              <div><h3>{e.title}</h3><p>{e.body}</p></div>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a class="more-link" href={identity.substack}>Read on Substack <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
+  <Contact />
 </Layout>

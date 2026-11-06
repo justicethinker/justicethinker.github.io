@@ -1,0 +1,22 @@
+---
+import { identity, availability, atelity } from '../data/site';
+---
+<section class="section night contact" id="contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <p class="label label--ember">Contact</p>
+    <h2 id="contact-title" style="margin-top:1rem">Have something worth <em>building?</em></h2>
+    <a class="contact__mail" href={`mailto:${identity.email}`}>{identity.email}</a>
+    <div class="contact__grid">
+      <p>{availability} I work in Python and TypeScript across the stack, from the database to the model to the screen.</p>
+      <div>
+        <p class="label" style="margin-bottom:0.9rem">Elsewhere</p>
+        <div class="links">
+          <a href={identity.github} rel="me">GitHub</a>
+          <a href={identity.linkedin} rel="me">LinkedIn</a>
+          <a href={identity.substack} rel="me">Substack</a>
+          <a href={atelity.x}>Atelity on X</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,14 @@
+---
+import type { Repo } from '../data/site';
+interface Props { repo: Repo; index?: number }
+const { repo, index } = Astro.props;
+---
+<article class="card">
+  <div class="card__top">
+    <span class="label">{repo.language}</span>
+    {index !== undefined && <span class="label" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>}
+  </div>
+  <h3><a href={repo.url}>{repo.name}</a></h3>
+  <p>{repo.body}</p>
+  <span class="card__go" aria-hidden="true">View on GitHub →</span>
+</article>
