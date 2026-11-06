@@ -226,45 +226,65 @@ export type Result = {
   event: string;
   when: string;
   placing: string;
-  format: string;
-  body: string;
+  detail?: string;
 };
 
-export const debateResults: Result[] = [
+export type ResultGroup = { title: string; items: Result[] };
+
+export const debateHighlights = [
+  { figure: '2', label: 'Championship titles' },
+  { figure: '4th', label: 'Best Speaker, ANUDC 2025' },
+  { figure: '8', label: 'Elimination-round finishes' },
+  { figure: '2nd', label: 'Best Judge, NAUDC 2025' },
+];
+
+export const debateGroups: ResultGroup[] = [
   {
-    event: "Débatteur d'Or",
-    when: '2025 · 2026',
-    placing: 'Nominee',
-    format: 'Nigerian debating award',
-    body: 'Nominated two years running for the Nigerian Débatteur d’Or award.',
+    title: 'Championships',
+    items: [
+      { event: 'ANUDC Novice Championship (All Nigerian Universities Debating Championship)', when: '2024', placing: 'Champion' },
+      { event: 'World Spars League Debate Tournament', when: 'Online', placing: 'Champion' },
+    ],
   },
   {
-    event: 'All Nigerian Universities Debating Championship (ANUDC)',
-    when: '2026',
-    placing: 'Took part',
-    format: 'British Parliamentary',
-    body: 'On the tab at the national universities championship.',
+    title: 'Finals',
+    items: [
+      { event: 'All Nigerian Universities Debating Championship (ANUDC)', when: '2025', placing: 'First Runner-up', detail: 'On-site · 3rd breaking team' },
+      { event: 'Rivers State University Debate Open', when: '2025', placing: 'First Runner-up', detail: 'On-site · 3rd breaking team' },
+      { event: 'Africa Top Universities Debating Championship (ATUDC)', when: '2026', placing: 'Finalist', detail: 'Online · 3rd breaking team' },
+      { event: 'Africa Inter-Varsities Debating Championship', when: '2026', placing: 'Finalist', detail: 'Online · 5th breaking team' },
+    ],
   },
   {
-    event: 'US online debate tournaments',
-    when: '2025',
-    placing: 'Judge',
-    format: 'Online',
-    body: 'Volunteered as an adjudicator for online tournaments run from the US.',
+    title: 'Semifinals',
+    items: [
+      { event: 'West African Universities Debating Championship (WAUDC)', when: '2025', placing: 'Semifinalist', detail: 'Online · 13th breaking team' },
+      { event: 'All Nigerian Youth Debating Championship (ANYDC)', when: '2026', placing: 'Semifinalist', detail: 'On-site · 7th breaking team' },
+    ],
   },
   {
-    event: 'West African Universities Debating Championship (WA-UDC)',
-    when: '2024',
-    placing: 'Judge',
-    format: 'British Parliamentary',
-    body: 'Adjudicated rounds at the regional universities championship.',
+    title: 'Speaker awards',
+    items: [
+      { event: 'All Nigerian Universities Debating Championship (ANUDC)', when: '2025', placing: '4th Best Speaker' },
+      { event: 'All Nigerian Youth Debating Championship (ANYDC)', when: '2025', placing: '7th Best Speaker' },
+    ],
   },
   {
-    event: 'Tournament of Champions',
-    when: '2024',
-    placing: 'Organiser',
-    format: 'Sponsorship',
-    body: 'Brought in sponsorship to help the competition run.',
+    title: 'Adjudication',
+    items: [
+      { event: 'Nigerian Universities Debating Championship (NAUDC)', when: '2025', placing: 'Final Judge' },
+      { event: 'Nigerian Universities Debating Championship (NAUDC)', when: '2025', placing: '2nd Best Judge' },
+      { event: 'US online debate tournaments', when: '2025', placing: 'Judge', detail: 'Volunteer adjudicator' },
+      { event: 'West African Universities Debating Championship (WA-UDC)', when: '2024', placing: 'Judge' },
+    ],
+  },
+  {
+    title: 'Recognition & service',
+    items: [
+      { event: "Débatteur d'Or, Nigerian debating award", when: '2025 · 2026', placing: 'Nominee' },
+      { event: 'Tournament of Champions', when: '2024', placing: 'Organiser', detail: 'Brought in sponsorship' },
+      { event: 'Coaching', when: 'Ongoing', placing: 'Coach', detail: 'About 50 students coached' },
+    ],
   },
 ];
 

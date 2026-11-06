@@ -1,19 +1,45 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Contact from '../components/Contact.astro';
-import { debateResults, debateRules } from '../data/site';
+import { debateGroups, debateHighlights, debateRules } from '../data/site';
 ---
 <Layout
   title="Debate — Ikechukwu Emmanuel Isaac (Justice Thinker), Debater, Judge & Coach, Nigeria"
-  description="The debating record of Ikechukwu Emmanuel Isaac (Justice Thinker), a Full-Stack & AI Engineer in Nigeria: Débatteur d'Or nominee, university debate judge and coach."
+  description="Debate record of Ikechukwu Emmanuel Isaac (Justice Thinker), Full-Stack & AI Engineer in Nigeria: ANUDC Novice Champion 2024, ANUDC 2025 runner-up and 4th Best Speaker, 2nd Best Judge NAUDC 2025."
 >
   <header class="page-head">
     <div class="wrap">
       <p class="label label--ember">Debate</p>
-      <h1>I argue for sport, and judge and coach others.</h1>
-      <p>I compete, adjudicate and coach in Nigerian and West African university debating. It's where I learned to say a thing once and make it hold.</p>
+      <h1>I argue for sport. Sometimes I win.</h1>
+      <p>I compete, judge and coach in Nigerian, West African and African university debating. Two titles, eight elimination-round finishes, a top-four speaker award and a best-judge award so far. It's where I learned to say a thing once and make it hold.</p>
+      <dl class="stats">
+        {debateHighlights.map((h) => (<div><dt>{h.label}</dt><dd>{h.figure}</dd></div>))}
+      </dl>
     </div>
   </header>
+
+  <section class="section" aria-labelledby="record-title">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="label label--ember">Record</p>
+        <h2 id="record-title">Titles, breaks and awards.</h2>
+      </div>
+      {debateGroups.map((g) => (
+        <div class="record-group">
+          <h3 class="label record-group__title">{g.title}</h3>
+          <ul class="record">
+            {g.items.map((r) => (
+              <li>
+                <span class="label">{r.when}</span>
+                <div><h4>{r.event}</h4>{r.detail && <p>{r.detail}</p>}</div>
+                <span class="placing">{r.placing}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
 
   <section class="section" aria-labelledby="rules-title">
     <div class="wrap">
@@ -31,29 +57,6 @@ import { debateResults, debateRules } from '../data/site';
           </li>
         ))}
       </ol>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="record-title">
-    <div class="wrap">
-      <div class="section__head">
-        <p class="label label--ember">Record</p>
-        <h2 id="record-title">Where I've debated, judged and organised.</h2>
-      </div>
-      <ul class="record">
-        {debateResults.map((r) => (
-          <li>
-            <span class="label">{r.when}</span>
-            <div><h3>{r.event}</h3><p>{r.body}</p></div>
-            <span class="placing">{r.placing}</span>
-          </li>
-        ))}
-        <li>
-          <span class="label">Ongoing</span>
-          <div><h3>Coaching</h3><p>About 50 students coached.</p></div>
-          <span class="placing">Coach</span>
-        </li>
-      </ul>
     </div>
   </section>
 

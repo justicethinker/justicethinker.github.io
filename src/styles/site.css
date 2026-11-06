@@ -321,3 +321,13 @@ h2 em, h1 em { font-style: italic; }
 .foot nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
 .foot a { text-decoration: none; }
 .foot a:hover { color: var(--night-text); text-decoration: underline; }
+
+/* debate record groups + stats */
+.record-group { margin-top: 2.5rem; }
+.record-group__title { display: block; margin-bottom: 0.9rem; color: var(--ink-2); }
+.record h4 { font: 400 1.35rem/1.25 var(--serif); }
+.stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin-top: 2.5rem; border-top: 1px solid var(--ink); max-width: 52rem; }
+@media (min-width: 760px) { .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.stats div { display: flex; flex-direction: column-reverse; align-items: flex-start; gap: 0.35rem; padding: 1.1rem 1rem 0 0; }
+.stats dd { font: 380 clamp(2.2rem, 5vw, 3.2rem)/1 var(--serif); letter-spacing: -0.02em; }
+.stats dt { font-size: 0.92rem; color: var(--ink-2); }
