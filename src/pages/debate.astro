@@ -1,11 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { debateResults, talks, debateRules } from '../data/site';
+import { debateResults, debateRules } from '../data/site';
 ---
 
 <Layout
   title="Debate"
-  description="Debate results, talks, and rules."
+  description="Debate record and the rules I argue by."
 >
   <div class="stage" data-scale-stage>
     <canvas class="stage__canvas" data-scale-canvas aria-hidden="true"></canvas>
@@ -23,7 +23,7 @@ import { debateResults, talks, debateRules } from '../data/site';
       <section class="opener plate" aria-label="Introduction">
         <p class="kicker">Debate &amp; public speaking</p>
         <h1 class="display display--md">
-          Debate <span class="gold">results.</span>
+          Debate <span class="gold">record.</span>
         </h1>
         <p class="lede" data-selectable>
           Drag a result onto a side of the scale, or focus one and press ← or →.
@@ -33,8 +33,8 @@ import { debateResults, talks, debateRules } from '../data/site';
 
       <section class="section" data-balance-next aria-label="Results">
         <div class="section__head plate">
-          <h2 class="title">Results</h2>
-          <p class="note">Results from competitions.</p>
+          <h2 class="title">Record</h2>
+          <p class="note">Judging, competing and awards.</p>
         </div>
 
         <p class="sr-only" id="weigh-hint">
@@ -60,27 +60,6 @@ import { debateResults, talks, debateRules } from '../data/site';
                 <h3 class="card__name">{result.event}</h3>
                 <p class="card__body">{result.body}</p>
                 <span class="card__weigh">Drag onto a side · ← left · → right</span>
-              </article>
-            ))
-          }
-        </div>
-      </section>
-
-      <section class="section" aria-label="Talks">
-        <div class="section__head">
-          <h2 class="title">Talks</h2>
-          <p class="note">Talks I've given.</p>
-        </div>
-
-        <div class="cards" data-reveal-group>
-          {
-            talks.map((talk) => (
-              <article class="card" data-tilt data-reveal>
-                <span class="card__meta">
-                  {talk.venue} · {talk.meta}
-                </span>
-                <h3 class="card__name">{talk.title}</h3>
-                <p class="card__body">{talk.body}</p>
               </article>
             ))
           }

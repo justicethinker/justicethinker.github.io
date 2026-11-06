@@ -1,7 +1,7 @@
 /**
  * The content model.
  * Only things that are true live here: the GitHub record, the Substack
- * essays, and the debate results. Nothing invented.
+ * essays, and the debate record. Nothing invented.
  */
 
 export const identity = {
@@ -207,46 +207,39 @@ export type Result = {
 
 export const debateResults: Result[] = [
   {
-    event: 'National Debate Championship',
-    when: '2024',
-    placing: 'Champion',
-    format: 'Oxford Union style',
-    body: 'Won the final on technology and human rights, against a field of seasoned national competitors.',
+    event: "Débatteur d'Or",
+    when: '2025 · 2026',
+    placing: 'Nominee',
+    format: 'Nigerian debating award',
+    body: 'Nominated two years running for the Nigerian Débatteur d’Or award.',
   },
   {
-    event: 'Regional Parliamentary Series',
-    when: '2023 — 2024',
-    placing: 'Season winner',
+    event: 'All Nigerian Universities Debating Championship (ANUDC)',
+    when: '2026',
+    placing: 'Took part',
     format: 'British Parliamentary',
-    body: 'Highest win rate across the season, in both opening and closing positions, across a wide spread of motions.',
+    body: 'On the tab at the national universities championship.',
   },
   {
-    event: 'International Debate Tournament',
-    when: '2023',
-    placing: 'Third place',
-    format: 'World Schools',
-    body: 'Represented the country internationally, carrying research depth into cross-examination.',
-  },
-];
-
-export const talks = [
-  {
-    title: 'The ethics of artificial intelligence in decision making',
-    venue: 'TEDx University · 2024',
-    meta: '18-minute keynote · 100K+ views',
-    body: 'What it means to hand a moral decision to a system that cannot be held responsible for it.',
+    event: 'US online debate tournaments',
+    when: '2025',
+    placing: 'Judge',
+    format: 'Online',
+    body: 'Volunteered as an adjudicator for online tournaments run from the US.',
   },
   {
-    title: "Bridging science and society: the physicist's responsibility",
-    venue: 'National Science Convention · 2024',
-    meta: 'Plenary address · 2,000+ attendees',
-    body: 'A physicist who cannot explain their work in public has left the work unfinished.',
+    event: 'West African Universities Debating Championship (WA-UDC)',
+    when: '2024',
+    placing: 'Judge',
+    format: 'British Parliamentary',
+    body: 'Adjudicated rounds at the regional universities championship.',
   },
   {
-    title: 'The power of interdisciplinary thinking',
-    venue: 'University Graduation Ceremony · 2024',
-    meta: 'Valedictorian address',
-    body: 'How physics sharpened the code, and how debate sharpened the physics.',
+    event: 'Tournament of Champions',
+    when: '2024',
+    placing: 'Organiser',
+    format: 'Sponsorship',
+    body: 'Brought in sponsorship to help the competition run.',
   },
 ];
 
@@ -327,7 +320,7 @@ export const physicsInterests = [
 
 export const background = {
   degree: 'BSc Physics',
-  detail: 'First Class Honours · 2020 — 2024',
-  thesis: 'Thesis on the quantum-to-classical boundary in mesoscopic systems.',
-  coaching: 'Debate coach and judge — 150+ students coached, 50+ competitions judged.',
+  detail: 'Federal University of Technology Owerri (FUTO) · 2025',
+  thesis: 'Thesis on wireless energy transmission.',
+  coaching: 'Debate coach and judge — 50 students coached.',
 };
